@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      if (window.location.protocol === "http:") {
+        window.location.href = "https:" + window.location.href.substring(5);
+      }
+    </script>
+    <title>NFC & AR demo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+    <model-viewer auto-rotate camera-controls ar></model-viewer>
+    <pre></pre>
+    <script>
+      if ("NDEFReader" in window) {
+        import("/script.js");
+      } else {
+        document.querySelector("pre").textContent = "No Web NFC support!\n";
+      }
+    </script>
+  </body>
+</html>

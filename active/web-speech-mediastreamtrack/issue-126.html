@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="logs"></div>
+    <script type="module">
+      {
+        const iframe = createIframe("microphone 'none'");
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        try {
+          recognition.start();
+          const error = await onSpeechRecognitionError(recognition);
+          log(
+            error == "not-allowed"
+              ? "SUCCESS: recognition.onerror fires 'not-allowed' error if microphone 'none'"
+              : "FAIL: : recognition.onerror should fire 'not-allowed' error if microphone 'none'"
+          );
+        } catch (error) {
+          log("FAIL: : recognition.start() should not fail");
+        }
+        iframe.parentNode.removeChild(iframe);
+      }
+      {
+        const iframe = createIframe("microphone 'none'");
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        const ac = new AudioContext();
+        const mediaStreamDestination = ac.createMediaStreamDestination();
+        const audioTrack = mediaStreamDestination.stream.getAudioTracks()[0];
+        try {
+          recognition.start(audioTrack);
+          const error = await onSpeechRecognitionError(recognition);
+          log(
+            error
+              ? "FAIL: recognition.onerror should not fire an event if microphone 'none' and recognition.start(audioTrack)"
+              : "SUCCESS: recognition.onerror does not fire an event if microphone 'none' and recognition.start(audioTrack)"
+          );
+        } catch (error) {
+          log(
+            error.name == "InvalidStateError"
+              ? "SUCCESS: recognition.start(audioTrack) fails with InvalidStateError if microphone 'none'"
+              : "FAIL: : recognition.start(audioTrack) should fail with InvalidStateError if microphone 'none'"
+          );
+        }
+        iframe.parentNode.removeChild(iframe);
+      }
+      {
+        const iframe = createIframe("microphone 'none'");
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+        iframe.parentNode.removeChild(iframe);
+
+        try {
+          recognition.start();
+          log(
+            "FAIL: recognition.start() should throw if microphone 'none' and detached iframe (this behavior is not in the spec)"
+          );
+        } catch (error) {
+          log(
+            error.name == "UnknownError"
+              ? "SUCCESS: recognition.start() fails with UnknownError if microphone 'none' and detached iframe (this behavior is not in the spec)"
+              : "FAIL: : recognition.start() should fail with UnknownError if microphone 'none' and detached iframe (this behavior is not in the spec)"
+          );
+        }
+      }
+      {
+        const iframe = createIframe();
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+        iframe.parentNode.removeChild(iframe);
+
+        try {
+          recognition.start();
+          log(
+            "FAIL: recognition.start() should fail if detached iframe (this behavior is not in the spec)"
+          );
+        } catch (error) {
+          log(
+            error.name == "UnknownError"
+              ? "SUCCESS: recognition.start() fails with UnknownError if detached iframe (this behavior is not in the spec)"
+              : "FAIL: : recognition.start() should fail with UnknownError if detached iframe (this behavior is not in the spec)"
+          );
+        }
+      }
+      {
+        const iframe = createIframe();
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        try {
+          recognition.start();
+          log("SUCCESS: recognition.start() succeeds");
+        } catch (error) {
+          log(`FAIL: : recognition.start() should succeed - error: ${error}`);
+        }
+        iframe.parentNode.removeChild(iframe);
+      }
+      {
+        const iframe = createIframe();
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        const ac = new AudioContext();
+        const mediaStreamDestination = ac.createMediaStreamDestination();
+        const audioTrack = mediaStreamDestination.stream.getAudioTracks()[0];
+        try {
+          recognition.start(audioTrack);
+          log("SUCCESS: recognition.start(audioTrack) succeeds");
+        } catch (error) {
+          log(`FAIL: : recognition.start() should succeed - error: ${error}`);
+        }
+        iframe.parentNode.removeChild(iframe);
+      }
+      {
+        const iframe = createIframe();
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        try {
+          recognition.start(undefined);
+          log("FAIL: recognition.start(undefined) should fail");
+        } catch (error) {
+          log(
+            error.name == "TypeError"
+              ? "SUCCESS: : recognition.start(undefined) fails with TypeError"
+              : "FAIL: : recognition.start(undefined) should fail with TypeError"
+            );
+        }
+        iframe.parentNode.removeChild(iframe);
+      }
+
+      function createIframe(permissionsPolicy = "") {
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("allow", permissionsPolicy);
+        iframe.src = URL.createObjectURL(new Blob([`<!DOCTYPE html><meta charset="utf-8">`], { type: "text/html" }));
+        document.body.appendChild(iframe);
+        return iframe;
+      }
+      function onSpeechRecognitionError(recognition) {
+        const errorPromise = new Promise((resolve) => {
+          recognition.onerror = ({ error }) => {
+            resolve(error);
+          };
+        });
+        const timeoutPromise = (ms) =>
+          new Promise((resolve) => setTimeout(resolve, ms));
+        return Promise.race([errorPromise, timeoutPromise(1000)]);
+      }
+      function log(text) {
+        logs.innerHTML += `${text}<br>`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      import { openDB, deleteDB } from 'https://unpkg.com/idb?module';
+
+      (async () => {
+        try {
+          const db = await openDB('test-db', 2, {
+            upgrade(db, oldVersion) {
+              if (oldVersion < 1) db.createObjectStore('keyval');
+              if (oldVersion < 2) db.createObjectStore('another-keyval');
+            }
+          });
+          
+          $('body').append(`DB created with stores: ${JSON.stringify([...db.objectStoreNames])}`);
+        } catch (err) {
+          $('body').append(`It went wrong: ${err.message}`);
+          throw err;
+        }
+        
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<h1>iframe 2</h1>
+
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+  .text {
+    color: blue;
+    white-space: pre-line;
+  }
+</style>
+
+<script class="visible">
+  onmessage = () => {
+    log(`userActivation.isActive: ${navigator.userActivation?.isActive}`);
+    navigator.mediaDevices.getDisplayMedia();
+  };
+</script>
+<script>
+  onunhandledrejection = (event) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: event.reason,
+        className: "error",
+      })
+    );
+
+  function log(text) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: text,
+        className: "text",
+      })
+    );
+  }
+</script>

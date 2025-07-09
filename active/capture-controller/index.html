@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CaptureController</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>CaptureController</h1>
+    <a href="https://github.com/w3c/mediacapture-screen-share/issues/230"
+      >https://github.com/w3c/mediacapture-screen-share/issues/230</a
+    >
+    <pre>navigator.mediaDevices.getDisplayMedia({ controller })</pre>
+
+    <button id="button1">
+      setFocusBehavior("no-focus-change") BEFORE getDisplayMedia
+    </button>
+    <button id="button2">
+      setFocusBehavior("no-focus-change") DURING getDisplayMedia microtask
+    </button>
+    <button id="button3">
+      setFocusBehavior("no-focus-change") AFTER getDisplayMedia microtask
+    </button>
+    <br /><br />
+    <button id="button4">
+      setFocusBehavior("focus-captured-surface") BEFORE getDisplayMedia
+    </button>
+    <button id="button5">
+      setFocusBehavior("focus-captured-surface") DURING getDisplayMedia microtask
+    </button>
+    <button id="button6">
+      setFocusBehavior("focus-captured-surface") AFTER getDisplayMedia microtask
+    </button>
+    <br /><br />
+    <button id="button7">getDisplayMedia without setFocusBehavior</button>
+    <br /><br />
+    <button id="button8">getDisplayMedia without controller</button>
+    <br /><br />
+    <button id="button9">
+      stop tracks before setFocusBehavior("no-focus-change") DURING getDisplayMedia microtask
+    </button>
+    <br /><br />
+    <button id="button10">open window that calls setCaptureHandleConfig</button>
+    <button id="button11">setFocusBehavior(track.getCaptureHandle().handle) DURING getDisplayMedia microtask</button>
+    <button id="button12">setFocusBehavior(track.getCaptureHandle().handle) AFTER getDisplayMedia microtask</button>
+    <br /><br />
+    <button id="button13">setFocusBehavior("focus-captured-surface") followed by setFocusBehavior("no-focus-change") BEFORE getDisplayMedia </button>
+    <button id="button14">setFocusBehavior("focus-captured-surface") followed by setFocusBehavior("no-focus-change") DURING getDisplayMedia </button>
+    <button id="button15">setFocusBehavior("focus-captured-surface") followed by setFocusBehavior("no-focus-change") AFTER getDisplayMedia </button>
+    <br /><br />
+    <button id="button16">setFocusBehavior("no-focus-change") while picker is displayed </button>
+    <label><input id="reuseControllerCheckbox" disabled type="checkbox">Reuse controller</label>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `> ${event.reason}\r\n`;
+      };
+      window.onerror = (error) => {
+        logs.textContent += `> ${error}\r\n`;
+      };
+    </script>
+  </body>
+</html>

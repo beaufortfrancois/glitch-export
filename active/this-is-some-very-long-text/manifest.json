@@ -1,0 +1,48 @@
+{
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/400x400?text=0 - 400x400",
+      "sizes": "400x400",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/1000x1000?text=1 - 1000x1000",
+      "sizes": "1000x1000",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/1000x2000?text=2 - 1000x2000",
+      "sizes": "1000x2000",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/1000x3000?text=3 - 1000x3000",
+      "sizes": "1000x3000",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/1000x4000?text=4 - 1000x4000",
+      "sizes": "1000x4000",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/1000x5000?text=5 - 1000x5000",
+      "sizes": "1000x5000",
+      "type": "image/png"
+    }
+  ],
+  "name": "This is some very loooooooooooong text",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.com/1163eaec-58f8-4386-9c02-ffc75c3a5e45%2Flarge-icon.png?v=1589352660115",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?start_url",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff"
+}

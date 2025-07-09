@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--
+      This is the page head - it contains info the browser uses to display the page
+      You won't see what's in the head in the page
+      Scroll down to the body element for the page content
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <!-- 
+      This is an HTML comment
+      You can write text in a comment and the content won't be visible in the page
+    -->
+
+    <title>Hello World!</title>
+
+    <!-- Meta tags for SEO and social sharing -->
+    <link rel="canonical" href="https://glitch-hello-website.glitch.me/" />
+    <meta
+      name="description"
+      content="A simple website, built with Glitch. Remix it to get your own."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:title" content="Hello World!" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://glitch-hello-website.glitch.me/" />
+    <meta
+      property="og:description"
+      content="A simple website, built with Glitch. Remix it to get your own."
+    />
+    <meta
+      property="og:image"
+      content="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2Fhello-website-social.png?v=1616712748147"
+    />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- Import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <p>
+      <label for="ic">Color input</label>
+      <input type="color" id="ic" value="#000000" />
+    </p>
+    <p>
+      <label for="in">Number input</label>
+      <input type="number" id="in" min="0" max="10" value="5" />
+    </p>
+    <p>
+      <label for="ir">Range input</label>
+      <input type="range" id="ir" value="10" />
+    </p>
+    <p>
+      <label for="idd">Date input</label>
+      <input type="date" id="idd" value="1970-01-01" />
+    </p>
+    <p>
+      <label for="idm">Month input</label>
+      <input type="month" id="idm" value="1970-01" />
+    </p>
+    <p>
+      <label for="idw">Week input</label>
+      <input type="week" id="idw" value="1970-W01" />
+    </p>
+    <p>
+      <label for="idt">Datetime input</label>
+      <input type="datetime" id="idt" value="1970-01-01T00:00:00Z" />
+    </p>
+    <p>
+      <label for="idtl">Datetime-local input</label>
+      <input type="datetime-local" id="idtl" value="1970-01-01T00:00" />
+    </p>
+    <p>
+      <label for="idt">Time input</label>
+      <input type="time" id="idt" value="00:00" />
+    </p>
+  </body>
+</html>

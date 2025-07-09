@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ptz.glitch.me</title>
+    <meta charset="utf-8" />
+    <meta name="Description" content="pan–tilt–zoom playground" />
+    <link rel="icon" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <p id="flagWarning" style="display: none">
+      Turn on <b>Experimental Web Platform features</b>
+    </p>
+
+    <div id="preview">
+      <video id="video" autoplay muted width="380" height="140"></video>
+      <div class="buttons">
+        <div>
+          <button id="panLeftButton" data-name="pan" disabled>
+            left
+          </button>
+          <button id="panRightButton" data-name="pan" disabled>
+            right
+          </button>
+        </div>
+        <div>
+          <button id="tiltDownButton" data-name="tilt" disabled>
+            down
+          </button>
+          <button id="tiltUpButton" data-name="tilt" disabled>
+            up
+          </button>
+        </div>
+        <div>
+          <button id="zoomOutButton" data-name="zoom" disabled>
+            zoom&nbsp;out
+          </button>
+          <button id="zoomInButton" data-name="zoom" disabled>
+            zoom&nbsp;in
+          </button>
+        </div>
+      </div>
+      <div class="ranges">
+        <input type="range" id="panRange" data-name="pan" disabled />
+        <input type="range" id="tiltRange" data-name="tilt" disabled />
+        <input type="range" id="zoomRange" data-name="zoom" disabled />
+      </div>
+    </div>
+
+    <h1>
+      pan–tilt–zoom
+      <small id="small">🌱</small>
+    </h1>
+
+    <p>Pick a camera or use the default one</p>
+    <select id="cameraSelect" disabled> </select>
+
+    <p>Call <b>navigator.mediaDevices.getUserMedia</b> with</p>
+    <button
+      id="getUserMediaVideoPanUnconstrainedBasicButton"
+      autofocus
+      title="Request ideally a PTZ camera"
+    >
+      video: { pan: true }
+    </button>
+    <button
+      id="getUserMediaVideoPtzButton"
+      title="Request ideally a PTZ camera and set ideal zoom"
+    >
+      video: { zoom: 400 }
+    </button>
+    <button
+      id="getUserMediaVideoPanUnconstrainedAudioButton"
+      title="Request audio and ideally a PTZ camera"
+    >
+      audio: true, video: { tilt: true }
+    </button>
+    <button id="getUserMediaVideoButton" title="Request any camera">
+      video: true
+    </button>
+
+    <p>Manage the <b>panTiltZoom</b> camera permission with</p>
+    <button id="requestCameraPtzTrueButton">
+      permissions.request
+    </button>
+    <button id="revokeCameraPtzTrueButton">
+      permissions.revoke
+    </button>
+
+    <p>
+      Feature policy is
+      <input type="checkbox" id="cameraFeaturePolicy" />
+      <label for="cameraFeaturePolicy">camera</label>
+      <input type="checkbox" id="microphoneFeaturePolicy" />
+      <label for="microphoneFeaturePolicy">microphone</label>
+    </p>
+
+    <div id="logs"></div>
+
+    <script>
+      if (location.protocol == "http:") {
+        small.textContent = "(not secure)";
+        if (!window.confirm("Do you want to stay on insecure HTTP protocol?"))
+          location.protocol = "https:";
+      }
+    </script>
+  </body>
+</html>

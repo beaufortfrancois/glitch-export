@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>serial-api.glitch.me</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>Serial API</h1>
+    <button id="requestPortButton">
+      requestPort
+    </button>
+    <hr />
+    <button id="openPortButton">
+      open
+    </button>
+    <hr />
+    <button id="getInfoButton">
+      getInfo
+    </button>
+    <hr />
+    <button id="readButton">
+      read
+    </button>
+    <hr />
+    <input id="text" list="commands" />
+    <datalist id="commands">
+      <option value="\x03">Ctrl-C</option>
+      <option value="console.log(process.env);"
+        >Log environment variables</option
+      >
+      <option value="echo(false);">Turn off echo on REPL</option>
+      <option value="show(0b1);">Turn on the first LED on the first row</option>
+    </datalist>
+    <button id="writeButton">
+      write
+    </button>
+    <hr />
+    <button id="turnOnBrkSignalButton">
+      turn on brk
+    </button>
+    <button id="turnOffBrkSignalButton">
+      turn off brk
+    </button>
+    <hr />
+    <button id="turnOnDtrSignalButton">
+      turn on dtr
+    </button>
+    <button id="turnOffDtrSignalButton">
+      turn off dtr
+    </button>
+    <hr />
+    <button id="turnOnRtsSignalButton">
+      turn on rts
+    </button>
+    <button id="turnOffRtsSignalButton">
+      turn off rts
+    </button>
+    <hr />
+    <button id="getSignalsButton">
+      get signals
+    </button>
+    <hr />
+    <button id="closeButton">
+      close
+    </button>
+    <hr />
+    <h2>
+      Open DevTools console ➡
+    </h2>
+  </body>
+</html>

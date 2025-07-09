@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 4px;
+      }
+      a {
+        display: block;
+        margin-bottom: 24px;
+      }
+      button {
+        display: block;
+        padding: 4px 12px;
+        margin-bottom: 12px;
+      }
+      pre {
+        white-space: pre-line;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+      ndef.makeReadOnly()
+    </h2>
+    <a href="https://github.com/w3c/web-nfc/issues/558"
+      >https://github.com/w3c/web-nfc/issues/558</a
+    >
+    <button id="makeReadOnlyButton">ndef.makeReadOnly()</button>
+    <button id="writeButton">ndef.write("ok")</button>
+    <button id="writeAndMakeReadOnlyButton">
+      ndef.write("ok") <i>then</i> ndef.makeReadOnly()
+    </button>
+    <button id="scanButton">ndef.scan()</button>
+    <button id="abortButton">abortController.abort()</button>
+    <button id="resetAbortControllerButton">
+      abortController = new AbortController()
+    </button>
+<!--     <button id="testButton">test</button> -->
+
+    <pre id="pre"></pre>
+    <script>
+      const ndef = new NDEFReader();
+
+      makeReadOnlyButton.onclick = async () => {
+        try {
+          pre.append("Tap an NFC tag to make it read only...\n");
+          await ndef.makeReadOnly({ signal: abortController.signal });
+          pre.append("Success: Made tag read only\n");
+        } catch (error) {
+          pre.append(`Error: ${error}\n`);
+        }
+      };
+
+      writeButton.onclick = async () => {
+        try {
+          pre.append("Tap an NFC tag to write to it...\n");
+          await ndef.write("Hello", { signal: abortController.signal });
+          pre.append("Success: Wrote to tag\n");
+        } catch (error) {
+          pre.append(`Error: ${error}\n`);
+        }
+      };
+
+      writeAndMakeReadOnlyButton.onclick = async () => {
+        try {         
+          pre.append("Tap an NFC tag to write to and make it read only...\n");
+          await ndef.write("Hello", { signal: abortController.signal });
+          pre.append("Success: Wrote to tag\n");
+          await ndef.makeReadOnly({ signal: abortController.signal });
+          pre.append("Success: Made tag read only\n");
+        } catch (error) {
+          pre.append(`Error: ${error}\n`);
+        }
+      };
+
+      scanButton.onclick = async () => {
+        try {
+          pre.append("Scanning...\n");
+          await ndef.scan({ signal: abortController.signal });
+          ndef.onreadingerror = () => {
+            pre.append("Cannot read data from the NFC tag. Try another one?\n");
+          };
+          ndef.onreading = ({ message, serialNumber }) => {
+            pre.append(`NDEF message read from ${serialNumber}\n`);
+            for (const record of message.records) {
+              pre.append(`- Record type: ${record.recordType}\n`);
+            }
+          };
+        } catch (error) {
+          pre.append(`Error: ${error}\n`);
+        }
+      };
+
+      let abortController = new AbortController();
+      abortController.signal.onabort = event => {
+        pre.append(`All NFC operations have been aborted\n`);
+      };
+      abortButton.onclick = () => {
+        abortController.abort();
+      };
+
+      resetAbortControllerButton.onclick = () => {
+        abortController = new AbortController();
+        abortController.signal.onabort = event => {
+          pre.append(`All NFC operations have been aborted\n`);
+        };
+        pre.append("The abortController has been reset\n");
+      };
+
+      testButton.onclick = async () => {
+        const ndef = new NDEFReader();
+        await ndef.scan();
+
+        const abort1 = new AbortController();
+        try {
+          pre.append(`1\n`);
+          await ndef.makeReadOnly({ signal: abort1.signal });
+          // User taps NFC tag, p1 is resolved.
+          pre.append(`2\n`);
+        } finally {
+          try {
+            pre.append(`3\n`);
+            const abort2 = new AbortController();
+            const p2 = ndef.makeReadOnly({ signal: abort2.signal });
+            // For whatever reason.
+            abort1.abort();
+            await p2;
+          } catch (error) {
+            pre.append(`4\n`);
+            pre.append(`Error: ${error}\n`);
+          }
+        }
+      };
+
+      testButton.onclick = async () => {
+        const ndef = new NDEFReader();
+        await ndef.scan();
+
+        const abort1 = new AbortController();
+        try {
+          pre.append(`1\n`);
+          await ndef.makeReadOnly({ signal: abort1.signal });
+          // User taps NFC tag, p1 is resolved.
+          pre.append(`2\n`);
+        } finally {
+          try {
+            // For whatever reason.
+            abort1.abort();
+            pre.append(`3\n`);
+            const abort2 = new AbortController();
+            const p2 = ndef.makeReadOnly({ signal: abort2.signal });
+            await p2;
+          } catch (error) {
+            pre.append(`4\n`);
+            pre.append(`Error: ${error}\n`);
+          }
+        }
+      };
+
+      testButton.onclick = () => {
+        const controller = new AbortController();
+        pre.append(`test\n`);
+        const p1 = ndef.makeReadOnly({ signal: controller.signal });
+        p1.catch(error => {
+          pre.append(`p1 fails: ${error}\n`);
+        });
+        setTimeout(() => {
+          const p2 = ndef.makeReadOnly({ signal: controller.signal });
+          p2.catch(error => {
+            pre.append(`p2 fails: ${error}\n`);
+          });
+          controller.abort();
+        }, 1000);
+      };
+
+      testButton.onclick = () => {
+        const controller = new AbortController();
+        pre.append(`test\n`);
+        const p1 = ndef.scan({ signal: controller.signal });
+        p1.then(() => {
+          pre.append(`p1 succeeds\n`);
+        }).catch(error => {
+          pre.append(`p1 fails: ${error}\n`);
+        });
+        setTimeout(() => {
+          const p2 = ndef.scan({ signal: controller.signal });
+          p2.catch(error => {
+            pre.append(`p2 fails: ${error}\n`);
+          });
+          controller.abort();
+        }, 1000);
+      };
+    </script>
+  </body>
+</html>

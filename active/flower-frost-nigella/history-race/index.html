@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script type="module">
+      window.$ = (...args) => document.querySelector(...args);
+      
+      $('.slow-push-state').onclick = () => {
+        const start = Date.now();
+        while (Date.now() - start < 6000);
+        history.pushState({}, '', './pushed-state');
+      }
+      
+      const iframe = $('.x-origin-iframe');
+      
+      $('.automated').onclick = () => {
+        iframe.contentWindow.postMessage('slow-push', '*');
+        setTimeout(() => {
+          iframe.src = iframe.src + '#foo';
+        }, 100);
+      };
+      
+      onmessage = ({ data }) => {
+        if (data === 'slow-push') {
+          const start = Date.now();
+          while (Date.now() - start < 1000);
+          history.pushState({}, '', './pushed-state');
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <ol>
+      <li>Press the button below</li>
+      <li>You now have 6 seconds to click the URL bar, add a hash to the end (eg #foo), and press enter</li>
+      <li>Tab will crash</li>
+    </ol>
+    <button class="slow-push-state">
+      Slow pushState
+    </button>
+    
+    <h1>
+      Automated version - iframe
+    </h1>
+    <p>
+      <button class="automated">
+        Go!
+      </button>  
+    </p>
+    
+    <iframe class="x-origin-iframe" src="https://output.jsbin.com/jurahar/2/quiet"></iframe>
+    
+    <h1>
+      Automated version - top level
+    </h1>
+    
+    <iframe class="x-origin-iframe" src="https://output.jsbin.com/xobihaf/quiet"></iframe>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+<style>
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
+  }
+  span {
+    padding-right: 8px;
+  }
+</style>
+<p>For info, here are your current configuration's results inline:</p>
+<ul>
+  <li>
+    <span id="p3"></span>
+    Screen supports approximately the gamut specified by the DCI P3 Color Space
+    or more.
+  </li>
+  <li>
+    <span id="colorDepth"></span>
+    Color depth is 48 bytes or more.
+  </li>
+  <li>
+    <span id="vp9"></span>
+    Browser supports VP9 Profile 2, Level 1, 10-bit YUV content.
+  </li>
+</ul>
+<script>
+  document.querySelector("#colorDepth").innerHTML =
+    Math.sign(screen.colorDepth - 47) == 1 ? "&#x2714;" : "&#x274C;";
+  document.querySelector("#p3").innerHTML = window.matchMedia(
+    "(color-gamut: p3)"
+  ).matches
+    ? "&#x2714;"
+    : "&#x274C;";
+  document.querySelector("#vp9").innerHTML = MediaSource.isTypeSupported(
+    'video/webm; codecs="vp09.02.10.10"'
+  )
+    ? "&#x2714;"
+    : "&#x274C;";
+</script>

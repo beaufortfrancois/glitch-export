@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Glitch!</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <h1>
+      no-cache
+    </h1>
+    <button class="fetch">
+      Fetch
+    </button>
+    <button class="fetch-mode-no-store">
+      Fetch no-store
+    </button>
+    <button class="read">
+      Read 500k
+    </button>
+    <h1>
+      no-store
+    </h1>
+    <button class="fetch-no-store">
+      Fetch
+    </button>
+    <button class="read-no-store">
+      Read 500k
+    </button>
+    <pre class="output"></pre>
+    <script>
+      const pre = document.querySelector('.output');
+      let fetchPromise;
+      let fetchPromiseNoStore;
+      
+      document.querySelector('.fetch').addEventListener('click', event => {
+        fetchPromise = fetch('data');
+      });
+      
+      document.querySelector('.fetch-mode-no-store').addEventListener('click', event => {
+        fetchPromise = fetch('data', { cache: 'no-store' });
+      });
+      
+      document.querySelector('.fetch-no-store').addEventListener('click', event => {
+        fetchPromiseNoStore = fetch('data-no-store');
+      });
+      
+      const decoder1 = new TextDecoder();
+      const decoder2 = new TextDecoder();
+      
+      document.querySelector('.read').addEventListener('click', async event => {
+        const response = await fetchPromise;
+        let read = 0;
+        
+        const reader = response.body.getReader();
+        
+        while (true) {
+          const {value} = await reader.read();
+          read += value.length;
+          const decoded = decoder1.decode(value, {stream: true});
+          pre.append('decode...');
+          if (read > 1000 * 25) {
+            pre.append(decoded.substr(0, 25));
+            reader.releaseLock();
+            return;
+          }
+        }
+      });
+      
+      document.querySelector('.read-no-store').addEventListener('click', async event => {
+        const response = await fetchPromiseNoStore;
+        let read = 0;
+        
+        const reader = response.body.getReader();
+        
+        while (true) {
+          const {value} = await reader.read();
+          read += value.length;
+          const decoded = decoder2.decode(value, {stream: true});
+          if (read > 1000 * 25) {
+            pre.append(decoded.substr(0, 25));
+            reader.releaseLock();
+            return;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

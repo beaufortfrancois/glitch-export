@@ -1,0 +1,21 @@
+button {
+  display: block;
+}
+canvas {
+  width: 640px;
+  height: 480px;
+  margin-top: 24px;
+  object-fit: contain;
+}
+.error {
+  color: red;
+}
+.fullscreen {
+  background: black;
+  margin: 0;
+  width: 100vw;
+  object-fit: contain;
+  position: fixed;
+  top: 0;
+  left: 0;
+}

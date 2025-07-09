@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <title>WebGL Info</title>
+  </head>
+  <body>
+    <pre>RENDERER:                <span id="renderer"></span></pre>
+    <pre>UNMASKED_VENDOR_WEBGL:   <span id="unmaskedVendor"></span></pre>
+    <pre>UNMASKED_RENDERER_WEBGL: <span id="unmaskedRenderer"></span></pre>
+    <script>
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl");
+
+      renderer.textContent = gl.getParameter(gl.RENDERER);
+
+      const info = gl.getExtension("WEBGL_debug_renderer_info");
+      unmaskedVendor.textContent = gl.getParameter(info.UNMASKED_VENDOR_WEBGL);
+      unmaskedRenderer.textContent = gl.getParameter(
+        info.UNMASKED_RENDERER_WEBGL
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>getGamepads()</title>
+    <link rel="canonical" href="https://get-gamepads.glitch.me/" />
+    <meta name="robots" content="index,follow" />
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      (function printGamepads() {
+        pre.textContent = `Array.isArray(navigator.getGamepads()) ${Array.isArray(
+          navigator.getGamepads()
+        )}\n\nnavigator.getGamepads().__proto__ ${
+          navigator.getGamepads().__proto__
+        }\nnavigator.getGamepads().item      ${
+          navigator.getGamepads().item
+        }\nnavigator.getGamepads().length    ${
+          navigator.getGamepads().length
+        }\nnavigator.getGamepads()           ${navigator.getGamepads()}`;
+
+        requestAnimationFrame(printGamepads);
+      })();
+    </script>
+  </body>
+</html>

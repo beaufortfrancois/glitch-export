@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>region-capture-experimental-subtypes.glitch.me</title>
+    <meta
+      http-equiv="origin-trial"
+      content="Au4CTujRkAAeLcO5dIqSSgWy6h6x2+PJkyopcQLZKDi8wskwB6hUmde5QSrAqCg1pa5VtzVWLNwzN4Y1DIPoQA8AAAB1eyJvcmlnaW4iOiJodHRwczovL3JlZ2lvbi1jYXB0dXJlLWV4cGVyaW1lbnRhbC1zdWJ0eXBlcy5nbGl0Y2gubWU6NDQzIiwiZmVhdHVyZSI6IlJlZ2lvbkNhcHR1cmUiLCJleHBpcnkiOjE2NjY3NDIzOTl9"
+    />
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Region Capture experimental subtypes</h1>
+    <a href="https://github.com/w3c/mediacapture-region/"
+      >https://github.com/w3c/mediacapture-region/</a
+    >
+    <video id="video" autoplay muted playsinline></video>
+    <select id="select"></select>
+    <button id="button">Crop captured tab</button>
+    <pre id="logs"></pre>
+
+    <div id="test-div"></div>
+    <hr id="test-hr" />
+    <p id="test-p">
+      <var id="test-var">e</var> equals mc<sup id="test-sup">2</sup>, or is
+      <wbr id="test-wbr" />it mc<sub id="test-sub">2</sub>?
+      <u id="test-u">probz</u>.
+    </p>
+    <select id="test-select">
+      <optgroup label="Bar" id="test-optgroup">
+        <option value="foo" id="test-option">Foo</option>
+      </optgroup>
+    </select>
+    <br id="test-br" />
+    <a id="test-a" href="#"></a>
+    <script id="test-script">
+      console.log("hello");
+    </script>
+    <audio id="test-audio"></audio>
+    <video
+      id="test-video"
+      autoplay
+      loop
+      muted
+      src="https://storage.googleapis.com/media-session/sintel/trailer.mp4"
+      style="width: 150px"
+    ></video>
+    <img
+      id="test-img"
+      src="https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2Fillustration.svg?v=1618177344016"
+      style="width: 50px"
+    />
+
+    <math id="test-math">
+      <mrow>
+        <mi>x</mi>
+        <mo>=</mo>
+        <mfrac id="test-mfrac">
+          <mrow>
+            <mrow>
+              <mo>-</mo>
+              <mi>b</mi>
+            </mrow>
+            <mo>&PlusMinus;</mo>
+            <msqrt>
+              <mrow>
+                <msup>
+                  <mi>b</mi>
+                  <mn>2</mn>
+                </msup>
+                <mo>-</mo>
+                <mrow>
+                  <mn>4</mn>
+                  <mo>&InvisibleTimes;</mo>
+                  <mi>a</mi>
+                  <mo>&InvisibleTimes;</mo>
+                  <mi>c</mi>
+                </mrow>
+              </mrow>
+            </msqrt>
+          </mrow>
+          <mrow>
+            <mn>2</mn>
+            <mo>&InvisibleTimes;</mo>
+            <mi>a</mi>
+          </mrow>
+        </mfrac>
+      </mrow>
+    </math>
+    <span id="test-span"></span>
+    <iframe id="test-iframe" 
+      style="width: 100px; height: 50px"></iframe>
+    <svg id="test-svg">
+      <text id="test-text" x="20" y="20">I'm a &lt;text> in a &lt;svg></text>
+      <rect
+        id="test-rect"
+        x="20"
+        y="50"
+        width="50"
+        height="50"
+        fill="none"
+        stroke="black"
+        stroke-width="2"
+      />
+    </svg>
+    <canvas id="test-canvas"></canvas>
+    <object id="test-object"></object>
+    <embed id="test-embed" type="video/webm" />
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+  </body>
+</html>

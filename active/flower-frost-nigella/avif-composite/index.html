@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        background: black;
+        color: white;
+        font-family: sans-serif;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        width: 960px;
+        height: auto;
+      }
+      .layer {
+        display: grid;
+        width: max-content;
+      }
+      
+      .layer > * {
+        grid-area: 1/1;
+        transition: transform 500ms ease-in-out; 
+      }
+      
+      .layer:hover img:nth-child(1) {
+        transform: translateY(-10%);
+      }
+      
+      .contrast-on-hover:hover {
+        filter: contrast(2) saturate(4.6)
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Low quality - 79kB
+    </h1>
+    
+    <img src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Flow.avif?v=1623153692626" width="1920" height="1319">
+    
+    <p>
+      cqLevel 51, 4:4:4. I had to go with full chroma otherwise the colours were really weird.
+    </p>
+    
+    <p>
+      The sky looks obviously bad to me, but the rest isn't so bad.
+    </p>
+    
+    <h1>
+      Low quality 4:2:0 - 75kB
+    </h1>
+    
+    <img class="contrast-on-hover" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Flow-420.avif?v=1623154464158" width="1920" height="1319">
+    
+    <p>
+      cqLevel 51, 4:2:0. Just to demonstrate the colour issue I mentioned. I see purple areas in this image. Hover over to enhance.
+    </p>
+    
+    <h1>
+      High quality - 312kB
+    </h1>
+    
+    <img src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fhigh.avif?v=1623153693508" width="1920" height="1319">
+    
+    <p>
+      cqLevel 29, 4:2:0. I went high enough so the clouds didn't look bad.
+    </p>
+    
+    <h1>
+      Composite - 94kB
+    </h1>
+    
+    <div class="layer">
+      <img src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fbackground.avif?v=1623153692154" width="1920" height="1319">
+      <img src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fforeground.avif?v=1623153693040" width="1920" height="1319">
+    </div>
+    
+    <p>
+      This is a combination of the previous settings, but where one image is just the sky, and the other is the rest. One is layed over the top of the other.
+    </p>
+    
+    <p>
+      Hover to see the separation.
+    </p>
+    
+    <p>
+      This image looks good enough to me.
+    </p>
+  </body>
+</html>

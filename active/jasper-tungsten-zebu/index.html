@@ -1,0 +1,71 @@
+<script type="module">
+  const feature = "chromium-experimental-read-write-storage-texture";
+  const adapter = await navigator.gpu.requestAdapter();
+  if (!adapter.features.has(feature)) {
+    throw new Error("Read write storage texture support is not available");
+  }
+  // Explicitly request read write storage texture support.
+  const device = await adapter.requestDevice({
+    requiredFeatures: [feature],
+  });
+
+  const bindGroupLayout = device.createBindGroupLayout({
+    entries: [
+      {
+        binding: 0,
+        visibility: GPUShaderStage.COMPUTE, // Can also be used in vertex and fragment stages.
+        storageTexture: {
+          access: "read-write", // <- New!
+          format: "r32uint",
+        },
+      },
+    ],
+  });
+
+  const code = `
+    enable chromium_experimental_read_write_storage_texture;
+    @group(0) @binding(0) var image : texture_storage_2d<r32uint, read_write>;
+
+    @compute @workgroup_size(1, 1)
+    fn main(@builtin(local_invocation_id) local_id: vec3u) {
+      var data = textureLoad(image, vec2i(local_id.xy));
+      data.x *= 2;
+      textureStore(image, vec2i(local_id.xy), data);
+    }`;
+  const shaderModule = device.createShaderModule({ code });
+
+  const pipeline = device.createComputePipeline({
+    layout: device.createPipelineLayout({
+      bindGroupLayouts: [bindGroupLayout],
+    }),
+    compute: {
+      module: shaderModule,
+      entryPoint: "main",
+    },
+  });
+
+  const size = [100, 100];
+  const texture = device.createTexture({
+    size,
+    format: "r32uint",
+    usage: GPUTextureUsage.STORAGE_BINDING,
+  });
+
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+      {
+        binding: 0,
+        resource: texture.createView(),
+      },
+    ],
+  });
+
+  const commandEncoder = device.createCommandEncoder();
+  const passEncoder = commandEncoder.beginComputePass();
+  passEncoder.setPipeline(pipeline);
+  passEncoder.setBindGroup(0, bindGroup);
+  passEncoder.dispatchWorkgroups(1, 1);
+  passEncoder.end();
+  device.queue.submit([commandEncoder.finish()]);
+</script>

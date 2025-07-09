@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+      const log = (msg) => {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        $('.log').append(div);
+      };
+    </script>
+  </head>
+  <body>
+    <div class="log"></div>
+    <script type="module">
+      import { setMany } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
+      import { openDB } from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
+      
+      log('Imported stuff');
+      const toSet = [
+        ['hello', 'world'],
+        ['foo', 'bar'],
+        [123, 456],
+      ];
+      log(`Setting ${JSON.stringify(toSet)} in idb-keyval`);
+      await setMany(toSet);
+      log(`Opening in idb`);
+      const db = await openDB('keyval-store');
+      log(`Requesting keys`);
+      const tx = db.transaction('keyval');
+      const keys = await tx.store.getAllKeys();
+      log(`Got ${JSON.stringify(keys)}`)
+    </script>
+  </body>
+</html>

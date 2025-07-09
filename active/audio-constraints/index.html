@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>audio-constraints.glitch.me</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Audio constraints</h1>
+    <a href="https://w3c.github.io/mediacapture-main/"
+      >https://w3c.github.io/mediacapture-main/</a
+    >
+    <label>navigator.mediaDevices.getUserMedia({</label>
+    <label>
+      &nbsp;&nbsp;"audio":
+      <input
+        id="audio"
+        type="text"
+        list="audioValues"
+        placeholder="..."
+      />
+      <a href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-audio">help</a>
+      <datalist id="audioValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"echoCancellation":
+      <input
+        id="echoCancellation"
+        type="text"
+        list="echoCancellationValues"
+        placeholder="..."
+      />&nbsp;}
+      <a href="https://w3c.github.io/mediacapture-main/#def-constraint-echoCancellation">help</a>
+      <datalist id="echoCancellationValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"autoGainControl":
+      <input
+        id="autoGainControl"
+        type="text"
+        list="autoGainControlValues"
+        placeholder="..."
+      />&nbsp;}
+      <a href="https://w3c.github.io/mediacapture-main/#def-constraint-autoGainControl">help</a>
+      <datalist id="autoGainControlValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"noiseSuppression":
+      <input
+        id="noiseSuppression"
+        type="text"
+        list="noiseSuppressionValues"
+        placeholder="..."
+      />&nbsp;}
+      <a href="https://w3c.github.io/mediacapture-main/#def-constraint-noiseSuppression">help</a>
+      <datalist id="noiseSuppressionValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>})</label><br/>
+    <button id="captureButton">Capture microphone</button>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const searchParams = new URL(location).searchParams;
+        const inputs = Array.from(document.querySelectorAll("input[id]"));
+
+        inputs.forEach((input) => {
+          if (searchParams.has(input.id)) {
+            if (input.type == "checkbox") {
+              input.checked = searchParams.get(input.id);
+            } else {
+              input.value = searchParams.get(input.id);
+              input.blur();
+            }
+          }
+          if (input.type == "checkbox") {
+            input.addEventListener("change", function (event) {
+              const newSearchParams = new URL(location).searchParams;
+              if (event.target.checked) {
+                newSearchParams.set(input.id, event.target.checked);
+                newSearchParams.sort();
+              } else {
+                newSearchParams.delete(input.id);
+              }
+              history.replaceState(
+                {},
+                "",
+                Array.from(newSearchParams).length
+                  ? location.pathname + "?" + newSearchParams
+                  : location.pathname
+              );
+            });
+          } else {
+            input.addEventListener("input", function (event) {
+              const newSearchParams = new URL(location).searchParams;
+              if (event.target.value) {
+                newSearchParams.set(input.id, event.target.value);
+                newSearchParams.sort();
+              } else {
+                newSearchParams.delete(input.id);
+              }
+              history.replaceState(
+                {},
+                "",
+                Array.from(newSearchParams).length
+                  ? location.pathname + "?" + newSearchParams
+                  : location.pathname
+              );
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      import { openDB } from 'https://unpkg.com/idb@6.1.2/build/esm/index.js?module';
+      
+      const dbName = 'weather-station';
+      const storeName = 'default';
+      const version = 1;
+
+      async function runCode() {
+        const db = await openDB(dbName, version, {
+          upgrade(db, oldVersion, newVersion, transaction) {
+            const idbstore = db.createObjectStore(storeName);
+            idbstore.put({}, 'sensors');
+            idbstore.put([], 'stations');
+          },
+        });
+
+        const sensors = {
+          'd61063a3-7459-4d72-a9a5-7801800f0b27': {
+            id: 'd61063a3-7459-4d72-a9a5-7801800f0b27',
+            alias: 'voltage',
+            label: 'voltage',
+            measurements: [
+              {
+                id: '2bb3d916-159a-4f3c-9826-db6a63765fc1',
+                value: '4.11',
+                created_at: '2021-05-01T04:55:38.670785',
+              },
+              {
+                id: '93964ace-2955-4698-b6c1-cecef875b27f',
+                value: '3.86',
+                created_at: '2021-05-01T05:19:00.036708',
+              },
+              {
+                id: '6a3769e0-f7d6-432c-9a42-48922ce0d619',
+                value: '3.85',
+                created_at: '2021-05-01T05:42:48.825846',
+              },
+              {
+                id: '0e354e94-f822-436a-b60d-ae914b75570b',
+                value: '3.85',
+                created_at: '2021-05-01T06:06:41.550926',
+              },
+              {
+                id: '678f9e0d-606f-483d-9d2c-cb6be888cd18',
+                value: '3.85',
+                created_at: '2021-05-01T06:30:13.700158',
+              },
+            ],
+            type: {
+              id: 'aaed6b1d-75b9-4130-929d-df16421f01f0',
+              label: 'voltage',
+              description: '18650 voltage',
+            },
+            station: {
+              id: 'a7d6f7f3-a5b3-459a-83d7-87a3af57fe57',
+              label: 'Reservoir',
+            },
+            created_at: '2021-05-01T04:22:20.804463',
+            updated_at: '2021-05-31T22:36:25.347951',
+          },
+          'f8a89dbb-57e1-442e-b19d-79a4787ffbc1': {
+            id: 'f8a89dbb-57e1-442e-b19d-79a4787ffbc1',
+            alias: 'air_temp',
+            label: 'air_temp',
+            measurements: [
+              {
+                id: '79899b8f-4d50-48f3-84a1-675ef844d1cc',
+                value: '24.21',
+                created_at: '2021-05-01T04:55:38.669175',
+              },
+              {
+                id: 'bac5dd0b-a5d7-4d6d-9761-2379b31539f4',
+                value: '23.94',
+                created_at: '2021-05-01T05:19:00.032843',
+              },
+              {
+                id: 'afcf70a5-7e8a-4d4e-b828-a91b7d9a603b',
+                value: '22.51',
+                created_at: '2021-05-01T05:42:48.824246',
+              },
+              {
+                id: '3e442da8-64f3-4a4c-9b3c-4be6b8018d93',
+                value: '21.81',
+                created_at: '2021-05-01T06:06:41.538698',
+              },
+              {
+                id: '6a604b4c-cd94-402f-a26e-74fec2b99e73',
+                value: '21.32',
+                created_at: '2021-05-01T06:30:13.698527',
+              },
+            ],
+            type: {
+              id: '6a3afc2e-f38e-4044-972d-49388f51053a',
+              label: 'temperature',
+              description: 'celsius',
+            },
+            station: {
+              id: 'a7d6f7f3-a5b3-459a-83d7-87a3af57fe57',
+              label: 'Swiftcreek Reservoir',
+            },
+            created_at: '2021-05-01T04:22:20.804463',
+            updated_at: '2021-05-31T22:36:25.325708',
+          },
+        };
+
+        const stations = [
+          {
+            id: 'a7d6f7f3-a5b3-459a-83d7-87a3af57fe57',
+            label: 'Swiftcreek Reservoir',
+            sensors: [
+              {
+                id: 'f8a89dbb-57e1-442e-b19d-79a4787ffbc1',
+                alias: 'air_temp',
+                label: 'air_temp',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.325708',
+              },
+              {
+                id: 'eca63f73-0897-4cb4-ba78-adf673929e5e',
+                alias: 'humidity',
+                label: 'humidity',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.330409',
+              },
+              {
+                id: 'ac7327c2-0ec6-4f4d-a55a-384cd23f519e',
+                alias: 'pressure',
+                label: 'pressure',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.337565',
+              },
+              {
+                id: 'd61063a3-7459-4d72-a9a5-7801800f0b27',
+                alias: 'voltage',
+                label: 'voltage',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.347951',
+              },
+              {
+                id: 'e67740bf-3e26-4145-8647-35f1b0914b5f',
+                alias: 'altitude',
+                label: 'altitude',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.351553',
+              },
+              {
+                id: '35072d26-5306-4b4e-b459-81758e35a202',
+                alias: 'signal',
+                label: 'signal',
+                created_at: '2021-05-01T04:22:20.804463',
+                updated_at: '2021-05-31T22:36:25.354701',
+              },
+            ],
+          },
+          {
+            id: 'ae5bf2c3-f54a-40ab-b802-29f8b7ab96e9',
+            label: 'Marcio Test A',
+            sensors: [
+              {
+                id: 'd656f7be-d789-4496-a4dc-0f867c4df18a',
+                alias: 'air_temp',
+                label: 'air_temp',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+              {
+                id: '6b031cfb-2e5a-42f4-b52c-eca4f8ad6d62',
+                alias: 'humidity',
+                label: 'humidity',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+              {
+                id: '3231c59c-c4f0-43c3-b1fd-20def7b3bd04',
+                alias: 'pressure',
+                label: 'pressure',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+              {
+                id: '86d9d0e9-a32e-496d-ad37-fe062d27ce9e',
+                alias: 'altitude',
+                label: 'altitude',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+              {
+                id: '94499ec8-3c2f-4908-aeda-737ba34b91d2',
+                alias: 'signal',
+                label: 'signal',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+              {
+                id: '9f5bf6eb-90ca-43d1-903c-a251ba12b822',
+                alias: 'voltage',
+                label: 'voltage',
+                created_at: '2021-05-17T19:39:07.173494',
+                updated_at: '2021-05-17T19:39:07.173494',
+              },
+            ],
+          },
+        ];
+
+        {
+          const tx = db.transaction(storeName, 'readwrite');
+          const idbstore = tx.objectStore(storeName);
+          idbstore.delete('sensors').then(() => {
+            idbstore.put(sensors, 'sensors');
+          });  
+        }
+        
+        {
+          const tx = db.transaction(storeName, 'readwrite');
+          const idbstore = tx.objectStore(storeName);
+          idbstore.delete('stations').then(() => {
+            idbstore.put(stations, 'stations');
+          });  
+        }
+        
+        {
+          console.log(await db.getAll(storeName));
+        }
+        
+      }
+
+      runCode();
+
+    </script>
+  </body>
+</html>

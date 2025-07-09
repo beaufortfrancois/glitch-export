@@ -1,0 +1,78 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em;
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(148, 187, 233, 0.1) 50%,
+    rgba(238, 174, 202, 0.2) 100%
+  );
+  height: 100vh;
+}
+
+h1 {
+  margin-block-end: 0;
+}
+
+a {
+  display: block;
+  margin-block-end: 1.4em;
+}
+
+button {
+  margin-bottom: 5px;
+}
+
+#video {
+  width: 100%;
+}
+video {
+  height: 150px;
+  margin-bottom: 25px;
+  background: rgba(148, 187, 233, 0.1);
+  border: 2px solid rgba(255, 255, 255, 1);
+}
+
+.loremIpsum {
+  margin-bottom: 25px;
+  text-align: justify;
+}
+
+iframe {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 25px;
+}
+
+#cropTargetArea {
+  font-weight: bold;
+  position: absolute;
+  cursor: move;
+  z-index: 10;
+  border: 2px solid;
+  border-color: red;
+  user-select: none;
+}
+
+#cropTargetAreaHeader {
+  background: red;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#innerRedRectangle {
+  height: 100px;
+  width: 100px;
+}
+
+#logs {
+  white-space: pre-wrap;
+}
+
+@media screen and (min-width: 640px) {
+  body {
+    margin: 2em auto;
+    max-width: calc(640px - 2em);
+  }
+}

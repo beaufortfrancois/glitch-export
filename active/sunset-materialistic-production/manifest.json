@@ -1,0 +1,13 @@
+{
+  "name": "name",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.com/9bdcb1a9-d93f-4d1a-9d46-be446fbc251f%2Fblue-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "theme_color": "#3740ff"
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+  </head>
+  <body>
+    <button onClick="transition()">
+      Transition
+    </button>
+
+    <input id="scramble-type" type="hidden" value="Megaminx">
+
+    <div class="timer__container h-100">
+      <section class="container h-100 user-select-none" id="timer">
+        <div class="stack-space-400">
+          <h1 class="timer__text" style="contain:paint">1:11.06</h1>
+          <p>
+            Some other content
+          </p>
+        </div>
+      </section>
+    </div>
+    <script>
+      async function transition() {
+          const timer = document.querySelector('.timer__text');
+          await document.documentTransition.prepare({ rootTransition: 'reveal-up', sharedElements: [timer] })
+
+          timer.innerText = new Date().getTime()
+
+          await document.documentTransition.start({ sharedElements: [timer] });
+      }
+    </script>
+  </body>
+</html>

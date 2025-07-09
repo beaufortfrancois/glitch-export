@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script type="module">
+      import { openDB } from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
+      
+      async function getDb() {
+        // fails silently
+        const db = await openDB("halo", "1", {
+          upgrade(db, oldVersion, newVersion, transaction) {
+            db.createObjectStore("hello", {
+              // The 'id' property of the object will be the key.
+              keyPath: "id",
+            });
+            db.createObjectStore("store1");
+            db.createObjectStore("store2");
+            console.log(3333);
+          },
+        });
+        return db;
+      }
+      
+      getDb().then((db) => {
+        console.log('worked');
+        console.log('DB has stores:', ...db.objectStoreNames);
+      });
+    </script>
+  </head>
+  <body>
+    <h1>
+      See the console
+    </h1>
+  </body>
+</html>

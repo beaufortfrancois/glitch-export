@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Pickers demo</title>
+
+<main>
+  <datalist id="ice-cream-flavors">
+    <option value="Chocolate"> </option>
+    <option value="Coconut"> </option>
+    <option value="Mint"> </option>
+    <option value="Strawberry"> </option>
+    <option value="Vanilla"> </option>
+  </datalist>
+
+  <form id="form" action="#" method="post">
+    <fieldset id="likely">
+      <legend>Likely to have a picker (in most browsers)</legend>
+    </fieldset>
+
+    <fieldset id="not-so-likely">
+      <legend>Not very likely to have a picker, but could conceivably</legend>
+    </fieldset>
+<!--     <button>
+      submit form
+    </button> -->
+  </form>
+  <pre id="errors"></pre>
+</main>
+
+<script type="module">
+  const likely = [
+    "date",
+    "month",
+    "week",
+    "time",
+    "datetime-local",
+    "color",
+    "file"
+  ];
+  const notSoLikely = ["search", "tel", "url", "email", "password"];
+
+  const likelyContainer = document.querySelector("#likely");
+  for (const type of likely) {
+    append(likelyContainer, `<input type="${type}">`, () => inputCreator(type));
+  }
+  append(
+    likelyContainer,
+    `<input type="text" list="ice-cream-flavors">`,
+    () => {
+      const i = inputCreator("text");
+      i.setAttribute("list", "ice-cream-flavors");
+      return i;
+    }
+  );
+  append(
+    likelyContainer,
+    `<input type="text" name="name">`,
+    () => {
+      const i = inputCreator("text");
+      i.setAttribute("name", "name");
+      return i;
+    }
+  );
+  // append(likelyContainer, `<select>`, () => selectCreator({ multiple: false }));
+
+  const notSoLikelyContainer = document.querySelector("#not-so-likely");
+  for (const type of notSoLikely) {
+    append(notSoLikelyContainer, `<input type="${type}">`, () =>
+      inputCreator(type)
+    );
+  }
+  // append(notSoLikelyContainer, `<select multiple>`, () =>
+  //   selectCreator({ multiple: true })
+  // );
+
+  function append(container, labelText, elCreator) {
+    const p = document.createElement("p");
+    const label = document.createElement("label");
+
+    const el = elCreator();
+
+    const showPicker = document.createElement("button");
+    showPicker.textContent = "Programmatically show picker";
+    showPicker.onclick = () => {
+      try {
+        el.showPicker();
+      } catch (error) {
+        errors.append(`${error}\n`);
+      }
+    };
+
+    const showPickerOutOfDom = document.createElement("button");
+    showPickerOutOfDom.textContent =
+      "Programmatically show picker (out of DOM)";
+    showPickerOutOfDom.onclick = () => {
+      try {
+        elCreator().showPicker();
+      } catch (error) {
+        errors.append(`${error}\n`);
+      }
+    };
+
+    const clicker = document.createElement("button");
+    clicker.textContent = "Programmatically click";
+    clicker.onclick = () => el.click();
+
+    const clickerOutOfDom = document.createElement("button");
+    clickerOutOfDom.textContent = "Programmatically click (out of DOM)";
+    clickerOutOfDom.onclick = () => {
+      try {
+        elCreator().click();
+      } catch (error) {
+        errors.append(`${error}\n`);
+      }
+    };
+
+    const focuser = document.createElement("button");
+    focuser.textContent = "Programmatically focus";
+    focuser.onclick = () => el.focus();
+
+    label.append(labelText, el);
+    p.append(
+      label,
+      showPicker,
+      showPickerOutOfDom,
+      clicker,
+      clickerOutOfDom,
+      focuser
+    );
+    container.append(p);
+  }
+
+  function inputCreator(type) {
+    const el = document.createElement("input");
+    el.type = type;
+    return el;
+  }
+
+  function selectCreator({ multiple }) {
+    const el = document.createElement("select");
+    el.multiple = multiple;
+    el.innerHTML = `<option value="1">1</option><option value="2">2</option>`;
+    return el;
+  }
+</script>

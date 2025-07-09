@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Animation sync issue</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <style>
+      html {
+        font-family: sans-serif;
+        background: #ddd;
+        height: -webkit-fill-available;
+      }
+      
+      body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        margin: 0;
+        display: flex; 
+        flex-direction: column;
+      }
+      
+      .container {
+        flex: 1;
+        background: #fff;
+        padding: 0 8px;
+        margin: 0 auto;
+        max-width: 600px;
+        display: flow-root;
+        min-height: 100%;
+        width: calc(100% - 16px);
+      }
+      
+      .page-container {
+        width: 360px;
+        height: 640px;
+        max-height: 70vh;
+        border: 1px solid #000;
+        overflow: hidden;
+        margin: 0 auto;
+        position: relative;
+      }
+      
+      .page {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+      
+      .header {
+        padding: 8px;
+        background: #ddd;
+        border-bottom: 8px solid #ccc;
+      }
+      
+      .header h1,
+      .header p {
+        margin: 0;
+      }
+      
+      .content {
+        padding: 8px;
+        background: #fff;
+      }
+      
+      .content h2 {
+        border-left: 8px solid #ccc;
+        padding-left: 8px;
+      }
+      
+      .page-2 {
+        transform: translateX(100%);
+      }
+      
+      .toggle-btn-container {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      
+      <h1>
+        Shared element transition
+      </h1>
+
+      <div class="page-container">
+        <div class="page-1 page">
+          <div class="header">
+            <h1>My cool website</h1>
+            <p>
+              Where all the cool things happen. So cool.
+            </p>
+          </div>
+          <div class="content">
+            <p>
+              This is my homepage!
+            </p>
+            <h2>
+              Article promo
+            </h2>
+            <p>
+              Suspendisse efficitur ut dolor nec vulputate. Curabitur at interdum nulla. Duis facilisis non dolor non pretium.
+            </p>
+            <h2>
+              Another article promo
+            </h2>
+            <p>
+              Fusce at eleifend lorem. Vestibulum porttitor elit eget vulputate auctor. Proin rhoncus ligula malesuada augue fringilla pharetra.
+            </p>
+            <h2>
+              And there's more!
+            </h2>
+            <p>
+              Aliquam gravida quam sed sapien luctus, in iaculis nunc consequat. Sed in arcu nec nulla commodo viverra et at sapien.
+            </p>
+            <h2>
+              So many articles!
+            </h2>
+            <p>
+              Curabitur at interdum nulla. Duis facilisis non dolor non pretium. Suspendisse eget tellus pharetra, sodales diam eu, dapibus felis. Curabitur blandit lobortis arcu at semper. Mauris maximus, nisi eu interdum tempus, nibh lacus malesuada diam, quis ornare libero nisl eget ex.
+            </p>
+            <h2>
+              Article promo
+            </h2>
+            <p>
+              Suspendisse efficitur ut dolor nec vulputate. Curabitur at interdum nulla. Duis facilisis non dolor non pretium.
+            </p>
+            <h2>
+              Another article promo
+            </h2>
+            <p>
+              Fusce at eleifend lorem. Vestibulum porttitor elit eget vulputate auctor. Proin rhoncus ligula malesuada augue fringilla pharetra.
+            </p>
+            <h2>
+              And there's more!
+            </h2>
+            <p>
+              Aliquam gravida quam sed sapien luctus, in iaculis nunc consequat. Sed in arcu nec nulla commodo viverra et at sapien.
+            </p>
+            <h2>
+              So many articles!
+            </h2>
+            <p>
+              Curabitur at interdum nulla. Duis facilisis non dolor non pretium. Suspendisse eget tellus pharetra, sodales diam eu, dapibus felis. Curabitur blandit lobortis arcu at semper. Mauris maximus, nisi eu interdum tempus, nibh lacus malesuada diam, quis ornare libero nisl eget ex.
+            </p>
+            <h2>
+              Article promo
+            </h2>
+            <p>
+              Suspendisse efficitur ut dolor nec vulputate. Curabitur at interdum nulla. Duis facilisis non dolor non pretium.
+            </p>
+            <h2>
+              Another article promo
+            </h2>
+            <p>
+              Fusce at eleifend lorem. Vestibulum porttitor elit eget vulputate auctor. Proin rhoncus ligula malesuada augue fringilla pharetra.
+            </p>
+            <h2>
+              And there's more!
+            </h2>
+            <p>
+              Aliquam gravida quam sed sapien luctus, in iaculis nunc consequat. Sed in arcu nec nulla commodo viverra et at sapien.
+            </p>
+            <h2>
+              So many articles!
+            </h2>
+            <p>
+              Curabitur at interdum nulla. Duis facilisis non dolor non pretium. Suspendisse eget tellus pharetra, sodales diam eu, dapibus felis. Curabitur blandit lobortis arcu at semper. Mauris maximus, nisi eu interdum tempus, nibh lacus malesuada diam, quis ornare libero nisl eget ex.
+            </p>
+            <h2>
+              Ok, last one
+            </h2>
+            <p>
+              Mauris tristique egestas nulla, sit amet pretium ex molestie ac.
+            </p>
+          </div>
+        </div>
+        <div class="page-2 page">
+          <div class="header">
+            <h1>My cool website</h1>
+            <p>
+              Where all the cool things happen. So cool.
+            </p>
+          </div>
+          <div class="content">
+            <h2>
+              Article page
+            </h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus at nunc risus. Aenean cursus quam tempor eros consequat lacinia. Etiam a turpis non nisl posuere lacinia. Curabitur congue aliquet mauris nec ultricies. Ut sed vulputate leo. Duis ut convallis purus. Cras ultrices metus quis lacus aliquet finibus.</p>
+
+            <p>Maecenas non dapibus neque. Nullam nec enim vel enim pulvinar convallis vel vel ex. Ut augue arcu, finibus at malesuada vitae, convallis sed nisi. Duis hendrerit dolor id ultrices viverra. Nullam condimentum sem diam, et auctor lorem fringilla ut. Suspendisse fringilla ligula elementum nisl vulputate tempor. Aliquam gravida quam sed sapien luctus, in iaculis nunc consequat. Sed in arcu nec nulla commodo viverra et at sapien.</p>
+
+            <p>Phasellus nisi libero, blandit et ante a, tempus euismod felis. Suspendisse interdum urna in hendrerit accumsan. Nulla facilisi. Quisque laoreet arcu nec tellus ornare eleifend. Fusce ante ante, aliquet sit amet cursus commodo, rutrum ut nunc. Aliquam mattis malesuada magna, vitae sodales diam placerat at. In nibh nisi, aliquet at lobortis at, rutrum vel turpis. Suspendisse sollicitudin pretium nibh vel commodo. In quis efficitur risus. Proin sit amet turpis lacinia, molestie enim vitae, laoreet tortor. Duis pretium urna quam, ac viverra odio pellentesque sed. Duis quis sapien non quam faucibus feugiat at eget risus. Curabitur interdum non libero sodales accumsan.</p>
+
+            <p>Suspendisse efficitur ut dolor nec vulputate. Curabitur at interdum nulla. Duis facilisis non dolor non pretium. Suspendisse eget tellus pharetra, sodales diam eu, dapibus felis. Curabitur blandit lobortis arcu at semper. Mauris maximus, nisi eu interdum tempus, nibh lacus malesuada diam, quis ornare libero nisl eget ex. Donec ipsum nisl, aliquam id placerat non, scelerisque non tellus. Nullam interdum condimentum tellus in vehicula. Ut et tempus ante, eu rhoncus tellus. Morbi vitae mollis nisl. Duis tempor aliquet placerat. Proin quis orci efficitur, vehicula libero eu, pharetra lorem. Morbi mi erat, sodales in pulvinar nec, tincidunt nec orci. Nunc viverra ex eget rutrum pretium. Etiam ante nisl, vestibulum ut malesuada sit amet, tempus vel eros. Nam nec elementum massa, vel consectetur ligula.</p>
+
+            <p>Fusce at eleifend lorem. Vestibulum porttitor elit eget vulputate auctor. Proin rhoncus ligula malesuada augue fringilla pharetra. Ut euismod vulputate orci, ac aliquam leo bibendum sed. Pellentesque ut ipsum sit amet tellus efficitur feugiat. Duis sit amet lacus eget augue imperdiet fringilla. Morbi iaculis sem sagittis purus viverra egestas. Sed accumsan feugiat diam. Mauris tristique egestas nulla, sit amet pretium ex molestie ac.</p>
+          </div>
+        </div>
+      </div>
+      
+      <p class="toggle-btn-container">
+        <button>
+          Toggle pages
+        </button>
+      </p>
+      
+      <script>
+        function transition(element, to, options) {
+          const anim = element.animate(to, {
+            ...options,
+            fill: 'both',
+          });
+
+          anim.addEventListener('finish', () => {
+            anim.commitStyles();
+            anim.cancel();
+          });
+
+          return anim;
+        }
+        
+        const animOptions = {
+          duration: 1000,
+          easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+        };
+        
+        (() => {
+          const btn = document.currentScript.previousElementSibling.querySelector('button');
+          const container = document.currentScript.previousElementSibling.previousElementSibling;
+          const page1 = container.querySelector('.page-1');
+          const page1Header = page1.querySelector('.header');
+          const page2 = container.querySelector('.page-2');
+          const page2Header = page2.querySelector('.header');
+          let page2Active = false;
+          
+          btn.onclick = async () => {
+            const previousAnims = container.getAnimations({ subtree: true });
+            for (const anim of previousAnims) anim.finish();
+            await Promise.all(previousAnims.map(a => a.finished));
+            const page1Destination = page2Active ? {transform: 'translateX(0)'} : {transform: 'translateX(-100%)'};
+            const page2Destination = page2Active ? {transform: 'translateX(100%)'} : {transform: 'translateX(0)'};
+            const header1Rect = page1Header.getBoundingClientRect();
+            const header2Rect = page2Header.getBoundingClientRect();
+            const headerLeftOffset = header2Rect.left - header1Rect.left;
+            const headerTopOffset = header2Rect.top - header1Rect.top;
+            
+            page1Header.animate({
+              transform: `translate(${headerLeftOffset}px, ${headerTopOffset}px)`,
+              offset: page2Active ? 0 : 1,
+            }, animOptions);
+            page2Header.animate({
+              transform: `translate(${headerLeftOffset * -1}px, ${headerTopOffset * -1}px)`,
+              offset: page2Active ? 1 : 0,
+            }, animOptions);
+            
+            
+            transition(page1, page1Destination, animOptions);
+            transition(page2, page2Destination, animOptions);
+            page2Active = !page2Active;
+          };
+        })();
+      </script>
+    </div>
+  </body>
+</html>

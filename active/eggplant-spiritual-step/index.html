@@ -1,0 +1,43 @@
+<img
+  crossorigin="true"
+  src="https://cdn.glitch.global/d3368f29-71a9-421d-bf2d-0bbddf2d96cb/PXL_20241101_175211434.PORTRAIT.jpg?v=1742554940303"
+/>
+
+<script type="module">
+  import {
+    ImageClassifier,
+    FilesetResolver,
+  } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision";
+
+  const vision = await FilesetResolver.forVisionTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+  );
+  const imageClassifier = await ImageClassifier.createFromModelPath(
+    vision,
+    "https://storage.googleapis.com/mediapipe-models/image_classifier/efficientnet_lite0/float32/1/efficientnet_lite0.tflite"
+  );
+
+  const image = document.querySelector("img");
+  const { classifications } = imageClassifier.classify(image);
+
+  console.log(classifications[0].categories[0]); // categoryName: "nematode", score: 90.123 ...
+</script>
+<script type="module">
+  import {
+    FilesetResolver,
+    LlmInference,
+  } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai";
+
+  const genai = await FilesetResolver.forGenAiTasks(
+    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai@latest/wasm"
+  );
+  const llmInference = await LlmInference.createFromOptions(genai, {
+    baseOptions: {
+      modelAssetPath: "https://storage.googleapis.com/jmstore/kaggleweb/grader/g-2b-it-gpu-int4.bin",
+    },
+  });
+  const inputPrompt =
+    "How many times should I say the word \"AI\" in a Google I/O talk?";
+  const response = await llmInference.generateResponse(inputPrompt);
+  console.log(response);
+</script>

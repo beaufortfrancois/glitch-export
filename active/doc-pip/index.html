@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Document Picture-in-Picture</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Document Picture-in-Picture</h1>
+    <a href="https://wicg.github.io/document-picture-in-picture"
+      >https://wicg.github.io/document-picture-in-picture</a
+    >
+
+    <button id="button1">
+      documentPictureInPicture.requestWindow()
+    </button>
+    <button id="button2">
+      documentPictureInPicture.window.documentPictureInPicture.requestWindow()
+    </button>
+    
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `> ${event.reason}\r\n`;
+      };
+      window.onerror = (error) => {
+        logs.textContent += `> ${error}\r\n`;
+      };
+    </script>
+  </body>
+</html>

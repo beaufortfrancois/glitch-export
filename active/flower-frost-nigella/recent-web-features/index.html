@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+
+<div class="output">See console</div>
+<script type="module">
+  //import {} from 'https://cdn.jsdelivr.net/npm/react-inspector@5.1.1/+esm';
+  
+  const dataResponse = await fetch(
+    'https://cdn.jsdelivr.net/npm/@mdn/browser-compat-data@4.1.14/data.json'
+  );
+  const data = await dataResponse.json();
+  const mainBrowsers = ['chrome', 'chrome_android', 'samsunginternet_android', 'firefox', 'safari', 'safari_ios'];
+  const browserData = data.browsers;
+  const lastIO = new Date('2021-05-18').valueOf();
+
+  function getReleaseDate(browser, version) {
+    if (version === false) {
+      return new Date(NaN);
+    }
+    if (!browserData[browser].releases[version]) {
+      // This seems to happen when it's an old unknown version, like "<4"
+      // In this case return 1970.
+      return new Date(0);
+    }
+    if (!browserData[browser].releases[version].release_date) {
+      // No release date, so it's probably really new, so return today:
+      return new Date();
+    }
+    return new Date(browserData[browser].releases[version].release_date);
+  }
+
+  function browserReleaseDates(data) {
+    return Object.fromEntries(
+      mainBrowsers.map((browser) => {
+        let supportStatement = data[browser];
+        
+        if (Array.isArray(supportStatement)) {
+          supportStatement = supportStatement.find(item => (item.flags?.length || 0) === 0);
+        }
+        
+        if ((supportStatement?.flags?.length || 0) !== 0) {
+          supportStatement = undefined;
+        }
+        
+        return [
+          browser,
+          [
+            supportStatement?.version_added || false,
+            supportStatement?.version_added
+              ? getReleaseDate(browser, supportStatement.version_added)
+              : NaN,
+          ],
+        ]; 
+      })
+    );
+  }
+
+  function listToTree(features) {
+    const tree = {};
+
+    for (const [feature, browserDates] of features) {
+      const keys = feature.split('.');
+      let obj = tree;
+      for (const key of keys) {
+        if (!obj[key]) obj[key] = {};
+        obj = obj[key];
+      }
+      obj.__compat = browserDates;
+    }
+
+    return tree;
+  }
+
+  const featureRoots = ['api', 'css', 'html', 'http', 'javascript', 'svg'];
+  const recentFeatures = [];
+
+  function processFeature(name, featureData) {
+    const { __compat, ...subFeatures } = featureData;
+
+    if (__compat) {
+      const browserDates = browserReleaseDates(__compat.support);
+      const latestDate = new Date(
+        Math.max(...Object.values(browserDates).map(([version, date]) => date))
+      );
+
+      if (!isNaN(latestDate) && latestDate.valueOf() > lastIO) {
+        recentFeatures.push([name, browserDates]);
+      }
+    }
+
+    for (const [key, value] of Object.entries(subFeatures)) {
+      processFeature(`${name}.${key}`, value);
+    }
+  }
+
+  for (const featureRoot of featureRoots) {
+    processFeature(featureRoot, data[featureRoot]);
+  }
+
+  console.log(listToTree(recentFeatures));
+</script>

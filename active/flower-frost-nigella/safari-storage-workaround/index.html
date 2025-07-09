@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>localstorage bug workaround</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      p {
+        max-width: 60ch;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      'foo' is: <span class="ls-value"></span>
+    </p>
+    <p>
+      <button class="increment">Increment</button>
+    </p>
+    <p>
+      'bar' is: <span class="ls-value-2"></span>
+    </p>
+    <p>
+      <button class="increment-2">Increment</button>
+    </p>
+    <script type="module">
+      import { openDB } from 'https://unpkg.com/idb@6.0.0/build/esm/index.js?module';
+      
+      const dbPromise = openDB('keyval-store', 1, {
+        upgrade(db) {
+          db.createObjectStore('keyval');
+        },
+      });
+      
+      const swPromise = navigator.serviceWorker.register('sw.js', {
+        scope: '/safari-storage-workaround/this/does/not/exist/on/the/site/'
+      });
+      
+      const container = $('.ls-value');
+      const container2 = $('.ls-value-2');
+      
+      async function updateValues() {
+        const tx = (await dbPromise).transaction('keyval');
+        const [foo, bar] = await Promise.all([
+          tx.store.get('foo'),
+          tx.store.get('bar'),
+        ]);
+        container.textContent = foo;
+        container2.textContent = bar;
+      }
+      
+      updateValues();
+      
+      async function increment(key) {
+        const tx = (await dbPromise).transaction('keyval', 'readwrite');
+        const newVal = ((await tx.store.get(key)) || 0) + 1;
+        tx.store.put(newVal, key);
+        await tx.done;
+        const reg = await swPromise;
+        const worker = reg.installing || reg.waiting || reg.active;
+        worker.postMessage({ action: 'broadcast', message: 'update-data' });
+      }
+      
+      $('.increment').onclick = () => increment('foo');
+      $('.increment-2').onclick = () => increment('bar');
+      
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data === 'update-data') {
+          updateValues();
+        }
+      });
+    </script>
+  </body>
+</html>

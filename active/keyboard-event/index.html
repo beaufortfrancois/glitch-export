@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌨️</text></svg>"
+    />
+
+    <title>Keyboard Event</title>
+
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-weight: 100;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 800px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Listening to keyboard events...</h1>
+    <script>
+      document.addEventListener("keydown", e => {
+        log(`Key "${e.key}" ${e.repeat ? "repeating" : "pressed"}`);
+      });
+
+      document.addEventListener("keyup", e => {
+        log(`Key "${e.key}" released`);
+      });
+
+      function log(text) {
+        const pre = document.createElement("pre");
+        pre.textContent = text;
+        logs.insertBefore(pre, logs.firstChild);
+      }
+    </script>
+    <div id="logs"></div>
+  </body>
+</html>

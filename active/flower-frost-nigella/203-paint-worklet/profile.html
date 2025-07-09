@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script defer src="https://unpkg.com/houdini-paint-flecks/dist/index.js"></script>
+    <style>
+      .demo {
+        width: 1000px;
+        height: 1000px;
+        background-color: #84dce2;
+        background-image: paint(fleck);
+        overflow: hidden;
+        --fleck-colors: #0193c1 #74d8e6 #0bc0e0 #3ddaf5 #e2f9fe #02313f;
+        --fleck-seed: 123;
+      }
+      
+      @keyframes size-change {
+        to {
+          width: 1100px;
+          height: 1100px;
+        }
+      }
+      
+      body:focus .demo {
+        animation: 3s infinite alternate ease-in-out size-change;
+      }
+    </style>
+  </head>
+  <body tabindex="0">
+    <div class="demo"></div>
+  </body>
+</html>

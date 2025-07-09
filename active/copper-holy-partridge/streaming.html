@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+  .foo {
+    color: #333;
+    text-align: center;
+    padding: 1em;
+    background: #ffea61;
+    box-shadow: 0 0 0.5em #999;
+  }
+</style>
+<div class="foo">
+  Start
+</div>
+<div id="output"></div>
+<script>
+
+// Default format for Google Chrome.
+const AUDIO_DATA_FORMAT = 'f32-planar';
+
+/** Circular buffer to hold audio data. */
+class AudioRingBuffer {
+  // private readonly buffer: Float32Array;
+  written = 0;
+  lastRead = 0;
+
+  get available() {
+    return this.written - this.lastRead;
+  }
+
+  constructor(bufferSize) {
+    this.buffer = new Float32Array(bufferSize);
+  }
+
+  writeAudioData(data) {
+    const offset = this.written % this.bufferSize;
+    if (offset + data.numberOfFrames > this.bufferSize) {
+      const left = this.bufferSize - offset;
+
+      data.copyTo(this.buffer.subarray(offset, offset + left), {
+        planeIndex: 0,
+        frameCount: left,
+        format: AUDIO_DATA_FORMAT,
+      });
+
+      data.copyTo(this.buffer.subarray(0, data.numberOfFrames - left), {
+        planeIndex: 0,
+        frameOffset: left,
+        format: AUDIO_DATA_FORMAT,
+      });
+    } else {
+      data.copyTo(this.buffer.subarray(offset, offset + data.numberOfFrames), {
+        planeIndex: 0,
+        format: AUDIO_DATA_FORMAT,
+      });
+    }
+    this.written += data.numberOfFrames;
+  }
+
+  writeFloat32Array(data) {
+    const offset = this.written % this.bufferSize;
+    if (offset + data.length > this.bufferSize) {
+      const left = this.bufferSize - offset;
+      this.buffer.set(data.slice(0, left), offset);
+      this.buffer.set(data.slice(left), 0);
+    } else {
+      this.buffer.set(data, offset);
+    }
+    this.written += data.length;
+  }
+
+  write(data) {
+    if (data instanceof Float32Array) {
+      this.writeFloat32Array(data);
+    } else {
+      this.writeAudioData(data);
+    }
+  }
+
+  /** Returns the last X values from the ring buffer without changing it. */
+  last(windowSize) {
+    const offset = this.written % this.bufferSize;
+    const startIndex =
+      (this.written - windowSize + this.bufferSize) % this.bufferSize;
+    let chunk;
+    if (startIndex < offset) {
+      chunk = this.buffer.slice(startIndex, offset);
+    } else {
+      chunk = new Float32Array(windowSize);
+      chunk.set(this.buffer.slice(startIndex, this.bufferSize));
+      chunk.set(this.buffer.slice(0, offset), this.bufferSize - startIndex);
+    }
+    this.lastRead = this.written;
+    return chunk;
+  }
+}
+
+
+
+
+
+
+const CHUNK_SIZE = 48_000 * 10;
+const STEP_SIZE = 48_000 * 5;
+
+function mergeFullTextAndNextChunk(
+  fullText,
+  nextText,
+  maxWordsOverride
+) {
+  if (fullText.length === 0) {
+    return nextText;
+  }
+  if (nextText.length === 0) {
+    return fullText;
+  }
+
+  const fullWords = fullText.split(' ');
+  const nextWords = nextText.split(' ');
+  // console.log('Full words:', fullWords);
+  // console.log('Next words:', nextWords);
+
+  // Start by appending next text to full text.
+  let bestScore = 0;
+  let bestOverlap = 0;
+  for (let overlap = 1; overlap <= nextWords.length; ++overlap) {
+    let score = 0;
+    for (let i = 0; i < overlap; ++i) {
+      if (fullWords[fullWords.length - overlap + i] === nextWords[i]) {
+        score += 1;
+      }
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestOverlap = overlap;
+    }
+  }
+  // console.log(`Best score: ${bestScore}`);
+  // console.log(`Best overlap: ${bestOverlap}`);
+
+  // Allow to override only a few last words in the full text.
+  const wordsOverride = Math.min(
+    Math.round(bestOverlap * 0.5),
+    maxWordsOverride
+  );
+  const mergedWords = fullWords
+    .slice(0, fullWords.length - wordsOverride)
+    .concat(nextWords.slice(bestOverlap - wordsOverride));
+
+  return mergedWords.join(' ');
+}
+
+async function* processStream(stream) {
+  const maxWordsOverride = 3;
+  let fullText = '';
+
+  const s = await window.ai.languageModel.create();
+  const buffer = new AudioRingBuffer(CHUNK_SIZE * 2);
+
+  let lastWritten = 0;
+
+  for await (const value of stream) {
+    buffer.write(value);
+
+    if (buffer.written - lastWritten < STEP_SIZE) continue;
+    lastWritten = buffer.written;
+
+    const chunk = buffer.last(Math.min(buffer.written, CHUNK_SIZE));
+    // console.log(chunk);
+
+    const content = new AudioBuffer({
+      sampleRate: 48000,
+      numberOfChannels: 1,
+      length: chunk.length,
+    });
+    content.copyToChannel(chunk, 0, 0);
+
+    console.log('Starting processing');
+
+    const nextText = await s.prompt([
+      'Transcribe this audio',
+      { type: 'audio', content },
+    ]);
+    console.log('Next text', nextText);
+    // const nextText = await onFullAudioData(chunk);
+    fullText = mergeFullTextAndNextChunk(fullText, nextText, maxWordsOverride);
+
+    yield fullText;
+  }
+
+  const chunk = buffer.last(Math.min(buffer.written, CHUNK_SIZE));
+  const nextText = await s.prompt([
+    'Transcribe this audio',
+    { type: 'audio', content: chunk },
+  ]);
+  fullText = mergeFullTextAndNextChunk(fullText, nextText, maxWordsOverride);
+  yield fullText;
+
+  console.log('Finished processing stream.');
+}
+
+async function main() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const transformer = new MediaStreamTrackProcessor({
+    track: stream.getAudioTracks()[0],
+  });
+  for await (const chunk of processStream(transformer.readable)) {
+    document.querySelector('#output').textContent = chunk;
+  }
+}
+document.querySelector('.foo').addEventListener('click', main);
+// main();
+</script>

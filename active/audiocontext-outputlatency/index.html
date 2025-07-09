@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>AudioContext.outputLatency 🧪</h1>
+    <div>
+      After clicking the "start" button, please connect and disconnect your
+      Bluetooth headset to observe output latency changes.
+    </div>
+    <br />
+    <button id="startButton" autofocus>start</button>
+    <button id="requestMicrophoneButton">request microphone</button>
+    <pre>outputLatency: <span id="outputLatency">N/A</span> | timestamp: <span id="timestamp">N/A</span></pre>
+    <canvas id="canvas"></canvas>
+  </body>
+</html>

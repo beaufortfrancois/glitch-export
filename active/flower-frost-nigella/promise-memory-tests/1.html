@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+  </head>
+  <body>
+    Test memory usage of this page
+    <script type="module">
+      async function test() {
+        const lotsOfMemory = new Uint8Array(1000 * 1000 * 100);
+        
+        // Make it truely async to be sure
+        await new Promise(r => setTimeout(r, 1000));
+        
+        throw new Error('BOOM');
+      }
+      
+      window.cachedPromise = test();
+      
+      window.cachedPromise.then(
+        () => console.log('resolved'),
+        () => console.log('rejected'),
+      )
+    </script>
+  </body>
+</html>

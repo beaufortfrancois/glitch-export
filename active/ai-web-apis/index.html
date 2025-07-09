@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>"
+    />
+
+    <title>AI Web APIs</title>
+
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>AI Web APIs ✨</h1>
+    <details open>
+      <summary>Call concurrent AI Web APIs in two iframes</summary>
+      <button id="htmlIframeButton">Call summarizer in two HTML iframes</button>
+      <button id="blobIframeButton">Call summarizer in two Blob iframes</button>
+      <br />
+    </details>
+    <br />
+    <details open>
+      <summary>Crash tab</summary>
+      <button id="svgImageButton">Describe this SVG image</button>
+      <img
+        width="12"
+        src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M505 442.7 405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>'
+      />
+      <img
+        width="12"
+        height="12"
+        src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"></svg>'
+      />
+      <img
+        width="12"
+        height="12"
+        src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><text x="0" y="18" fill="red">⚡</text></svg>'
+      />
+    </details>
+    <br />
+    <details open>
+      <summary>Image Prompt API</summary>
+      <label
+        ><input type="checkbox" id="useCreateImageBitmapCheckbox" />Use
+        createImageBitmap</label
+      >
+      <label>
+        <input id="imagePromptText" placeholder="Enter a prompt..." />
+      </label>
+      <input id="imageFileButton" type="file" />
+      <br />
+      <br />
+      <canvas id="canvas" width="50" height="50"></canvas>
+            <button id="canvasButton">Prompt canvas</button>
+
+      <img
+        width="50"
+        height="50"
+        crossorigin="anonymous"
+        id="referenceImage"
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_natural_color.jpg?v=1742910048500"
+      />
+      <img
+        width="50"
+        height="50"
+        crossorigin="anonymous"
+        id="userDrawnImage"
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/88who9jt94691.webp?v=1742910108656"
+      />
+      <button id="compareImagesButton">Compare images</button>
+    </details>
+    <br />
+    <!--     <details>
+      <summary>Text Detector API</summary>
+      <input id="textDetectorFileButton" type="file" />
+    </details> -->
+    <br />
+    <details open>
+      <summary>Create</summary>
+      <button id="monitorButton">Monitor</button>
+    </details>
+    <br />
+    <details open>
+      <summary>Audio prompt API</summary>
+      <button id="abortButton">Abort</button>
+
+      <label
+        ><input type="checkbox" id="useFakeBlobCheckbox" />Use fake blob</label
+      >
+      <label
+        ><input type="checkbox" id="useAudioBlobCheckbox" />Use blob instead of
+        audio buffer</label
+      >
+      <label
+        ><input type="checkbox" id="promptAudioFirstCheckbox" />Prompt audio
+        first</label
+      >
+      <label>
+        <input id="systemPromptText" placeholder="Enter a system prompt..." />
+      </label>
+      <br />
+      <br />
+      <button id="abortAndTranscribeButton">Abort and Transcribe</button><br />
+      <audio
+        id="audioElement1"
+        controls
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/test-conan.m4a"
+      ></audio>
+      <audio
+        id="audioElement2"
+        controls
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/test-stereo.mp3?v=1741084505135"
+      ></audio>
+      <audio
+        id="audioElement3"
+        controls
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/test-mono.ogg?v=1741084490063"
+      ></audio
+      ><br />
+      <button id="audio1Button">Transcribe first audio (french)</button>
+      <button id="audio2Button">Transcribe second audio (stereo)</button>
+      <button id="audio3Button">Transcribe third audio (mono)</button>
+      <br />
+      <audio
+        id="audioElement4"
+        controls
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/english-short.m4a?v=1741098618503"
+      ></audio>
+      <audio
+        id="audioElement5"
+        controls
+        src="https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/french-short.m4a?v=1741098620472"
+      ></audio>
+      <br />
+      <button id="audio4Button">Transcribe short english audio</button>
+      <button id="audio5Button">Transcribe short french audio</button>
+      <button id="bothFrenchAudioButton">
+        Transcribe both french short and long audio
+      </button>
+      <button id="englishAndFrenchAudioButton">
+        Transcribe both english and french short audio
+      </button>
+      <button id="manyAudioContentsButton">
+        Try as many audio contents as possible
+      </button>
+    </details>
+    <hr />
+    <pre id="logs"></pre>
+  </body>
+</html>

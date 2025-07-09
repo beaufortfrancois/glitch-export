@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      img, iframe, div {
+        width: 300px;
+        height: 100px;
+        background: #ccc;
+        display: block;
+        margin: 1rem 0;
+      }
+      img {
+        object-fit: contain;
+      }
+      iframe {
+        border: none;
+      }
+      div {
+        object-fit: contain;
+        content: url('img.svg');
+      }
+    </style>
+  </head>
+  <body>
+    <img src="img.svg" />
+    <iframe src="img.svg"></iframe>
+    <div></div>
+  </body>
+</html>

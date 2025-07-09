@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style.css" rel="stylesheet" />
+    <link href="style.css?disabled" rel="stylesheet" disabled />
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍿</text></svg>"
+    />
+    <meta
+      http-equiv="origin-trial"
+      content="AhgqzMQ3OSEp37HZJHK8i1KrTrX6Ypo5cwLfDcogx//WXhJAkkr4uyVECzSkQnRfTHHVw7mTslihfB3RbfdPuwAAAAB+eyJvcmlnaW4iOiJodHRwczovL2RvY3VtZW50LXBpY3R1cmUtaW4tcGljdHVyZS1hcGkuZ2xpdGNoLm1lOjQ0MyIsImZlYXR1cmUiOiJEb2N1bWVudFBpY3R1cmVJblBpY3R1cmVBUEkiLCJleHBpcnkiOjE2OTQxMzExOTl9"
+    />
+  </head>
+  <body>
+    <div id="videoContainer">
+      <video
+        id="video"
+        class="video-js"
+        poster="https://storage.googleapis.com/media-session/sintel/artwork-512.png"
+      >
+        <source
+          src="https://storage.googleapis.com/media-session/sintel/trailer.mp4"
+          type="video/mp4"
+        />
+      </video>
+    </div>
+    <script
+      src="https://vjs.zencdn.net/7.20.3/video.min.js"
+      type="module"
+    ></script>
+    <script src="script.js" type="module"></script>
+    <script>
+      // Show errors to users via alert. Don't do this in prod obviously ;)
+      window.onunhandledrejection = (event) => {
+        window.alert(event.reason);
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script type="module">
+      import { get, set } from 'https://unpkg.com/idb-keyval@5.0.5/dist/esm-compat/index.js?module';
+      
+      set('foo', 'bar').then(async () => {
+        if (await get('foo') !== 'bar') {
+          throw Error('Unexpected value');
+        }
+        document.body.append('Looks like everything is working fine');
+      }).catch((err) => {
+        document.body.append('Something went wrong');
+        throw err;
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

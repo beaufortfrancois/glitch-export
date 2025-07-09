@@ -1,0 +1,110 @@
+<!doctype html>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method (MimeType)</th>
+      <th>kFile</th>
+      <th>kLive</th>
+    </tr>
+  </thead>
+  <tr class="url">
+    <th>URL</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="blob_none">
+    <th>BlobURL (none)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="blob_webm">
+    <th>BlobURL (<code>video/webm</code>)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="blob_webm_vp8">
+    <th>BlobURL (<code>video/webm; codecs="vp8"</code>)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="mse_none">
+    <th>MSE (none)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="mse_webm">
+    <th>MSE (<code>video/webm</code>)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+  <tr class="mse_webm_vp8">
+    <th>MSE (<code>video/webm; codecs="vp8"</code>)</th>
+    <td class="kfile"><video></video></td>
+    <td class="klive"><video></video></td>
+  </tr>
+</table>
+
+<script>
+  function nextEvent(target, name) {
+    return new Promise(resolve => {
+      target.addEventListener(name, resolve, {once: true});
+    });
+  }
+
+  function mediaSource(buffer, mimeType) {
+    const mediaSource = new MediaSource();
+    mediaSource.onsourceopen = async () => {
+      const sourceBuffer = mediaSource.addSourceBuffer(mimeType);
+      sourceBuffer.appendBuffer(buffer);
+      await nextEvent(sourceBuffer, "updateend");
+      mediaSource.endOfStream();
+    };
+    return URL.createObjectURL(mediaSource);
+  }
+
+  async function init() {
+    const urls = [
+      "https://cdn.glitch.com/b45fd535-adb1-4bcd-8c31-074f502a3af6%2Fkfile.webm?1546513540071",
+      "https://cdn.glitch.com/b45fd535-adb1-4bcd-8c31-074f502a3af6%2Fklive.webm?1546513540278"
+    ];
+    const blobs = await Promise.all(urls.map(url => fetch(url).then(r => r.arrayBuffer())));
+
+      document.querySelector(`.mse_webm_vp8 .kfile video`).src = mediaSource(blobs[0].slice(), `video/webm; codecs="vp8"`)
+
+//     let target;
+//     ["kfile", "klive"].forEach((mode, idx) => {
+//       target = document.querySelector(`.url .${mode} video`);
+//       target.src = urls[idx]; 
+
+//       target = document.querySelector(`.blob_none .${mode} video`);
+//       target.src = URL.createObjectURL(new Blob([blobs[idx].slice()]));
+
+//       target = document.querySelector(`.blob_webm .${mode} video`);
+//       target.src = URL.createObjectURL(new Blob([blobs[idx].slice()], {type: `video/webm`}));
+
+//       target = document.querySelector(`.blob_webm_vp8 .${mode} video`);
+//       target.src = URL.createObjectURL(new Blob([blobs[idx].slice()], {type: `video/webm; codecs="vp8"`}));
+
+//       target = document.querySelector(`.mse_none .${mode} video`);
+//       target.src = mediaSource(blobs[idx].slice(), ``)
+
+//       target = document.querySelector(`.mse_webm .${mode} video`);
+//       target.src = mediaSource(blobs[idx].slice(), `video/webm`)
+
+//       target = document.querySelector(`.mse_webm_vp8 .${mode} video`);
+//       target.src = mediaSource(blobs[idx].slice(), `video/webm; codecs="vp8"`)
+//     });
+
+    for(const video of document.querySelectorAll("video")) {
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.width = 100;
+      video.height = 100;
+      video.play();
+    }
+  }
+  init();
+</script>

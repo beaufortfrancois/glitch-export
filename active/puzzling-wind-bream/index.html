@@ -1,0 +1,33 @@
+<button id="button">button</button>
+<script>
+  console.log('script');
+  button.onclick = async () => {
+          console.log("onclick");
+
+    const serviceWorkerPaths = [
+      "/script1.js",
+      "/script2.js",
+      "/script3.js",
+      "/script4.js",
+    ];
+    for (const path of serviceWorkerPaths) {
+      console.log(path);
+      const options = { type: "module", scope: "/" };
+      const registration = await navigator.serviceWorker.register(
+        path,
+        options
+      );
+      await registration.update();
+
+      await navigator.serviceWorker.ready;
+      console.log(navigator.serviceWorker.controller);
+      if (
+        registration.active.scriptURL !== `${window.location.origin}${path}`
+      ) {
+        console.error(`Failed to retrieve proper file from service worker registration.
+        Got ${registration.active.scriptURL} instead of ${window.location.origin}${path}`);
+      }
+      // await registration.unregister();
+    }
+  };
+</script>

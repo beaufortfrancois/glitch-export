@@ -1,0 +1,43 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+#buttons {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+}
+
+button {
+  width: 38px;
+  height: 38px;
+  margin-bottom: 12px;
+  background: black;
+  color: white;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+p {
+  margin: 0;
+}
+
+.color {
+  height: 72px;
+  text-align: center;
+}
+
+.warning {
+  display: none;
+  padding: 12px 0;
+  text-align: center;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion) {
+  .warning {
+    display: block;
+  }
+}

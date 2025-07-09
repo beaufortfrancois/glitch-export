@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>"
+    />
+
+    <title>Web Speech ❤️ MediaStreamTrack</title>
+
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>Web Speech ❤️ MediaStreamTrack</h1>
+    <a href="https://chromestatus.com/feature/5178378197139456"
+      >chromestatus.com/feature/5178378197139456</a
+    >
+    <h4 id="statusMessage"></h4>
+    <details open>
+      <summary>Capture microphone audio stream track</summary>
+      <select id="devicesIds"></select>
+      <button id="getUserMediaButton">Record</button>
+      <br />
+      <div class="logs">
+        <div id="mic_statusLogs"></div>
+        <span id="mic_finalLogs"></span>
+        <span id="mic_interimLogs"></span>
+      </div>
+      <hr />
+    </details>
+    <br />
+    <details open>
+      <summary>Play local audio file and capture audio stream track</summary>
+      <audio id="audioElement" controls></audio>
+      <input id="audioInputButton" type="file" accept="audio/*" />
+      <div class="logs">
+        <div id="audio_statusLogs"></div>
+        <span id="audio_finalLogs"></span>
+        <span id="audio_interimLogs"></span>
+      </div>
+      <hr />
+    </details>
+    <br />
+    <details open>
+      <summary>
+        Play local video file, capture audio stream track, and display generated
+        captions
+      </summary>
+      <video id="videoElement" controls>
+        <track id="videoTextTrack" kind="captions" default />
+      </video>
+      <input id="videoInputButton" type="file" accept="video/*" />
+      <div class="logs">
+        <div id="video_statusLogs"></div>
+        <span id="video_finalLogs"></span>
+        <span id="video_interimLogs"></span>
+      </div>
+      <hr />
+    </details>
+    <br />
+    <details open>
+      <summary>
+        Decode audio data from local audio file with WebAudio and capture audio stream track
+      </summary>
+      <audio id="webAudioElement" controls></audio>
+      <input id="webAudioInputButton" type="file" accept="audio/*" />
+      <div class="logs">
+        <div id="webAudio_statusLogs"></div>
+        <span id="webAudio_finalLogs"></span>
+        <span id="webAudio_interimLogs"></span>
+      </div>
+      <hr />
+    </details>
+  </body>
+</html>

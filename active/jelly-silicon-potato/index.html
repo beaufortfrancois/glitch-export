@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello!</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <pre id="info"></pre>
+    <img id="image" src="qrcode.svg" />
+    <video
+      id="video"
+      muted
+      autoplay
+      loop
+      crossorigin
+      src="https://upload.wikimedia.org/wikipedia/commons/6/61/2160p_Demo_-_3840x2160_pixel_4k_Video_-_a_timelapse_project_by_Florian_Friedrich.webm"
+    ></video
+    ><br />
+    <button id="detectImageButton">
+      detect(image)
+    </button>
+    <button id="detectVideoButton">
+      detect(video)
+    </button>
+    <button id="grabFrameButton">
+      grabFrame()
+    </button>
+    <button id="grabFrameAndDetectButton">
+      grabFrame() & detect(frame)
+    </button>
+    <button id="createImageBitmapButton">
+      createImageBitmap(video)
+    </button>
+    <button id="stopButton">
+      stop
+    </button>
+    <pre id="time"></pre>
+    <pre id="pre"></pre>
+  </body>
+</html>

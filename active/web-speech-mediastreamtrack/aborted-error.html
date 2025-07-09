@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <audio
+      id="audio"
+      controls
+      style="display: block; margin-bottom: 12px"
+    ></audio>
+    <input id="input" type="file" accept="audio/*" />
+    <p>
+      Play local audio file, capture audio stream track, and start another one 5
+      seconds later. The first one is stopped sady
+    </p>
+    <p>1.<span id="log1"></span></p>
+    <p>2.<span id="log2"></span></p>
+    <script type="module">
+      input.onchange = async (event) => {
+        audio.volume = 0.00001;
+        audio.src = URL.createObjectURL(new Blob([event.target.files[0]]));
+        await new Promise((r) => (audio.onloadeddata = r));
+
+        // Capture speech...
+        captureSpeech(log1);
+
+        // Wait 5 seconds before capturing speech from another media stream.
+        setTimeout(() => {
+          captureSpeech(log2);
+        }, 5000);
+
+        audio.play();
+
+      };
+
+      async function captureSpeech(log) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.interimResults = true;
+        recognition.continuous = true;
+
+        const noAudioTrack = new URL(location).searchParams.has("noAudioTrack");
+        if (noAudioTrack) {
+          recognition.start();
+          log.innerHTML = ` Speech recognition started:`;
+        } else {
+          const mediaStream = audio.captureStream();
+          const audioTrack = mediaStream.getAudioTracks()[0];
+          recognition.start(audioTrack);
+          log.innerHTML = ` Speech recognition started on ${audioTrack.label}:`;
+        }
+
+        recognition.onerror = ({ error }) => {
+          log.innerHTML += ` [error = ${error}]`;
+        };
+        recognition.onresult = ({ resultIndex, results }) => {
+          let transcript = "";
+          for (let i = resultIndex; i < results.length; ++i) {
+            if (!results[i].isFinal) {
+              transcript += results[i][0].transcript;
+            }
+          }
+          if (transcript) {
+            log.innerHTML = ` ${transcript}`;
+          }
+        };
+      }
+    </script>
+  </body>
+</html>

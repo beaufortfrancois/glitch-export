@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+          
+      html {
+        font-family: sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      .container {
+        display: grid;
+        grid-template-rows: 1fr max-content;
+      }
+      .demo {
+        font-size: 2rem;
+        display: grid;
+      }
+      .demo > * {
+        grid-area: 1/1;
+      }
+      .input {
+        font: inherit;
+        padding: 0.5rem;
+      }
+      .log {
+        padding: 0.5rem;
+        overflow: scroll;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .log > * {
+        margin: 1em 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="log"></div>
+      <div class="demo">
+        <input class="input" type="text" />
+      </div>
+    </div>
+    
+    <script type="module">
+      const container = $('.container');
+      const input = $('.input');
+      const logEl = $('.log');
+      
+      function log(...args) {
+        console.log(...args);
+        const div = document.createElement('div');
+        div.textContent = args.map(arg => JSON.stringify(arg)).join(', ');
+        logEl.append(div);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+      
+      function createLogEventListener(props) {
+        return (event) => {
+          log(
+            event.type,
+            Object.fromEntries(
+              props.map(prop => {
+                let value = event;
+                
+                for (const propPart of prop.split('.')) {
+                  value = value[propPart];
+                }
+                
+                return [prop, value === undefined ? '[undefined]' : value]
+              })
+            )
+          );
+        };
+      }
+      
+      function updateContainer() {
+        container.style.height = visualViewport.height + 'px';
+      }
+      updateContainer();
+      visualViewport.addEventListener('resize', () => updateContainer());
+      
+      input.addEventListener('keydown', createLogEventListener([
+        'key', 'code', 'isComposing'
+      ]));
+      input.addEventListener('input', createLogEventListener([
+        'data', 'inputType', 'isComposing'
+      ]));
+      input.addEventListener('keyup', createLogEventListener([
+        'key', 'code', 'isComposing'
+      ]));
+      input.addEventListener('compositionstart', createLogEventListener([
+        'data'
+      ]));
+      input.addEventListener('compositionupdate', createLogEventListener([
+        'data'
+      ]));
+      input.addEventListener('compositionend', createLogEventListener([
+        'data'
+      ]));
+      
+    </script>
+  </body>
+</html>

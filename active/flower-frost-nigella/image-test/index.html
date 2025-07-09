@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      img {
+        max-width: 100%;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <picture>
+    <source type="image/avif" media="(-webkit-min-device-pixel-ratio: 1.5)" srcset="
+        https://jakearchibald.com/c/2x-800-84e33279.avif   800w,
+        https://jakearchibald.com/c/2x-1200-d14bf50a.avif 1200w,
+        https://jakearchibald.com/c/full-6ec3e681.avif    1598w
+      " sizes="
+        (min-width: 1066px) 743px,
+        (min-width: 800px) calc(75vw - 57px),
+        100vw
+      ">
+    <source type="image/webp" media="(-webkit-min-device-pixel-ratio: 1.5)" srcset="
+        https://jakearchibald.com/c/2x-low-f66b25b5.webp   800w,
+        https://jakearchibald.com/c/2x-1200-ddb0e478.webp 1200w,
+        https://jakearchibald.com/c/full-54fceb69.webp    1598w
+      " sizes="
+        (min-width: 1066px) 743px,
+        (min-width: 800px) calc(75vw - 57px),
+        100vw
+      ">
+    <source media="(-webkit-min-device-pixel-ratio: 1.5)" srcset="
+        https://jakearchibald.com/c/2x-800-1c3721da.jpg   800w,
+        https://jakearchibald.com/c/2x-1200-5a4802ee.jpg 1200w,
+        https://jakearchibald.com/c/full-a50e0df4.jpg    1598w
+      " sizes="
+        (min-width: 1066px) 743px,
+        (min-width: 800px) calc(75vw - 57px),
+        100vw
+      ">
+    <source type="image/avif" srcset="https://jakearchibald.com/c/1x-9d3b16b6.avif">
+    <source type="image/webp" srcset="https://jakearchibald.com/c/1x-74109603.webp">
+    <img src="https://jakearchibald.com/c/1x-85078f69.jpg" width="1598" height="1026" alt="A red panda" style="height:auto">
+  </picture>
+  </body>
+</html>

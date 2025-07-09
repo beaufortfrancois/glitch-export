@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="https://cdn.glitch.global/f9c24568-4e33-4a7b-aab5-6150f1cb83d7/favicon.png?v=1686045223355"
+    />
+    <title>WebGPU bookmarklets!</title>
+    <style>
+      html,
+      body {
+        font-family: Google Sans, arial, sans-serif;
+        margin: 0 auto;
+        padding: 0 12px;
+      }
+      @media only screen and (min-width: 480px) {
+        body {
+          width: 480px;
+        }
+      }
+
+      img {
+        margin: 0 auto;
+        display: block;
+      }
+      h1,
+      p {
+        text-align: center;
+      }
+      h1 {
+        margin-bottom: 0;
+      }
+      p {
+        margin: 0;
+      }
+      a {
+        line-height: 32px;
+      }
+      ul {
+        padding-inline-start: 0;
+      }
+      li {
+        list-style-type: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebGPU Bookmarklets</h1>
+    <p>Drag links below to your bookmarks bar</p>
+    <ul>
+      <li>
+        <a
+          href="
+    javascript:void%20function(){javascript:var%20orig=GPU.prototype.requestAdapter;GPU.prototype.requestAdapter=function(){return%20alert(%22GPU.requestAdapter()%22),GPU.prototype.requestAdapter=orig,orig.call(this,...arguments)}}();"
+          >GPU.requestAdapter()</a
+        >
+      </li>
+      <li>
+        <a
+          href="
+    javascript:void%20function(){javascript:var%20orig=GPUAdapter.prototype.requestDevice;GPUAdapter.prototype.requestDevice=function(){return%20alert(%22GPUAdapter.requestDevice()%22),GPUAdapter.prototype.requestDevice=orig,orig.call(this,...arguments)}}();"
+          >GPUAdapter.requestDevice()</a
+        >
+      </li>
+      <li>
+        <a
+          href="javascript:void%20function(){javascript:(()=%3E{var%20a=GPUQueue.prototype.submit;GPUQueue.prototype.submit=function(){alert(%22GPUQueue.submit()%22),a.call(this,...arguments),GPUQueue.prototype.submit=a}})()}();"
+          >GPUQueue.submit()</a
+        >
+      </li>
+    </ul>
+    <img
+      width="24"
+      src="https://cdn.glitch.global/f9c24568-4e33-4a7b-aab5-6150f1cb83d7/favicon.png"
+    />
+  </body>
+</html>

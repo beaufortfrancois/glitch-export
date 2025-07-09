@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>HDR vs SDR!</title>
+    <style>
+      html,
+      body {
+        background: black;
+        margin: 0;
+        height: 100%;
+      }
+      video {
+        width: 50%;
+        float: left;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <video
+      id="hdr"
+      src="https://storage.googleapis.com/crosvideo/peru8k.cut.334.webm"
+      muted="true"
+    ></video>
+    <video
+      id="sdr"
+      src="https://storage.googleapis.com/crosvideo/peru8k.cut.247.webm"
+      muted="true"
+    ></video>
+    <script>
+      hdr.load();
+      sdr.load();
+      hdr.play();
+      sdr.play();
+      hdr.onclick = syncVideos;
+      sdr.onclick = syncVideos;
+      function syncVideos() {
+        hdr.currentTime = sdr.currentTime();
+      }
+    </script>
+  </body>
+</html>

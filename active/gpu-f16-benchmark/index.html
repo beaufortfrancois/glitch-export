@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebGPU f16 vs f32</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="module" src="script.js"></script>
+    <script src="//mrdoob.github.io/stats.js/build/stats.min.js"></script>
+  </head>
+  <body>
+    <h1>WebGPU - f16 vs f32 benchmark</h1>
+    <div id="statsContainer">
+      
+    </div>
+    <h2>Matrix multiplication</h2>
+    <pre id="pre"></pre>
+    <script>
+      window.onload = () => {
+        const stats = new Stats();
+        stats.dom.style.position = 'initial';
+        statsContainer.appendChild(stats.dom);
+        requestAnimationFrame(function loop() {
+          stats.update();
+          requestAnimationFrame(loop);
+        });
+      };
+    </script>
+  </body>
+</html>

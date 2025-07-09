@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      pinch-zoom, .stage-svg {
+        position: absolute;
+        inset: 0;
+      }
+      pinch-zoom > * {
+        position: absolute;
+        inset: 0;
+        visibility: hidden;
+      }
+      .stage-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+    </style>
+    <script type="module">
+      import "https://unpkg.com/pinch-zoom-element@1.1.1/dist/pinch-zoom.mjs?module";
+      
+      const pinchZoom = document.querySelector('pinch-zoom');
+      const target = document.querySelector('.target');
+      
+      function update() {
+        target.style.transform = `translate(${pinchZoom.x}px, ${pinchZoom.y}px) scale(${pinchZoom.scale}`;
+      }
+      pinchZoom.addEventListener('change', () => update());
+      update();
+    </script>
+  </head>
+  <body>
+    <pinch-zoom><div></div></pinch-zoom>
+    <svg class="stage-svg">
+      <g class="target">
+        <svg width="100%" height="100%" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle fill="red" cx="50" cy="50" r="45" />
+        </svg>
+      </g>
+    </svg>
+  </body>
+</html>

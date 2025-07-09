@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      input[type='range'] {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Regular compositing
+    </h1>
+    <p>
+      This example uses regular layering, and "foo" cross-fades with "fop" by having one layer transition from opacity 100%-0, and the other 0-100%.
+    </p>
+    <p>
+      The identical parts of each layer, "fo", shouldn't change in a 'proper' cross-fade, but they do here.
+    </p>
+    <p>
+      This is because, with regular compositing, opacity 50% on top of opacity 50% is 75% opacity.
+    </p>
+    <canvas class="normal-compositing"></canvas>
+    <div>
+      <label>Mix: <input class="normal-compositing-range" type="range" min="0" max="1" value="0.5" step="any" /></label>
+    </div>
+<script type="module">
+const range = $('.normal-compositing-range');
+  
+// The aim is to cross fade 'foo' and 'bar'.
+const canvas = document.querySelector('.normal-compositing');
+  
+function paint(mix) {
+  canvas.width = 300;
+  canvas.height = 300;
+  
+  const ctx = canvas.getContext('2d');
+
+  // This green square is some unrelated element in the background.
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0, 0, 150, 150);
+
+
+  ctx.fillStyle = `rgba(0,0,0,${1-mix})`;
+  ctx.font = '220px sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText('foo', 0, 0);
+
+  ctx.fillStyle = `rgba(0,0,0,${mix})`;
+  ctx.font = '220px sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText('fop', 0, 0);
+}
+  
+paint(range.valueAsNumber);
+  
+let debounceTimeout;
+  
+range.addEventListener('input', () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    paint(range.valueAsNumber);
+  }, 200);
+});
+
+</script>
+    <h1>
+      Plus-lighter with background isolation
+    </h1>
+    <canvas class="with-background-isolation"></canvas>
+    <div>
+      <label>Mix: <input class="with-background-isolation-range" type="range" min="0" max="1" value="0.5" step="any" /></label>
+    </div>
+<script type="module">
+const range = $('.with-background-isolation-range');
+  
+// The aim is to cross fade 'foo' and 'bar'.
+const canvas = document.querySelector('.with-background-isolation');
+const subCanvas1 = document.createElement('canvas');
+const subCanvas2 = document.createElement('canvas');
+  
+function paint(mix) {
+  canvas.width = 300;
+  canvas.height = 300;
+  
+  const ctx = canvas.getContext('2d');
+
+  // This green square is some unrelated element in the background.
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0, 0, 150, 150);
+
+  // Here's the element to cross-fade from. "foo"
+  subCanvas1.width = 300;
+  subCanvas1.height = 300;
+  const subCtx1 = subCanvas1.getContext('2d');
+  subCtx1.fillStyle = `rgba(0,0,0,${1-mix})`;
+  subCtx1.font = '220px sans-serif';
+  subCtx1.textBaseline = 'top';
+  subCtx1.fillText('foo', 0, 0);
+
+  // Here's the element to cross-fade to. "bar"
+  subCanvas2.width = 300;
+  subCanvas2.height = 300;
+  const subCtx2 = subCanvas2.getContext('2d');
+  subCtx2.fillStyle = `rgba(0,0,0,${mix})`;
+  subCtx2.font = '220px sans-serif';
+  subCtx2.textBaseline = 'top';
+  subCtx2.fillText('fop', 0, 0);
+
+  const pixels = subCtx1.getImageData(0, 0, 300, 300);
+  const toComposite = subCtx2.getImageData(0, 0, 300, 300);
+  
+  plusLighter(pixels, toComposite);
+  subCtx1.putImageData(pixels, 0, 0);
+  ctx.drawImage(subCanvas1, 0, 0);
+}
+  
+// The compositing operation.
+self.plusLighter = function plusLighter(target, toComposite) {
+  for (let i = 0; i < target.data.length; i += 4) {
+    const targetPixel = target.data.subarray(i, i + 4);
+    const compositePixel = toComposite.data.subarray(i, i + 4);
+    let targetColors = [...targetPixel.slice(0, -1)].map(c => c / 255);
+    const compositeColors = [...compositePixel.slice(0, -1)].map(c => c / 255);
+    let targetAlpha = targetPixel[3] / 255;
+    const compositeAlpha = compositePixel[3] / 255;
+
+    // Composite premultiplied
+    targetColors = targetColors.map((targetColor, ci) => {
+      const compositeColor = compositeColors[ci];
+      return Math.min(1, compositeAlpha * compositeColor + targetAlpha * targetColor);
+    });
+
+    targetAlpha = Math.min(1, compositeAlpha + targetAlpha);
+
+    for (const [ci, color] of targetColors.entries()) {
+      // Unmultiply and set to 0-255.
+      targetPixel[ci] = color / targetAlpha * 255;
+    }
+
+    targetPixel[3] = targetAlpha * 255;
+  }
+}
+  
+paint(range.valueAsNumber);
+  
+let debounceTimeout;
+  
+range.addEventListener('input', () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    paint(range.valueAsNumber);
+  }, 200);
+});
+
+</script>
+<h1>
+      Plus-lighter without background isolation
+    </h1>
+    <canvas class="no-background-isolation"></canvas>
+    <div>
+      <label>Mix: <input class="no-background-isolation-range" type="range" min="0" max="1" value="0.5" step="any" /></label>
+    </div>
+<script type="module">
+const range = $('.no-background-isolation-range');
+  
+// The aim is to cross fade 'foo' and 'bar'.
+const canvas = document.querySelector('.no-background-isolation');
+const subCanvas = document.createElement('canvas');
+  
+function paint(mix) {
+  canvas.width = 300;
+  canvas.height = 300;
+  
+  const ctx = canvas.getContext('2d');
+
+  // This green square is some unrelated element in the background.
+  ctx.fillStyle = 'green';
+  ctx.fillRect(0, 0, 150, 150);
+
+  // Here's the element to cross-fade from. "foo"
+  ctx.fillStyle = `rgba(0,0,0,${1-mix})`;
+  ctx.font = '220px sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.fillText('foo', 0, 0);
+
+  // Here's the element to cross-fade to. "bar"
+  subCanvas.width = 300;
+  subCanvas.height = 300;
+  const subCtx = subCanvas.getContext('2d');
+  subCtx.fillStyle = `rgba(0,0,0,${mix})`;
+  subCtx.font = '220px sans-serif';
+  subCtx.textBaseline = 'top';
+  subCtx.fillText('fop', 0, 0);
+
+  const pixels = ctx.getImageData(0, 0, 300, 300);
+  const toComposite = subCtx.getImageData(0, 0, 300, 300);
+  
+  plusLighter(pixels, toComposite);
+  ctx.putImageData(pixels, 0, 0);
+}
+  
+paint(range.valueAsNumber);
+  
+let debounceTimeout;
+  
+range.addEventListener('input', () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    paint(range.valueAsNumber);
+  }, 200);
+});
+
+</script>
+  </body>
+</html>

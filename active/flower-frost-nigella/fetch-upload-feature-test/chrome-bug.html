@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+  </head>
+  <body>
+    <script type="module">
+      function logResult(promise) {
+        return promise.then(
+          () => console.log('It worked!'),
+          (err) => console.log('It failed', err),
+        )
+      }
+      
+      console.log('Trying fetch');
+      
+      await logResult(
+        fetch('data:a/b;charset=utf-8,', {
+          method: 'POST',
+          body: new ReadableStream({ start: c => c.close() }),
+        })
+      );
+      
+      console.log('Trying fetch with request');
+      
+      const request = new Request('data:a/b;charset=utf-8,', {
+        method: 'POST',
+        body: new ReadableStream({ start: c => c.close() }),
+      });
+
+      await logResult(
+        fetch(request)
+      );
+    </script>
+  </body>
+</html>

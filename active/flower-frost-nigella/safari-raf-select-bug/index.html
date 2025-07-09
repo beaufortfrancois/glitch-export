@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <p>
+      Average time between requestAnimationFrame (30 samples): <span class="result"></span>
+    </p>
+    <script>
+      const samples = [];
+      const result = $('.result');
+      const windowSize = 30;
+      
+      function frame(now) {
+        samples.push(now);
+        
+        if (samples.length > windowSize) {
+          samples.shift();
+          let totalDistance = 0;
+          for (let i = 1; i < samples.length; i++) {
+            totalDistance += samples[i] - samples[i-1];
+          }
+          const averageDistance = totalDistance / (samples.length - 1);
+          result.textContent = `${averageDistance.toFixed(3)}ms`;
+        }
+        
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    </script>
+  </body>

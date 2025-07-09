@@ -1,0 +1,123 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "posts": {
+      ".read": true,
+      ".indexOn": ["published", "object/replies/totalItems", "object/plusoners/totalItems", "object/resharers/totalItems"],
+
+      "$post_id": {
+
+        "access": {
+          "description": {},
+          "items": {},
+          "kind": {}
+        },
+
+        "actor": { // The person who performed this activity.
+          "displayName": {}, // The name of the actor, suitable for display.
+          "id": {}, // The ID of the actor's Person resource.
+          "image": { // The image representation of the actor.
+            "url": {} // The URL of the actor's profile photo. To resize the image and crop it to a square,
+            // append the query string ?sz=x, where x is the dimension in pixels of each side.
+          },
+          "url": {}, // The link to the actor's Google profile.
+          "verification": {}
+        },
+
+        "etag": {},
+        "id": {}, // The ID of this activity.
+        "kind": {}, // Identifies this resource as an activity. Value: "plus#activity".
+
+        "object": { // The object of this activity.
+          "actor": {}, // If this activity's object is itself another activity, such as when a person reshares an activity,
+          // this property specifies the original activity's actor.
+          "attachments": {}, // The media objects attached to this activity.
+          "content": {}, // The HTML-formatted content, which is suitable for display.
+          "objectType": {},
+
+          "plusoners": { // People who +1'd this activity.
+            "selfLink": {},
+            "totalItems": { // Total number of people who +1'd this activity.
+              ".write": "auth != null",
+              ".validate": "(newData.val() == data.val() + 1 && newData.parent().parent().parent().parent().parent().child('plusoners/' + $post_id + '/' + auth.token.firebase.identities['google.com'][0]).exists() && !data.parent().parent().parent().parent().parent().child('plusoners/' + $post_id + '/' + auth.token.firebase.identities['google.com'][0]).exists()) || (newData.val() == data.val() - 1  && !newData.parent().parent().parent().parent().parent().child('plusoners/' + $post_id + '/' + auth.token.firebase.identities['google.com'][0]).exists() && data.parent().parent().parent().parent().parent().child('plusoners/' + $post_id + '/' + auth.token.firebase.identities['google.com'][0]).exists())"
+            }
+          },
+
+          "replies": { // Comments in reply to this activity.
+            "selfLink": {},
+            "totalItems": {} // Total number of comments on this activity.
+          },
+
+          "resharers": { // People who reshared this activity.
+            "selfLink": {},
+            "totalItems": {} // Total number of people who reshared this activity.
+          },
+
+          "url": {}
+        },
+
+        "provider": {
+          "title": {}
+        },
+
+        "published": {}, // The time at which this activity was initially published. Formatted as an RFC 3339 timestamp.
+        "title": {}, // Title of this activity.
+        "updated": {}, // The time at which this activity was last updated. Formatted as an RFC 3339 timestamp.
+        "url": {}, // The link to this activity.
+        "verb": {}
+      }
+    },
+
+    "comments": {
+      "$post_id": {
+        ".read": true,
+        ".indexOn": ["published"]
+      }
+    },
+
+    "plusoners": {
+      "$post_id": { // The ID of an activity.
+        ".read": true,
+        "$google_id": { // The Google ID of the person who +1'd this activity.
+
+          ".write": "auth != null && auth.token.firebase.identities['google.com'][0] == $google_id",
+          ".validate": "(!data.exists() && newData.parent().parent().parent().child('posts/' + $post_id + '/object/plusoners/totalItems').val() == data.parent().parent().parent().child('posts/' + $post_id + '/object/plusoners/totalItems').val() + 1) || (data.exists() && newData.val() == null && newData.parent().parent().parent().child('posts/' + $post_id + '/object/plusoners/totalItems').val() == data.parent().parent().parent().child('posts/' + $post_id + '/object/plusoners/totalItems').val() - 1)",
+
+          "displayName": {},
+          "etag": {},
+          "id": {},
+          "image": {},
+          "kind": {},
+          "url": {}
+        }
+      }
+    },
+
+    "siteTitle": {
+      ".read": true
+    },
+
+    "functionsDeployed": {
+      ".read": true,
+      ".write": true
+    },
+
+    "searchQueries" : {
+      ".indexOn": ["startedAt"],
+      "$query_id": {
+        ".read": true,
+        ".write": true,
+        ".validate": "newData.isNumber()"
+      }
+    },
+
+    "searchResults" : {
+      "$query_id": {
+        ".read": true,
+        ".indexOn": ["published", "object/replies/totalItems", "object/plusoners/totalItems", "object/resharers/totalItems"]
+      }
+    }
+  }
+}

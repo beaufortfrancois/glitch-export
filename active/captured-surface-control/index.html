@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔎</text></svg>"
+    />
+    <title>Captured Surface Control</title>
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="/script.js" defer></script>
+  </head>
+  <body style="overflow: hidden">
+    <h1>Captured Surface Control</h1>
+    <a
+      target="_blank"
+      href="https://github.com/screen-share/captured-surface-control/"
+      >https://github.com/screen-share/captured-surface-control/</a
+    >
+
+    <div id="mainContent" hidden>
+      <div
+        id="clickToShareInstructions"
+        class="instruction"
+        style="background: #ffffca"
+      >
+        Click to share a tab
+      </div>
+      <div
+        id="clickToPermit"
+        class="instruction"
+        hidden
+        style="background: #4dfa76"
+      >
+        Click again to grant permission
+      </div>
+      <div
+        id="scrollInstructions"
+        class="instruction"
+        hidden
+        style="background: #00ffca"
+      >
+        Try scrolling over the preview
+      </div>
+      <div id="shareTabWarning" class="instruction" style="background: #f6927d">
+        Sorry, this demo only works if you share a tab. Try again?
+      </div>
+      <video id="video" autoplay muted playsinline></video>
+      <div id="buttons" class="hidden">
+        <svg
+          id="showScrollInstructionsButton"
+          xmlns="http://www.w3.org/2000/svg"
+          height="36"
+          viewBox="0 -960 960 960"
+          width="36"
+          fill="currentColor"
+        >
+          <path
+            d="M660-160q58 0 99-41t41-99v-60H520v60q0 58 41 99t99 41ZM521-440h99v-114q-38 11-65.5 42T521-440Zm179 0h99q-6-41-33.5-72T700-554v114ZM660-80q-92 0-156-64t-64-156v-120q0-92 64-156t156-64q92 0 156 64t64 156v120q0 92-64 156T660-80ZM160-240v-480 480Zm0 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v96q-17-19-37-34.5T800-686v-34H160v480h206q5 21 11.5 41t16.5 39H160Z"
+          />
+        </svg>
+        <label id="currentZoomLabel"></label>
+        <svg
+          id="zoomPlusButton"
+          xmlns="http://www.w3.org/2000/svg"
+          height="36"
+          viewBox="0 -960 960 960"
+          width="36"
+          fill="currentColor"
+        >
+          <path
+            d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Zm-40-60v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"
+          />
+        </svg>
+        <svg
+          id="zoomMinusButton"
+          xmlns="http://www.w3.org/2000/svg"
+          height="36"
+          viewBox="0 -960 960 960"
+          width="36"
+          fill="currentColor"
+        >
+          <path
+            d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400ZM280-540v-80h200v80H280Z"
+          />
+        </svg>
+        <svg
+          id="resetZoomLevelButton"
+          width="36"
+          height="36"
+          viewBox="-4 -4 42 42"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentcolor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="3"
+          >
+            <circle cx="14" cy="14" r="12" />
+            <path d="M23 23 L30 30" />
+            <path
+              d="M9 12 L9 9 12 9 M16 9 L19 9 19 12 M9 16 L9 19 12 19 M19 16 L19 19 16 19"
+            />
+          </g>
+        </svg>
+      </div>
+    </div>
+    <pre id="logs"></pre>
+    <div id="failureWarning" hidden>
+      <p>To enjoy this demo, please:</p>
+      <ol>
+        <li>
+          Install
+          <a href="https://www.google.com/chrome/canary/">Chrome Canary</a>.
+        </li>
+        <li>
+          Visit chrome://flags/#captured-surface-control and enable that flag.
+        </li>
+        <li>Come back here.</li>
+      </ol>
+    </div>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        log(`> ${event.reason}`);
+      };
+      window.onerror = (error) => {
+        log(`> Error: ${error}`);
+      };
+
+      function log(text) {
+        const pre = document.createElement("pre");
+        pre.innerHTML = `${text}`;
+        logs.append(pre);
+      }
+    </script>
+  </body>
+</html>

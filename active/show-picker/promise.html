@@ -1,0 +1,41 @@
+<!-- <html style="background: red"> -->
+<!--   <body style="background: green"> -->
+    <input id="inputDate" type="date" />
+    <button id="button">show date picker</button>
+    <pre id="pre"></pre>
+    <script>
+      var controller = new AbortController();
+
+      function showDatePicker(signal) {
+        return new Promise((resolve, reject) => {
+          // Cancel date picker operation
+          signal.addEventListener("abort", () => {
+            reject("Request aborted");
+          });
+
+          try {
+            // Show programmatically a date picker.
+            inputDate.showPicker();
+
+            // Get date entered by user
+            inputDate.addEventListener("change", event => {
+              resolve(inputDate.value);
+            });
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+      button.addEventListener("click", async function() {
+        controller.abort();
+        controller = new AbortController();
+        // try {
+          const date = await showDatePicker(controller.signal);
+          pre.append(`${date}\n`);
+        // } catch (error) {
+          // pre.append(`Error: ${error}\n`);
+        // }
+      });
+    </script>
+<!--   </body> -->
+<!-- </html> -->

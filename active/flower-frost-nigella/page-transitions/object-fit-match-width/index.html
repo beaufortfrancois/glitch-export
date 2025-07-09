@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      .container {
+        background: #ccc;
+      }
+      
+      .container img {
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/Google_2015_logo%20(1).svg?v=1653308030572" />
+    </div>
+    <script type="module">
+      const container = $('.container');
+      
+      function random(min, max) {
+        const val = Math.random() * (max - min);
+        return val + min;
+      }
+      
+      function animateTo(element, to, options) {
+        const anim = element.animate(
+          to,
+          { ...options, fill: 'both' },
+        );
+        anim.addEventListener('finish', () => {
+          anim.commitStyles();
+          anim.cancel();
+        });
+        return anim;
+      }
+      
+      while (true) {
+        const width = random(200, 800);
+        const height = random(50, 300);
+        
+        await animateTo(container, {
+          width: width + 'px', height: height + 'px',
+        }, {
+          duration: 1000,
+          easing: 'ease-in-out',
+        }).finished
+      }
+    </script>
+  </body>
+</html>

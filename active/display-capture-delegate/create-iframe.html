@@ -1,0 +1,41 @@
+<button id="button">Append &lt;iframe&gt; which calls getDisplayMedia()</button>
+<label for="checkbox">
+  <input id="checkbox" type="checkbox" checked />
+  Delegate "display-capture" capability
+</label>
+
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+</style>
+<script class="visible">
+  button.onclick = () => {
+    const iframe = document.createElement("iframe");
+    iframe.onload = () => {
+      const options = checkbox.checked ? { delegate: "display-capture" } : {};
+      iframe.contentWindow.postMessage(null, options);
+    };
+    iframe.srcdoc = `<script>onmessage = () => navigator.mediaDevices.getDisplayMedia()
+        .catch(e => document.body.append(e));<\/script>`;
+    document.body.append(iframe);
+  };
+</script>
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+</script>
+
+

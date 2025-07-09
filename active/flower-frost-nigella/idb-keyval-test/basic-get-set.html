@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+      const log = (msg) => {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        $('.log').append(div);
+      };
+    </script>
+  </head>
+  <body>
+    <button class="set">
+      Set val
+    </button>
+    <button class="get">
+      Get val
+    </button>
+    <div class="log"></div>
+    <script type="module">
+      import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
+      
+      $('.set').onclick = async () => {
+        log('Attempting to set');
+        await set('foo', 'bar');
+        log('Set complete');
+      };
+      $('.get').onclick = async () => {
+        log('Attempting to get');
+        log(`Got foo=${await get('foo')}`);
+      };
+    </script>
+  </body>
+</html>

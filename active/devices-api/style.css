@@ -1,0 +1,26 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em auto;
+  max-width: 1024px;
+}
+
+.parent {
+  place-items: center;
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.parent > div {
+  text-align: center;
+  font-weight: bold;
+  padding: 24px;
+  background: whitesmoke;
+  box-shadow: 0px 1px 1px darkgrey;
+  border-radius: 12px;
+  min-width: 124px;
+}
+
+img {
+  width: 64px;
+  height: 64px;
+}

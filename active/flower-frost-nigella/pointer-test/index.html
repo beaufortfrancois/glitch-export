@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <ol>
+      <li>Open console to observe events</li>
+      <li>Press down left mouse button somewhere on the page</li>
+      <li>With the left mouse button still down, click the right mouse button. This should open a context menu.</li>
+      <li>Release the left mouse button</li>
+      <li>Click the left mouse button outside the context menu</li>
+    </ol>
+    
+    <p>
+      The left button is now up, but neither a <code>pointerup</code> or <code>pointercancel</code> was fired for that first click.
+    </p>
+    <script>
+      const logEvent = (event) => console.log(event.type, event);
+      for (const eventType of ['pointerdown', 'pointercancel', 'pointerup', 'contextmenu']) {
+        window.addEventListener(eventType, logEvent);
+      }
+    </script>
+  </body>
+</html>

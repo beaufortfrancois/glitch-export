@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      .top-nav {
+        border-bottom: 4px solid #ccc;
+        background: #eee;
+        padding: 0 1rem;
+        contain: paint;
+      }
+      .page-2 h1 {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+      }
+      .content {
+        margin: 0 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-nav">
+      <h1>
+        
+      </h1>
+      <p class="page-nav">
+        <button data-page-index="0">Page one</button> <button data-page-index="1">Page two</button>
+      </p>
+    </div>
+    <div class="content">
+      
+    </div>
+    <script>
+      const pages = [
+        `<p>This is page one's content.</p>`,
+        `<p>Page two is amazing because it has…</p><p>TWO PARAGRAPHS OMG!!1</p>`,
+      ];
+      const headings = [
+        `Page 1's heading is pretty big`,
+        `Smaller page 2 heading`,
+      ];
+      let currentPage = 0;
+      const content = $('.content');
+      const topNav = $('.top-nav');
+      const heading = $('.top-nav h1');
+      const pageNav = $('.page-nav');
+      content.innerHTML = pages[0];
+      heading.innerText = headings[0];
+      
+      pageNav.onclick = async (event) => {
+        const btn = event.target.closest('[data-page-index]');
+        if (!btn) return;
+        
+        const index = Number(btn.dataset.pageIndex);
+        if (index === currentPage) return;
+        
+        await document.documentTransition.prepare({
+          rootTransition: 'cover-left',
+				  sharedElements: [topNav, pageNav, heading],
+        });
+        
+        content.innerHTML = pages[index];
+        heading.innerText = headings[index];
+        
+        if (index === 1) {
+          topNav.classList.add('page-2');
+        } else {
+          topNav.classList.remove('page-2');
+        }
+        currentPage = index;
+        document.documentTransition.start({ sharedElements: [topNav, pageNav, heading] });
+      };
+    </script>
+  </body>
+</html>

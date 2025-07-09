@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- In dark mode, the theme color is dark blue, otherwise it's light sky blue. -->
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffdd"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="black"
+    />
+
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <style>
+      html {
+        background-color: dodgerblue;
+      }
+      button {
+        padding: 0.5em;
+        margin: 1em 0 0 1em;
+      }
+    </style>
+    <button id="lightThemeButton">
+      CHANGE LIGHT THEME COLOR
+    </button>
+    <button id="darkThemeButton">
+      CHANGE DARK THEME COLOR
+    </button>
+    <pre id="pre" style="white-space: pre-wrap;"></pre>
+    <script>
+      pre.textContent += document.head.innerHTML;
+      lightThemeButton.onclick = () => {
+        document.querySelector(
+          'meta[name="theme-color"][media="(prefers-color-scheme: light)"]'
+        ).content = "lightpink ";
+      };
+      darkThemeButton.onclick = () => {
+        document.querySelector(
+          'meta[name="theme-color"][media="(prefers-color-scheme: dark)"]'
+        ).content = "hotpink";
+      };
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕴️</text></svg>"
+    />
+
+    <title>Always On Top</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: sans-serif;
+      }
+      h1 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 12px;
+        font-weight: 100;
+        text-align: center;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 800px;
+      }
+      button,
+      pre {
+        display: block;
+        margin: 18px;
+        padding: 6px;
+        text-align: left;
+      }
+      pre {
+        white-space: pre-line;
+        color: red;
+        font-weight: bold;
+      }
+      iframe {
+        width: calc(100% - 4px);
+        height: 140px
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Always On Top</h1>
+
+    <button>
+      open("prompt.html", "", "alwaysOnTop,width=480,height=270")
+    </button>
+    <button>open("/", "", "alwaysOnTop")</button>
+    <button>open("/", "", "width=600,height=600")</button>
+    <button>open("/", "", "resizable,scrollbars,status")</button>
+    <button>
+      open("#1", "1", "alwaysOnTop"); open("#2", "2", "alwaysOnTop"); open("#3",
+      "3", "alwaysOnTop")
+    </button>
+    <button>open("/", "", "alwaysOnTop=no")</button>
+
+    <iframe src="iframe.html"> </iframe>
+    
+    <pre id="pre"></pre>
+    
+    <script>
+      document.querySelectorAll("button").forEach(
+        button =>
+          (button.onclick = () => {
+            eval(`window.w = ${button.textContent};`);
+          })
+      );
+      window.onerror = error => {
+        pre.append(`⚠️ ${error}\r\n`);
+      };
+    </script>
+  </body>
+</html>

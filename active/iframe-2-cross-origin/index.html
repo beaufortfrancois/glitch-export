@@ -1,0 +1,53 @@
+<h1>iframe 2 <b>(cross-origin)</b> allow="display-capture"</h1>
+
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+  .text {
+    color: blue;
+    white-space: pre-line;
+  }
+  b {
+    color: orange;
+  }
+</style>
+
+<script class="visible">
+  onmessage = () => {
+    log(`userActivation.isActive: ${navigator.userActivation?.isActive}`);
+    navigator.mediaDevices.getDisplayMedia();
+  };
+</script>
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+  onunhandledrejection = (event) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: event.reason,
+        className: "error",
+      })
+    );
+
+  function log(text) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: text,
+        className: "text",
+      })
+    );
+  }
+</script>

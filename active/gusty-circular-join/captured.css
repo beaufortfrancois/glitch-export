@@ -1,0 +1,12 @@
+body {
+  text-align: center;
+}
+
+h2 {
+  font-size: 10vmin;
+}
+
+pre {
+  font-size: 4vmin;
+  white-space: pre-line;
+}

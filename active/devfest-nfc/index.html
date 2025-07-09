@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <h1>
+       Web NFC 
+    </h1>
+    <pre id="pre" style="overflow: auto; padding: 0 12px 12px 0"></pre>
+    <script>
+      if ('NDEFReader' in window) {
+        import("/script.js");
+      } else {
+        pre.textContent = 'No Web NFC support!\n';
+      }
+    </script>
+  </body>
+</html>

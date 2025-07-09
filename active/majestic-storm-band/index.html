@@ -1,0 +1,59 @@
+<script >
+async function go() {
+  var w = await documentPictureInPicture.requestWindow();
+  var b1 = w.document.createElement("button");
+  b1.onclick = play_src;
+  b1.innerText = "Play src in opener context";
+  w.document.body.appendChild(b1);
+  var b2 = w.document.createElement("button");
+  b2.onclick = play_mse;
+  b2.innerText = "Play mse in opener context";
+  w.document.body.appendChild(b2);
+}
+
+// documentPictureInPicture.addEventListener("enter", async (event) => {
+//   // Hack!
+//   const a = document.createElement("audio");
+//   a.muted = true;
+//   a.src = "https://storage.googleapis.com/watk-public/buck360p_h264.mp4";
+//   await a.play();
+//   a.src = "";
+// });
+
+function play_src() {
+  var p = document.getElementById("video");
+  p.src = "https://storage.googleapis.com/watk-public/buck360p_h264.mp4";
+  p.play();
+}
+
+function play_mse() {
+  var p = document.getElementById("video");
+  var mediaSource = new MediaSource();
+  p.src = URL.createObjectURL(mediaSource);
+  mediaSource.addEventListener("sourceopen", async (e) => {
+    const sourceBuffer = mediaSource.addSourceBuffer(
+      'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+    );
+    const response = await fetch(
+      "https://nickdesaulniers.github.io/netfix/demo/frag_bunny.mp4"
+    );
+    const arrayBuffer = await response.arrayBuffer();
+    sourceBuffer.appendBuffer(arrayBuffer);
+    sourceBuffer.addEventListener("updateend", () => {
+      p.play();
+    });
+  });
+}
+</script>
+
+<video id="video" controls></video>
+
+<p>
+  To use:<br />
+  click 'go' to open pip window.<br />
+  Open a new tab and bring it to the foreground.<br />
+  click 'play src' button in pip window.<br />
+  observe nothing happens.<br />
+  switch back to opener tab, see movie start from the beginning<br />
+</p>
+<button onclick="go()">go</button>

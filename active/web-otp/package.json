@@ -1,0 +1,26 @@
+{
+  "name": "web-otp",
+  "version": "0.0.1",
+  "description": "A demo of SMS Receiver API.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "twilio": "^4.6.0",
+    "hbs": "^4.0.4"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/web-otp"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

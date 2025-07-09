@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link id="manifest" rel="manifest" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+</head>
+
+The manifest powering PWA install prompt is loaded from <a></a>.
+
+<script>
+  navigator.serviceWorker.register("sw.js");
+
+  const url = new URL(location);
+  const typeIcons = 
+    url.searchParams.has("png") ? "png" : "svg";
+  document.querySelector("#manifest").href = `manifest-with-${typeIcons}-icons.json`;
+  document.querySelector("a").textContent = document.querySelector("#manifest").href;
+  document.querySelector("a").href = document.querySelector("#manifest").href;
+</script>

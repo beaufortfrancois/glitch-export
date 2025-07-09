@@ -1,0 +1,139 @@
+<html lang='en' class='notranslate' translate='no'>
+  <head>
+      <meta name='google' content='notranslate' />
+      <meta charset='UTF-8'>
+      <meta name='description' content='An Offline Multimedia File Conversion Tool.'>
+      <meta name='keywords' content='ffmpeg,wasm API,audio-conversion'>
+      <meta name="author" content="Charmaine Chui" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+      <meta http-equiv='Content-Language' content='en' />
+      <title>Media Transcoder | Built With FFmpeg for Audio & Video Files</title>
+      <meta name='msapplication-TileColor' content='#ffffff' />
+      <meta name='theme-color' content='#ffffff' />
+      <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+      <meta name='apple-mobile-web-app-capable' content='yes' />
+      <meta name='mobile-web-app-capable' content='yes' />
+      <meta name='HandheldFriendly' content='True' />
+      <meta name='MobileOptimized' content='320' />  
+
+      <link rel="apple-touch-icon" sizes="76x76" href="img/favicon-76.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="img/favicon-120.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="img/favicon-152.png">
+      <link rel="icon" sizes="196x196" href="img/favicon-196.png">
+      <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
+      <link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
+      <link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
+      <link href='css/custom.css' rel='stylesheet' type='text/css' />
+  </head>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <body>
+    <nav id='site-header' class="navbar navbar-expand-sm bg-light navbar-light border-bottom fixed-top pt-0 pb-0 text-muted small"><div id='site-header-wrapper'><a class="navbar-brand pt-0 pb-0 mr-1"><img src='img/logo.png' alt='logo' height='40px' /></a>Built&nbsp;with&nbsp;<a href='https://github.com/ffmpegwasm/ffmpeg.wasm' target='_blank'>FFmpeg.wasm</a><span class='symbol ml-1 mr-1'>▷</span><strong>For Digital File Conversions</strong>&nbsp;|&nbsp;<a href=" https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4" target="_blank"><span class='emoji'>✍</span> How to Transcode Audio & Video Files with FFmpeg in JavaScript</a>&nbsp;|&nbsp;©&nbsp;<span id='yearDisplay'></span>&nbsp;By&nbsp;<a href="https://medium.com/@geek-cc" target="_blank"><span class='symbol'>ヾξ(</span><span class='emoji'>🎀</span><span class='symbol'>˶❛◡❛)ﾉᵀᴴᴱ ᴿᴵᴮᴮᴼᴺ ᴳᴵᴿᴸ</span></a></div></nav>
+
+    <div class='container-full h-100 p-1'>
+      <div class='row no-gutters'>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❶</span> Select media format of output file
+            </div>
+            <div class="card-body p-1">
+              <table class='table table-bordered small mb-0 w-100'>
+                <thead>
+                  <tr>
+                    <td colspan='2'>
+                      <div class="input-group input-group-sm rounded-0 w-100">
+                        <div class="input-group-prepend rounded-0">
+                          <span class="input-group-text rounded-0"><span class='emoji mr-1'>💽</span><small>Output Codec</small></span>
+                        </div>
+                        <select id='outputFileExtension' class="custom-select rounded-0"></select>
+                      </div>
+                      <p class='mb-1 mt-1'><span class='emoji'>📀</span> Specify file extension of processed output such as: <code class='pl-1 pr-1'>mp4</code><code class='pl-1 pr-1'>mp3</code><code class='pl-1 pr-1'>avi</code></p>
+
+                      <mark><span class='emoji'>⚠️</span> All option(s) here are supported by FFmpeg.</mark>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th colspan='2'><span class='emoji'>🔎</span> Mime Type Details</th></tr>
+                  <tr><th class='w-25'>File Extension</th><td id='FileExt'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>Mime Type</th><td id='MimeType'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>Description</th><td id='MimeDescription'><span class='symbol'>…</span></td></tr>
+                  <tr>
+                    <td colspan='2'>
+                      <button id='resetAllBtn' type='button' class='btn btn-sm btn-outline-danger rounded-circle navBtn float-right text-center symbol'>↺</button>
+                      <span class='symbol float-right mr-2 text-danger'>𝚁𝚎𝚜𝚎𝚝 𝙰𝚕𝚕 ▷</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+             </div>  
+          </div>
+        </div>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❷</span> Upload media File here
+            </div>
+            <div class="card-body p-1">
+              <table class='table table-bordered small mb-0 w-100'>
+                <thead>
+                  <tr>
+                    <td colspan='2'>
+                      <button id='uploadMediaBtn' type='button' class='btn btn-sm btn-light border border-primary text-primary rounded-0'><span class='emoji'>📂</span> <small>Upload File</small><input id='uploadMedia' type='file' accept='audio/*,video/*' /></button>
+                      <p class='mb-1 mt-1'> Only <span class='emoji'>🎵</span> Audio & <span class='emoji'>🎞️</span> Video file formats are accepted.</p>
+                      <mark><span class='emoji'>⚠️</span> Note that upload should not exceed <strong class='symbol'>𝟸.𝟶 𝙶𝙱</strong>.</mark>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th colspan='2'><span class='emoji'>🔎</span> Input File Details</th></tr>
+                  <tr><th class='w-25'>File Name</th><td id='FileName'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>File Type</th><td id='FileType'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>File Size</th><td id='FileSize'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>Codecs String</th><td id='CodecsString'><span class='symbol'>…</span></td></tr>
+                </tbody>
+                <tr>
+                  <td colspan='2' valign='middle'>
+                    <button id='saveOutput' type='button' class='btn btn-sm btn-outline-success rounded-circle navBtn float-right text-center symbol'>💾</button>
+                    <span class='symbol float-right mr-2 text-success'>𝙴𝚡𝚙𝚘𝚛𝚝 𝙿𝚛𝚘𝚌𝚎𝚜𝚜𝚎𝚍 𝙾𝚞𝚝𝚙𝚞𝚝 ▷</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❸</span> <span class='emoji'>🔌</span> Server's <code>Cross-Origin Isolated</code> status: <span id='isCrossOriginIsolated' class='emoji'>🔘</span>
+            </div>
+            <div class="card-body p-1">
+              <p class='small text-muted mb-2 mt-1'>Upon finish, only processed output with the following <code>HTML5</code> compatible formats shall rendered below for preview.</p>
+              <p class='mb-2 mt-2 text-center'><small><code>mp4</code><span class='symbol'>［🎞️］</span></small> <small><code>mp3</code><span class='symbol'>［🎧］</span></small> <small><code>wav</code><span class='symbol'>［🎞️］</span></small> <small><code>webm</code><span class='symbol'>［🎞️］</span></small> <small><code>ogg</code><span class='symbol'>［🎧 | 🎞️］</span></small></p>
+              <hr>
+              <div id='mediaWrapper' class='text-center'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='row no-gutters'>
+        <div class='col-sm-12 p-1'>
+          <div id='logsOutput' class="card rounded-0">
+            <div class="card-header p-1"><span class='emoji'>📑</span> <strong>Application Logs</strong></span></div>
+            <div class="card-body p-1">
+              <div id='outputLogs' class='border w-100 h-100 p-2 small'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='js/polyfill.js'></script>
+    <script src='js/ie10-viewport-bug-workaround.js'></script>
+    <script src='js/bootstrap-native-v4.js'></script>
+    <script src="js/ffmpeg/ffmpeg.min.js"></script>
+    <script src="js/mimeTypes.js"></script>
+    <script src="js/custom.js"></script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+body {
+  background-color: pink;
+  color: black;
+}
+
+@media(prefers-color-scheme: light) {
+  #preCss:after {
+    content: '@media(prefers-color-scheme: light)'
+  }
+}
+
+@media(prefers-color-scheme: dark) {
+  #preCss:after {
+    content: '@media(prefers-color-scheme: dark)'
+  }
+}
+
+@media(prefers-color-scheme: only light) {
+  #preCss:after {
+    content: '@media(prefers-color-scheme: only light)'
+  }
+}
+
+@media(prefers-color-scheme: only dark) {
+  #preCss:after {
+    content: '@media(prefers-color-scheme: only dark)'
+  }
+}

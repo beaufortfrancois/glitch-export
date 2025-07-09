@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        background: #000;
+      }
+      body {
+        margin: 0;
+      }
+      
+      /* UA default styles for transition elements */
+      .stage {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        position: fixed;
+        inset: 0;
+      }
+      
+      .container {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      
+      .image-wrapper {
+        position: absolute;
+        inset: 0;
+        isolation: isolate;
+      }
+      .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Not implemented yet */
+        mix-blend-mode: plus-lighter;
+      }
+      
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      
+      .incoming {
+        animation: 600ms ease both fade-in;
+      }
+      
+      .outgoing {
+        animation: 600ms ease both fade-out;
+      }
+      
+      /* UA generated styles for parts of the transition */
+      @keyframes root-anim {
+        to {
+          width: 1920px;
+          height: 1080px;
+          transform: translate(0, 0);
+        }
+      }
+      
+      .root {
+        width: 1920px;
+        height: 1080px;
+        transform: translate(0, 0);
+        animation: 600ms ease both root-anim;
+      }
+      
+      @keyframes content-anim {
+        to {
+          width: 1488px;
+          height: 943px;
+          transform: translate(336px, 136px);
+        }
+      }
+      
+      .content {
+        width: 1488px;
+        height: 943px;
+        transform: translate(336px, 136px);
+        animation: 600ms ease both content-anim;
+      }
+      
+      /* User overrides */
+      .root .outgoing {
+        /* Only need this because plus-lighter isn't supported */
+        animation: none;
+      }
+      
+      .root .incoming {
+        animation-duration: 0.01s;
+      }
+      
+      @keyframes content-loading-anim {
+        to { opacity: 0.5; }
+      }
+      
+      @keyframes content-outogin-gone-anim {
+        to { opacity: 0; }
+      }
+      
+      .content .outgoing {
+        animation: 300ms ease both content-loading-anim, 600ms ease both content-outogin-gone-anim;
+        animation-delay: 0ms, 600ms;
+      }
+      
+      .content {
+        --slide: 60px;
+      }
+      
+      @keyframes content-wrapper-anim {
+        to { transform: translateX(calc(-1 * var(--slide))); }
+      }
+      
+      .content .image-wrapper {
+        animation: 600ms ease both content-wrapper-anim;
+        animation-delay: 600ms;
+      }
+      
+      .content .incoming {
+        transform: translateX(var(--slide));
+        animation-delay: 600ms;
+      }
+      
+      .content .final {
+        transform: translateX(var(--slide));
+      }
+      
+      /* Stuff that happens after the transition */
+      .final {
+        opacity: 0;
+        animation: 300ms ease both fade-in;
+        animation-delay: 1300ms;
+      }
+      
+      /* Misc stuff unrelated to the page transition */
+      .controls {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+      }
+    </style>
+    <script type="module">
+      const anims = document.getAnimations();
+      
+      function reset() {
+        for (const anim of anims) {
+          anim.pause();
+          anim.currentTime = 0;
+        }
+      }
+      
+      reset();
+      
+      
+      $('.play-btn').onclick = () => {
+        for (const anim of anims) {
+          anim.playbackRate = 1;
+          anim.play();
+        }
+      };
+      
+      $('.play-slow-btn').onclick = () => {
+        for (const anim of anims) {
+          anim.playbackRate = 0.1;
+          anim.play();
+        }
+      };
+      
+      $('.reset-btn').onclick = () => reset();
+    </script>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="container root">
+        <div class="image-wrapper">
+          <img class="image outgoing" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/yt-home-f1-empty.avif?v=1641830823420">
+          <img class="image incoming" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/yt-home-tech-empty.avif?v=1641830823535">
+        </div>
+      </div>
+      <div class="container content">
+        <div class="image-wrapper">
+          <img class="image outgoing" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/yt-f1-content-loaded.avif?v=1641830824176">
+          <img class="image incoming" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/yt-tech-content-loading.avif?v=1641830823420">
+          <img class="image final" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/yt-tech-content-loaded.avif?v=1641830824241">
+          
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="play-btn">
+        Play
+      </button>
+      <button class="play-slow-btn">
+        Play slow
+      </button>
+      <button class="reset-btn">
+        Reset
+      </button>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h1>Origin = palm</h1>
+    <p id="out">?</p>
+    <script>
+      
+      (function ook() {
+        const out = document.getElementById("out");
+        out.innerHTML = `isActive = ${navigator?.userActivation?.isActive}`;
+      requestAnimationFrame(ook);
+      })();
+      // window.parent.postMessage("foo", { includeUserActivation: true });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "G+ community",
+  "short_name": "G+ community",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait"
+}

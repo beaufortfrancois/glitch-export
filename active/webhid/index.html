@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>webhid.glitch.me</title>
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>WebHID</h1>
+    <button id="requestDeviceButton">
+      requestDevice
+    </button>
+    <hr />
+    <button id="openButton">
+      open
+    </button>
+    <hr />
+    <input type="number" id="reportIdInput" placeholder="reportId" />
+    <datalist id="reportDataList">
+      <option value="1, 0, 1, 64, 64, 0, 1, 64, 64, 0x50"
+        >JoyCon - Voltage</option
+      >
+    </datalist>
+    <input
+      type="text"
+      id="reportDataInput"
+      placeholder="data"
+      list="reportDataList"
+    />
+    <button id="sendReportButton">
+      sendReport
+    </button>
+    <hr />
+    <input type="number" id="featureReportIdInput" placeholder="reportId" />
+    <datalist id="featureReportDataList">
+      <option value="512, 0"
+        >MacBook Pro Keyboard Backlight - Turn on (reportId=1)</option
+      >
+      <option value="0, 0"
+        >MacBook Pro Keyboard Backlight - Turn off (reportId=1)</option
+      >
+    </datalist>
+    <input type="text" id="featureReportDataInput" placeholder="data" list="featureReportDataList" />
+    <button id="sendFeatureReportButton">
+      sendFeatureReport
+    </button>
+    <hr />
+    <button id="receiveFeatureReportButton">
+      receiveFeatureReport
+    </button>
+    <hr />
+    <button id="closeButton">
+      close
+    </button>
+    <hr />
+    <h2>
+      Open DevTools console ➡
+    </h2>
+  </body>
+</html>

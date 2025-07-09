@@ -1,0 +1,13 @@
+I'm an iframe.
+<input type="text" placeholder="I'm an input." />
+
+<script>
+  console.log("Hi from iframe");
+  const ndef = new NDEFReader();
+  console.log(ndef);
+  try {
+    ndef.scan();
+  } catch (error) {
+    console.error(error);
+  }
+</script>

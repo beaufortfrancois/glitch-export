@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+<style>
+    video {
+    width: 100%;
+  }
+    </style>
+  </head>
+  <body>
+    <video
+      id="video"
+      src="https://storage.googleapis.com/media-session/sintel/trailer.mp4"
+           controls
+    ></video>
+    <button id="button">
+      toggle pip
+    </button>
+    <script>
+      button.onclick = () => {
+        video.requestPictureInPicture();
+      };
+    </script>
+  </body>
+</html>

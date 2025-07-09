@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+  </head>
+  <body>
+    Test memory usage of this page
+    <script type="module">
+      function test() {
+          const lotsOfMemory = new Uint8Array(1000 * 1000 * 100);
+          const retains = () => { lotsOfMemory };
+          const someNumber = Math.random();
+
+          setInterval(() => {
+              console.log(someNumber);
+          }, 1000);
+      }
+
+      test();  // See 100MB forever in heap inspector
+    </script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<html>
+  <head> </head>
+  <body>
+    <model id="model" style="width: 500px; height: 500px" interactive autoplay>
+      <source
+        src="https://cdn.glitch.com/75d1edc2-c79e-4d76-bf1a-ba7b25b4dbfd%2Fheart.usdz"
+      />
+    </model>
+    <pre id="pre"></pre>
+    <script>
+      model.ready.then(
+        (value) => {
+          pre.textContent = `model.ready resolved`;
+        },
+        (reason) => {
+          pre.textContent = `modelready rejected: ${reason}`;
+        }
+      );
+    </script>
+  </body>
+</html>

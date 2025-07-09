@@ -1,0 +1,20 @@
+html {
+    font: 100% system-ui;
+}
+
+input:not([type="range"]), textarea, select, button {
+    font: 1rem system-ui;
+    padding: .05rem .3rem .1rem;
+}
+
+input[type="checkbox"], input[type="radio"], input[type="range"] {
+    zoom: 1.4;
+    vertical-align: -.3rem;
+    height: 1rem;
+}
+
+fieldset {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 2px;
+}

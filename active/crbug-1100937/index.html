@@ -1,0 +1,24 @@
+
+<body>
+  <style>
+    video { background: #1e2327; border-radius: 4px; width: 100%; } 
+    button { margin: 4px 0; }
+  </style>
+
+  <p>Credits: Media files are © copyright Blender Foundation | www.blender.org</p>
+  <div>
+    <video id="video" controls src="http://dl5.webmfiles.org/big-buck-bunny_trailer.webm" />
+  </div>
+
+  <div>
+    <button id="nukeButton">Nuke video</button>
+  </div>
+
+  <script>
+    nukeButton.addEventListener('click', _ => {
+      video.removeAttribute('src');
+      video.load();
+      video.remove();
+    });
+  </script>
+</body>

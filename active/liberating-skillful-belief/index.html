@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Manifest Destination</title>
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <link rel="manifest" href="./manifest.webmanifest?rel=manifest"/>
+    <link rel="preload" as="manifest" href="./manifest.webmanifest?rel=preload"/>
+    
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+  </head>  
+  <body>
+    <p>
+      Check the console!
+    </p>
+    <p>
+      The request for the manifest should log the destination as <a href="https://fetch.spec.whatwg.org/#dom-requestdestination-manifest">"manifest"</a>,
+      but logs it as empty string <a href="https://fetch.spec.whatwg.org/#dom-requestdestination">""</a>.
+    </p>
+  </body>
+</html>

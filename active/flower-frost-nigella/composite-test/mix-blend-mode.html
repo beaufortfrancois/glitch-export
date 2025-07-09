@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      body, figure {
+        margin: 0;
+      }
+      .checkd {
+        background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".05"/></svg>');
+        background-size: 20px 20px;
+      }
+      .example-stage {
+        position: relative;
+        overflow: hidden;
+        height: 223px;
+        isolation: isolate;
+      }
+      @media (min-width: 500px) {
+        .example-stage {
+          height: 300px;
+        }
+      }
+      .mix-input {
+        background: #ffe453;
+        display: grid;
+        padding: 10px;
+      }
+      .fade-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <figure class="checkd">
+      <div class="example-stage">
+        <svg id="destination-1" class="fade-item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 10"><text textLength="20" text-anchor="middle" dominant-baseline="middle" font-family="Courier New" x="50%" y="5" font-size="8.9" font-weight="bold" fill="#009D81">good</text></svg>
+        <svg style="mix-blend-mode: plus-lighter" id="source-1" class="fade-item" viewBox="0 0 21 10"><text textLength="20" text-anchor="middle" dominant-baseline="middle" font-family="Courier New" x="50%" y="5" font-size="8.9" font-weight="bold" fill="#009D81">goat</text></svg>
+      </div>
+      <div class="mix-input"><input id="mix-input-1" type="range" min="0" max="1" step="any" value="0"></div>
+    </figure>
+    <script type="module">
+      const range = $('#mix-input-1');
+      const destination = $('#destination-1');
+      const source = $('#source-1');
+      function update(mix) {
+        destination.style.opacity = 1 - mix;
+        source.style.opacity = mix;
+      }
+      range.oninput = () => update(range.valueAsNumber);
+      update(range.valueAsNumber);
+    </script>
+    <figure class="checkd">
+      <div class="example-stage">
+        <svg style="mix-blend-mode: plus-lighter" id="destination-2" class="fade-item" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 10"><text textLength="20" text-anchor="middle" dominant-baseline="middle" font-family="Courier New" x="50%" y="5" font-size="8.9" font-weight="bold" fill="#009D81">good</text></svg>
+        <svg style="mix-blend-mode: plus-lighter" id="source-2" class="fade-item" viewBox="0 0 21 10"><text textLength="20" text-anchor="middle" dominant-baseline="middle" font-family="Courier New" x="50%" y="5" font-size="8.9" font-weight="bold" fill="#009D81">goat</text></svg>
+      </div>
+      <div class="mix-input"><input id="mix-input-2" type="range" min="0" max="1" step="any" value="0"></div>
+    </figure>
+    <script type="module">
+      const range = $('#mix-input-2');
+      const destination = $('#destination-2');
+      const source = $('#source-2');
+      function update(mix) {
+        destination.style.opacity = 1 - mix;
+        source.style.opacity = mix;
+      }
+      range.oninput = () => update(range.valueAsNumber);
+      update(range.valueAsNumber);
+    </script>
+  </body>
+</html>

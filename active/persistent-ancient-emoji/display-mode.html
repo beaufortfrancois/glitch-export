@@ -1,0 +1,37 @@
+<style>
+  body {
+    background: red;
+  }
+  @media (display-mode: picture-in-picture) {
+    body {
+      background: blue;
+    }
+  }
+</style>
+<button id="button">enterPiP</button>
+<script>
+  button.addEventListener("click", async () => {
+    const pipWindow = await documentPictureInPicture.requestWindow();
+
+    // Copy all style sheets.
+    [...document.styleSheets].forEach((styleSheet) => {
+      try {
+        const cssRules = [...styleSheet.cssRules]
+          .map((rule) => rule.cssText)
+          .join("");
+        const style = document.createElement("style");
+
+        style.textContent = cssRules;
+        pipWindow.document.head.appendChild(style);
+      } catch (e) {
+        const link = document.createElement("link");
+
+        link.rel = "stylesheet";
+        link.type = styleSheet.type;
+        link.media = styleSheet.media;
+        link.href = styleSheet.href;
+        pipWindow.document.head.appendChild(link);
+      }
+    });
+  });
+</script>

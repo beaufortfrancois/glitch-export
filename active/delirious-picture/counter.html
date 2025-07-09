@@ -1,0 +1,34 @@
+<!doctype html>
+<div>These video file has 4 frames and is played at 2 frames per second. Both videos use the same file. The left video is using a URL as a source, the right video is using MSE with <code>fetch()</code> as a source.</div>
+<script>
+  function mediaSource(abuffer, type) {
+    const ms = new MediaSource();
+    ms.onsourceopen = async () => {
+      const buffer = ms.addSourceBuffer(type);
+      buffer.appendBuffer(abuffer);
+      buffer.onupdateend = () => ms.endOfStream();
+    };
+    return URL.createObjectURL(ms);
+  }
+
+  async function init() {
+    const src = "https://cdn.glitch.com/b45fd535-adb1-4bcd-8c31-074f502a3af6%2Fcounter.webm?1546513345118";
+    const webmbuffer = await fetch(src).then(r => r.arrayBuffer());
+
+    const urls = [];
+    urls.push(src);
+    urls.push(mediaSource(webmbuffer, `video/webm; codecs="vp8"`));
+
+    urls.forEach(url => {
+      video = document.createElement("video");
+      video.src = url;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      document.body.append(video);
+      video.play();
+    });
+  }
+  init();
+</script>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script type="module">
+      import { get, set } from 'https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm';
+      
+      console.log(`Setting foo to 'bar'`);
+      await set('foo', 'bar');
+      console.log(`Foo is`, await get('foo'));
+      console.log(`Setting foo to undefined`);
+      await set('foo', undefined);
+      console.log(`Foo is`, await get('foo'));
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

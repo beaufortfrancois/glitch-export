@@ -1,0 +1,41 @@
+<video autoplay muted controls></video>
+<script type="module">
+  // Open camera.
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  const [videoTrack] = stream.getVideoTracks();
+
+  // Use a video worker and show to user.
+  const videoElement = document.querySelector("video");
+  const videoWorker = new Worker("video-worker.js");
+  videoWorker.postMessage({ videoTrack }, [videoTrack]);
+  const { data } = await new Promise((r) => videoWorker.onmessage);
+  videoElement.srcObject = new MediaStream([data.videoTrack]);
+</script>
+
+<!-- <script>
+
+
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const [track] = stream.getVideoTracks();
+  // Use a video worker and show to user.
+  const videoElement = document.querySelector("video");
+  const videoWorker = new Worker("video-worker.js");
+    const processor = new MediaStreamTrackProcessor({ track });
+    worker.postMessage({ readable: processor.readable },
+        [processor.readable]);
+  
+  
+
+  videoWorker.postMessage({ videoTrack }, [videoTrack]);
+  const { data } = await new Promise((r) => videoWorker.onmessage);
+  videoElement.srcObject = new MediaStream([data.videoTrack]);
+  
+  
+  
+    const track = stream.getVideoTracks()[0];
+    const processor = new MediaStreamTrackProcessor({ track: track });
+    worker.postMessage({ readable: processor.readable },
+        [processor.readable]);
+    return result;
+
+</script> -->

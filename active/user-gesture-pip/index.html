@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--
+      This is the page head - it contains info the browser uses to display the page
+      You won't see what's in the head in the page
+      Scroll down to the body element for the page content
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <!-- Import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+    
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: sans-serif;
+      }
+      body {
+        margin: 2em auto;
+        max-width: 800px;
+      }
+      pre {
+        white-space: break-spaces;
+        margin-bottom: 4em;
+      }
+    </style>
+  </head>
+  <body>
+    <span
+      >A video element is playing. It will try to enter Picture-in-Picture on
+      "blur" and "mouse leave" and exit Picture-in-Picture on "focus" and "mouse
+      enter". It should work only when a user gesture is available.</span
+    >
+    <pre>userActivation: <span id="userActivation"></span></pre>
+    <pre id="pre"></pre>
+  </body>
+</html>

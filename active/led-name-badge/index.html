@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LED Name Badge</title>
+    <style>
+      body {
+        font-family: helvetica, arial, sans-serif;
+        margin: 2em;
+      }
+
+      h1 {
+        margin-bottom: 0;
+      }
+
+      a {
+        display: block;
+        margin-bottom: 0;
+      }
+
+      .row {
+        margin: 4px 0;
+      }
+
+      input,
+      select,
+      span {
+        vertical-align: middle;
+      }
+
+      select {
+        height: 21px;
+      }
+
+      input:invalid {
+        border-color: red;
+      }
+
+      details summary {
+        text-align: right;
+        cursor: pointer;
+      }
+
+      #glyphEditor input[type="checkbox"] {
+        cursor: pointer;
+        appearance: none;
+        background: #9e9e9e;
+        border-radius: 4px;
+        width: 20px;
+        height: 20px;
+        margin: 1px;
+        transition: all 0.1s linear;
+      }
+
+      #glyphEditor input[type="checkbox"]:checked {
+        background-color: red;
+      }
+
+      button {
+        margin: 1em 0;
+      }
+
+      #logs {
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+
+      @media screen and (min-width: 640px) {
+        body {
+          margin: 2em auto;
+          max-width: calc(640px - 2em);
+        }
+      }
+    </style>
+    <script src="/script.js" defer></script>
+  </head>
+
+  <body>
+    <h1>LED Name Badge</h1>
+    <a href="https://www.amazon.com/dp/B07DWW9KFF"
+      >Amazon link (not sponsored)</a
+    ><br />
+    <div class="row">
+      <button id="connectDeviceButton">Connect</button>
+      <label>
+        <input id="experimentalCheckbox" type="checkbox" />
+        <span>Accept any device</span>
+      </label>
+    </div>
+    <div class="row">
+      <input
+        class="stringsInput"
+        value="Hello world"
+        pattern="[a-zA-Z0-9 ]*"
+        placeholder="..."
+      />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <input class="stringsInput" pattern="[a-zA-Z0-9 ]*" placeholder="..." />
+      <select class="modeInput" title="animation">
+        <option value="0" default>Scroll Left</option>
+        <option value="1">Scroll Right</option>
+        <option value="2">Scroll Up</option>
+        <option value="3">Scroll Down</option>
+        <option value="4">Still Centered</option>
+        <option value="6">Drop Down</option>
+        <option value="7">Curtain</option>
+        <option value="8">Laser</option>
+      </select>
+      <input
+        type="range"
+        title="speed"
+        class="speedInput"
+        min="0"
+        max="7"
+        value="4"
+      />
+    </div>
+    <div class="row">
+      <select id="brightnessInput" title="brightness">
+        <option value="0" default>🔅 normal</option>
+        <option value="1">🔅 dim</option>
+        <option value="2">🔅 max</option>
+      </select>
+      <select id="heightInput" title="height">
+        <option value="11" default>📏 11px height</option>
+        <option value="12">📏 12px height</option>
+        <option value="16">📏 16px height</option>
+      </select>
+    </div>
+    <div class="row">
+      <button id="updateDeviceButton" disabled>Update</button>
+    </div>
+    <div class="row">
+      <details>
+        <summary>Glyph Editor</summary>
+        <div id="glyphEditor"></div>
+        <button id="sendGlyphButton" disabled>Send glyph</button>
+      </details>
+    </div>
+    <hr />
+    <div id="logs"></div>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>showPicker demo</title>
+<style>
+  h2 {
+    margin-bottom: 4px;
+    padding-left: 4px;
+  }
+  a {
+    margin-bottom: 24px;
+    padding-left: 4px;
+  }
+  label {
+    font-family: monospace;
+  }
+  input {
+    display: block;
+    margin-top: 4px;
+  }
+  p {
+    padding: 4px;
+  }
+</style>
+<h2>HTMLInputElement showPicker()</h2>
+<a href="https://github.com/whatwg/html/pull/7319"
+  >https://github.com/whatwg/html/pull/7319</a
+>
+<datalist id="ice-cream-flavors">
+  <option value="Chocolate"></option>
+  <option value="Coconut"></option>
+  <option value="Mint"></option>
+  <option value="Strawberry"></option>
+  <option value="Vanilla"></option>
+</datalist>
+
+<main>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="date"&gt; </label>
+    <input type="date" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="month"&gt; </label>
+    <input type="month" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="week"&gt; </label>
+    <input type="week" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="time"&gt; </label>
+    <input type="time" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="datetime-local"&gt; </label>
+    <input type="datetime-local" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="color"&gt; </label>
+    <input type="color" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="file"&gt; </label>
+    <input type="file" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="text" list="ice-cream-flavors"&gt; </label>
+    <input type="text" list="ice-cream-flavors" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="text" autocomplete="name"&gt; </label>
+    <input type="text" autocomplete="name" />
+  </p>
+  <p>
+    <button>Show picker</button>
+    <label> &lt;input type="password" autocomplete="new-password"&gt; </label>
+    <input type="password" autocomplete="new-password" />
+  </p>
+</main>
+<script>
+  document.querySelectorAll("button").forEach((button) => {
+    button.onclick = () => {
+      const input = button.nextElementSibling.nextElementSibling;
+      try {
+        input.showPicker();
+      } catch(error) {
+        window.alert(error);
+      }
+    };
+  });
+</script>

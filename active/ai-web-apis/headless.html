@@ -1,0 +1,35 @@
+<pre id="logs"></pre>
+<script type="module">
+  logs.innerHTML += `1<hr>`;
+
+  try {
+    console.log("woohoo");
+    const session = await LanguageModel.create({
+      expectedInputs: [{ type: "audio" }],
+      temperature: 0,
+      topK: 1,
+    });
+    console.log("woohoo2");
+
+    logs.innerHTML += `2<hr>`;
+    const response = await fetch(
+      "https://cdn.glitch.global/6e31f6f1-6c13-40b4-8119-fdccdc8f9e25/english-short.m4a?v=1741098618503"
+    );
+    logs.innerHTML += `3<hr>`;
+    const content = await response.blob();
+    logs.innerHTML += `4<hr>`;
+
+    const stream = session.promptStreaming([
+      "transcribe",
+      { type: "audio", content },
+    ]);
+
+    logs.innerHTML += `<hr>`;
+    for await (const chunk of stream) {
+      logs.innerHTML += chunk;
+    }
+    logs.innerHTML += `<hr>`;
+  } catch (error) {
+    logs.innerHTML += `Error: ${error}`;
+  }
+</script>

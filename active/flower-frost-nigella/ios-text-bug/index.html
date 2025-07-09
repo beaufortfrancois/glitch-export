@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      .demo {
+        font-size: 2rem;
+        display: grid;
+      }
+      .demo > * {
+        grid-area: 1/1;
+      }
+      .fake-input {
+        border: 1px solid #000;
+        padding: 0.5rem;
+        text-align: right;
+      }
+      .input {
+        font: inherit;
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo">
+      <div class="fake-input"></div>
+      <input class="input" type="text" />
+    </div>
+    <script type="module">
+      const input = $('.input');
+      const fakeInput = $('.fake-input');
+      
+      input.oninput = () => {
+        fakeInput.textContent = input.value;
+      };
+      fakeInput.onclick = () => {
+        input.focus();
+      }
+    </script>
+  </body>
+</html>

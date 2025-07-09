@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Notification Triggers Demo</title>
+    <meta charset="utf-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      if (location.protocol === 'http:') {
+        location.protocol = 'https:';
+      }
+    </script>
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- OT Expires May 18, 2020 -->
+    <meta http-equiv="origin-trial" content="AjcHJhlEUe4x/DW2M8aIaOObO5OCKjOciOpMsWxYX9apX2DhPIumPpviN8oc+9p4VqPd4dEDLFd7UVzau7BNSwIAAABteyJvcmlnaW4iOiJodHRwczovL25vdGlmaWNhdGlvbi10cmlnZ2Vycy5nbGl0Y2gubWU6NDQzIiwiZmVhdHVyZSI6Ik5vdGlmaWNhdGlvblRyaWdnZXJzIiwiZXhwaXJ5IjoxNTg5ODEwNDMzfQ==">
+        
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+    
+    
+  </head>  
+  <body>
+    <h1>Notification Triggers</h1>
+    <h2>Schedule a notification in the future</h2> 
+    <form>
+      <label>
+        Schedule a notification
+        <input type="text" pattern="\d+" value="60">
+        minutes from now.
+      </label>
+      <input type="submit" value="Schedule Notification">
+    </form>
+    <h2>List all scheduled notifications</h2> 
+    <form>
+      <input type="submit" value="List Scheduled Notifications">
+      (<s>Striked</s> means the notification was shown already, but isn't closed yet.)
+    </form>
+    <table>
+      <thead>
+        <th>Tag</th>
+        <th>Title</th>
+        <th>Scheduled</th>
+        <th>Trigger</th>
+        <th>Cancel</th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </body>
+</html>

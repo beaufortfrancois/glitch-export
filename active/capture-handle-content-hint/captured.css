@@ -1,0 +1,23 @@
+body {
+  text-align: center;
+}
+
+h2 {
+  font-size: 10vmin;
+}
+
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: .5;
+  
+    object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+pre {
+  font-size: 4vmin;
+  white-space: pre-line;
+}

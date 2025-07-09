@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Deferred Prompt</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <button id="promptButton" hidden>
+      Prompt user to install this PWA
+    </button>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+      window.addEventListener("beforeinstallprompt", e => {
+        const showDefaultPrompt = new URLSearchParams(location.search).has(
+          "showDefaultPrompt"
+        );
+        if (showDefaultPrompt) {
+          document.body.append(
+            "Default PWA mini info-bar on mobile should show up. Clear site settings if not."
+          );
+          return;
+        }
+        promptButton.hidden = false;
+        e.preventDefault();
+        promptButton.onclick = () => {
+          e.prompt();
+        };
+      });
+    </script>
+  </body>
+</html>

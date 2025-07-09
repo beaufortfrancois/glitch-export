@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      .size-select {
+        position: absolute;
+        bottom: var(--inset);
+        left: var(--inset);
+        right: var(--inset);
+        --inset: 10px;
+        display: grid;
+        grid-template-columns: 1fr 10ch;
+        gap: var(--inset);
+      }
+      .size-selected {
+        background: #fff;
+        text-align: right;
+      }
+    </style>
+    <script src="idb-keyval.js"></script>
+  </head>
+  <body>
+    <script>
+      if (!self.TransformStream) {
+        document.body.append(
+          'Sorry, this demo requires a browser that implements TransformStream.',
+        );
+      } else {        
+        navigator.serviceWorker
+          .register('sw.js')
+          .then(async (reg) => {
+            if (!reg.active) {
+              await new Promise((resolve) => {
+                const worker = reg.installing || reg.waiting;
+                worker.addEventListener('statechange', () => {
+                  if (worker.state === 'activating') resolve();
+                });
+              });
+            }
+          
+            async function displayFiles(files) {
+              await idbKeyval.set('imgs', files);
+              
+              const container = document.createElement('div');
+              
+              Object.assign(container.style, {
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                bottom: '0',
+                right: '0',
+                display: 'grid',
+                gridAutoColumns: '1fr',
+                gridAutoFlow: 'column',
+                gap: '2px',
+              });
+              
+              const images = [];
+              const mode = modeInput.value;
+              const partialMode = mode.startsWith('partial');
+              const maxSize = Math.max(...files.map(f => f.size));
+              
+              const sizeSelect = document.createElement('div');
+              sizeSelect.className = 'size-select';
+              sizeSelect.innerHTML = `
+                <input min="0" step="1" type="range">
+                <span class="size-selected"></span>
+              `;
+              const range = sizeSelect.querySelector('input');
+              const sizeSelected = sizeSelect.querySelector('.size-selected');
+              range.max = maxSize;
+              range.value = maxSize;
+              
+              let timeoutId;
+              
+              range.addEventListener('input', () => {
+                sizeSelected.textContent = range.value;
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                  for (const [i, img] of images.entries()) {
+                    const newImg = new Image();
+                    newImg.src = getImageUrl(i);
+                    newImg.style.cssText = img.style.cssText;
+                    img.after(newImg);
+                    img.remove();
+                    images[i] = newImg;
+                  }
+                }, 300);
+              });
+              sizeSelected.textContent = range.value;
+              
+              function getImageUrl(index) {
+                const url = new URL(partialMode ? '/partial-img' : '/slow-img', location.href);
+                url.searchParams.set('r', Math.random() + '');
+                url.searchParams.set('i', index);
+                
+                if (partialMode) {
+                  url.searchParams.set('end', range.value);
+                  if (mode === 'partial-multi-pass') {
+                    url.searchParams.set('chunkSize', 3125);
+                    url.searchParams.set('delay', 250);
+                  }
+                } else {
+                  url.searchParams.set('chunkSize', 3125);
+                  url.searchParams.set('delay', 250);
+                }
+                
+                return url.href;
+              }
+              
+              for (const [i, file] of files.entries()) {
+                const example = document.createElement('div');
+                Object.assign(example.style, {
+                  clipPath: 'inset(0 0 0 0)',
+                });
+                
+                const img = new Image();
+                img.src = getImageUrl(i);
+                Object.assign(img.style, {
+                  position: 'absolute',
+                  width: '100%',
+                  height: '100%',
+                  top: '0',
+                  left: '0',
+                  objectFit: 'contain',
+                  objectPosition: 'center center',
+                });
+                
+                images.push(img);
+                
+                example.append(img);
+                
+                if (files.length > 1) {
+                  const label = document.createElement('div');
+                  label.textContent = file.name;
+                  Object.assign(label.style, {
+                    position: 'relative',
+                    width: 'max-content',
+                    background: 'white',
+                    margin: '0 auto',
+                  });
+                  example.append(label);
+                }
+                
+                container.append(example);
+              }
+              
+              document.body.append(container);
+              
+              if (partialMode) {
+                document.body.append(sizeSelect);
+              }
+              
+              inputs.remove();
+            }
+          
+            const inputs = document.createElement('div');
+            document.body.append(inputs);
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.multiple = true;
+            fileInput.onchange = async (event) => {
+              if (!fileInput.files[0]) return;
+              displayFiles([...fileInput.files]);
+            }
+            
+            const modeInput = document.createElement('select');
+            modeInput.innerHTML = `
+              <option value="2g">Simulate 2g load</option>
+              <option value="partial">Partial load</option>
+              <option value="partial-multi-pass">Partial load, multi-pass</option>
+            `;
+            const params = new URL(location.href).searchParams;
+            modeInput.value = params.get('mode') || '2g';
+            
+            const flipBtn = document.createElement('button');
+            flipBtn.textContent = 'Again, in reverse order';
+            flipBtn.onclick = async () => {
+              displayFiles((await get('imgs')).reverse());
+            };
+          
+            const againBtn = document.createElement('button');
+            againBtn.textContent = 'Again';
+            againBtn.onclick = async () => {
+              displayFiles(await get('imgs'));
+            };
+            
+            inputs.append(fileInput, ' ', modeInput, ' ', flipBtn, ' ', againBtn);
+          });
+      }
+      
+      
+    </script>
+  </body>
+</html>

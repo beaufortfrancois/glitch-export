@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blackwire 3220 Series playground</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>Blackwire 3220 Series playground</h1>
+    <button id="requestDeviceButton">request device</button>
+    <br />
+    <br />
+    <span>Then, when connected:</span>
+    <br />
+    <input type="checkbox" id="awaitCheckbox" />
+    <label for="awaitCheckbox">Wait 2 sec</label>
+    <br />
+    <input type="checkbox" id="ledOffHookCheckbox" checked />
+    <label for="ledOffHookCheckbox">Turn on "LED off hook" (on-call)</label>
+    <br />
+    <input type="checkbox" id="ledMuteCheckbox" checked />
+    <label for="ledMuteCheckbox">Turn on "LED mute" (muted)</label>
+    <hr />
+    <div id="logs"></div>
+  </body>
+</html>

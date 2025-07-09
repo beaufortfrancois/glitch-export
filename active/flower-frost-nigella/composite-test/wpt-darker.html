@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <style>
+      body {
+        display: grid;
+        grid-template-rows: repeat(5, max-content);
+        grid-template-columns: repeat(2, max-content);
+        grid-auto-flow: column;
+      }
+      
+      .test {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        isolation: isolate;
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+        mix-blend-mode: plus-darker;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function multiplyAlpha(pixel) {
+        return pixel.map((channel, i) => {
+          // Pass the alpha channel through unchanged
+          if (i === 3) return channel;
+          // Otherwise, multiply by alpha
+          return channel * pixel[3];
+        });
+      }
+
+      function unmultiplyAlpha(pixel) {
+        return pixel.map((channel, i) => {
+          // Pass the alpha channel through unchanged
+          if (i === 3) return channel;
+          // Avoid divide-by-zero
+          if (pixel[3] === 0) return channel;
+          // Divide by alpha
+          return channel / pixel[3];
+        });
+      }
+
+      function clamp01(value) {
+        if (value < 0) return 0;
+        if (value > 1) return 1;
+        return value;
+      }
+
+      const toPercent = (num) => `${num * 100}%`;
+      const toCSSColor = (pixel) =>
+        `rgb(${toPercent(pixel[0])} ${toPercent(pixel[1])} ${toPercent(pixel[2])} / ${
+          pixel[3]
+        })`;
+      
+      function plusDarker(pixels) {
+        return pixels.reduce((destination, source) => {
+          const premultipliedSource = multiplyAlpha(source);
+          const premultipliedDestination = multiplyAlpha(destination);
+          const premultipliedResult = premultipliedDestination.map((channel, i) =>
+            Math.max(0, (1 - channel) + (1 - premultipliedSource[i]))
+          );
+          return unmultiplyAlpha(premultipliedResult);
+        });
+      }
+
+      const tests = [
+        // Each test is a list of colors to composite.
+        // Each color is [r, g, b, a], unmultiplied, in the range 0-1.
+        [
+          [0, 1, 0.5, 1],
+          [0.5, 0.5, 1, 1],
+        ],
+      ];
+      
+      function createLayers(colors) {
+        let html = '';
+
+        for (const color of colors) {
+          html += `<div class="layer" style="background-color: ${toCSSColor(color)}"></div>`;
+        }
+
+        return html;
+      }
+
+      for (const colors of tests) {
+        document.body.insertAdjacentHTML('beforeend', `
+          <div class="test">${createLayers(colors)}</div>
+        `);
+      }
+      
+      for (const colors of tests) {
+        document.body.insertAdjacentHTML('beforeend', `
+          <div class="test" style="background-color: ${toCSSColor(plusDarker(colors))}"></div>
+        `);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Highlight API</title>
+  </head>
+  <body>
+    <style>
+      :root::highlight(example-highlight) {
+        background-color: yellow;
+        color: blue;
+      }
+    </style>
+    <script>
+      let highlightRangeGroup = new Highlight(
+        new StaticRange({
+          startContainer: document.body,
+          startOffset: 1,
+          endContainer: document.body,
+          endOffset: 2
+        })
+      );
+
+      CSS.highlights.set("example-highlight", highlightRangeGroup);
+    </script>
+
+    <span>One </span><span>two </span><span>three...</span>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum erat
+      ex, semper non feugiat non, fringilla id massa. Praesent non mi neque.
+      Proin euismod ut eros a sodales. Proin accumsan ipsum eu imperdiet
+      blandit. Pellentesque vehicula nisl mauris, nec auctor mi commodo et. In
+      sit amet elit ultrices, sollicitudin sem eget, varius felis. Sed consequat
+      posuere diam nec fringilla. Sed eu dolor hendrerit, commodo lorem sed,
+      lobortis arcu. Pellentesque semper augue a viverra aliquet. Nam aliquam
+      turpis ligula, quis ornare neque convallis non. Sed gravida vitae turpis
+      id fringilla. Fusce eu blandit nibh. Maecenas volutpat tincidunt lacus
+      vitae convallis.
+    </p>
+    <p>
+      Fusce vel metus tincidunt, iaculis ex at, viverra magna. Vestibulum
+      viverra cursus erat, eget pretium est mattis vitae. Donec quam magna,
+      cursus non augue vel, laoreet consectetur mi. Aenean ultrices nisl vel
+      lacus sodales sodales. Maecenas dapibus finibus venenatis. Mauris ac elit
+      sit amet nulla porttitor euismod ac nec massa. Ut vel ipsum vel lectus
+      ultricies elementum. Vivamus et rhoncus erat, vel posuere nunc. Ut a odio
+      ultrices, porta leo sed, lacinia orci. Nullam efficitur, risus sit amet
+      gravida facilisis, leo lacus rhoncus enim, vel blandit est nunc sit amet
+      est. Integer fermentum, neque ut condimentum placerat, tellus risus
+      pharetra risus, non finibus dui odio non tortor. Aenean egestas libero non
+      augue aliquet, in tempor augue ultricies. Pellentesque habitant morbi
+      tristique senectus et netus et malesuada fames ac turpis egestas.
+    </p>
+    <p>
+      Aenean nibh sapien, aliquet quis mattis vitae, semper quis diam. In
+      pretium cursus sapien in ornare. Praesent tempus condimentum neque
+      malesuada tristique. Vestibulum hendrerit lorem a ex molestie suscipit.
+      Proin eros metus, maximus sit amet dui at, ultrices pulvinar ante. Integer
+      est ligula, eleifend eu malesuada vel, aliquet et neque. Vivamus porttitor
+      imperdiet fermentum.
+    </p>
+    <p>
+      Sed id massa id elit aliquet malesuada. Pellentesque a lorem quis urna
+      posuere sodales. Proin vel interdum lorem, euismod eleifend urna. Orci
+      varius natoque penatibus et magnis dis parturient montes, nascetur
+      ridiculus mus. Duis id tortor magna. Donec egestas varius lectus, ac
+      pulvinar neque dictum eu. Cras mollis finibus nulla in blandit. Praesent
+      quis vehicula libero. Fusce sollicitudin ultricies justo. Pellentesque at
+      consectetur orci, ut tincidunt mi. Phasellus mattis commodo blandit. Etiam
+      vulputate ipsum arcu, in ullamcorper enim vehicula at.
+    </p>
+    <p>
+      Curabitur dapibus, mi ut luctus vestibulum, magna est tristique quam, id
+      efficitur diam massa a nisl. Nullam sed lacinia quam. Morbi congue dolor
+      enim, sed elementum quam finibus in. Nulla vitae leo sed felis feugiat
+      iaculis vel eu quam. Suspendisse vulputate lacus in convallis vestibulum.
+      Vestibulum est libero, scelerisque et nisl at, auctor maximus leo. Aliquam
+      mattis hendrerit velit at sagittis. Nam tempor convallis porta. Vivamus
+      mauris nunc, consequat id ultricies eget, interdum sed eros. Pellentesque
+      viverra egestas magna vitae posuere. Nulla volutpat ex a velit facilisis
+      scelerisque. Praesent in magna eu dolor volutpat congue. Orci varius
+      natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+      Cras ut malesuada mauris, vitae condimentum metus.
+    </p>
+  </body>
+</html>

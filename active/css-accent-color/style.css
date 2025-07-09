@@ -1,0 +1,25 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 72px 15% 24px 15%;
+}
+
+@media (max-width: 600px) {
+  body {
+    margin: 72px 24px;
+  }
+}
+
+canvas {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+hr {
+  border: none;
+}

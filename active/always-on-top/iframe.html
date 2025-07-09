@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Iframe</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: sans-serif;
+      }
+      body {
+        margin: 0 auto;
+        max-width: 800px;
+      }
+      button {
+        display: block;
+        margin: 18px;
+        margin-left: 16px;
+        padding: 6px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <button>open("/", "", "alwaysOnTop")</button>
+    <button>open("/", "", "width=600,height=600")</button>
+
+    <script>
+      document.querySelectorAll("button").forEach(
+        button =>
+          (button.onclick = () => {
+            eval(button.textContent);
+          })
+      );
+      window.onerror = error => {
+        window.parent.pre.append(`⚠️ ${error}\r\n`);
+      };
+    </script>
+  </body>
+</html>

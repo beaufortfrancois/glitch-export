@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <button>
+      Leak
+    </button>
+    <script>
+      const weakMap = new WeakMap();
+
+      $('button').onclick = () => {
+        const el = document.createElement('div');
+
+        weakMap.set(el, new Uint8Array(1000 * 1000 * 100));
+
+        window.addEventListener('keydown', () => {
+          el.textContent = 'keydown';
+        });
+
+        document.body.append(el);
+        setTimeout(() => el.remove(), 0);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+<video id="video" autoplay muted width=200></video>
+<br/><button id="button">button</button>
+<script>
+  button.onclick = async () => {
+    const video = document.querySelector("video");
+    const stream = await navigator.mediaDevices.getDisplayMedia();
+    video.srcObject = stream;
+
+    function logCapturedDisplaySurfaceCoordinates(now, metadata) {
+      console.log(metadata);
+      video.requestVideoFrameCallback(logCapturedDisplaySurfaceCoordinates);
+    }
+    video.requestVideoFrameCallback(logCapturedDisplaySurfaceCoordinates);
+  };
+</script>

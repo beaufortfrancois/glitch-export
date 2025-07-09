@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      if (window.location.protocol === "http:") {
+        window.location.href = "https:" + window.location.href.substring(5);
+      }
+    </script>
+    <title>🔥 Desktop Screen Recorder</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="manifest.json" />
+    <meta http-equiv="origin-trial" content="ArDBjJRjIBqTl8g85BDs3VTlnWslNv2jUMR0z2eeNhdBDhYMTYiIjKvcYRD+YJnvpSf3EOnC7ciVV1Gucri+cgMAAABreyJvcmlnaW4iOiJodHRwczovL2Rlc2t0b3Atc2NyZWVuLXJlY29yZGVyLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiTmF0aXZlRmlsZVN5c3RlbSIsImV4cGlyeSI6MTU4NzEyNjQ1MX0="/>
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>
+      🔥 Desktop Screen Recorder
+    </h1>
+    <p>
+      A simple PWA inspired by 
+      <a href="https://www.youtube.com/watch?v=3yqDxhR2XxE">Fireship</a>
+    </p>
+
+    <button id="startButton">
+      Start recording
+    </button>
+    <button id="stopButton">
+      Stop and save recording
+    </button>
+
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </body>
+</html>

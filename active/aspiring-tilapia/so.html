@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>NFC</title>
+  </head>
+  <body>
+    <button onclick="reader()">Scan</button>
+
+    <script>
+      function reader() {
+        const reader = new NDEFReader();
+        reader
+          .scan()
+          .then(() => {
+            alert("Scan started successfully.");
+            reader.onerror = () => {
+              alert("Cannot read data from the NFC tag. Try another one?");
+            };
+            reader.onreading = event => {
+              alert("NDEF message read.");
+            };
+          })
+          .catch(error => {
+            alert(`Error! Scan failed to start: ${error}.`);
+          });
+      }
+    </script>
+  </body>
+</html>

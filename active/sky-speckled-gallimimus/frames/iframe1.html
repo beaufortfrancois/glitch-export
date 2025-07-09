@@ -1,0 +1,44 @@
+<h1>iframe 1</h1>
+<button id="button">Ask iframe 2 to call documentPictureInPicture.requestWindow()</button>
+
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+  .text {
+    color: blue;
+    white-space: pre-line;
+  }
+</style>
+
+<script class="visible">
+  button.onclick = () => {
+    log(`userActivation.isActive: ${navigator.userActivation?.isActive}`);
+    window.parent.postMessage(null);
+  };
+</script>
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+
+  function log(text) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: text,
+        className: "text",
+      })
+    );
+  }
+</script>

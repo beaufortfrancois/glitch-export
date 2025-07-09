@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <h1>
+      Origin = charmed (same-origin)
+    </h1>
+    <p id="out">
+      ?
+    </p>
+    <script>
+      function ook() {
+        const out = document.getElementById('out');
+        out.innerHTML = `isActive = ${navigator?.userActivation?.isActive}`;
+      }
+      
+      setInterval(ook, 100);
+    </script>
+  </body>
+</html>

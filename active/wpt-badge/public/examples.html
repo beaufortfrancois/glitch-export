@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Web Platform Tests Badges</title>
+  <style>
+    pre { max-width: 800px; margin: 8px 0 48px 0; }
+  </style>
+</head>
+<body>
+  <h1>Web Platform Tests Badges</h1>
+  <p>
+    <a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+      <img src="/?product=chrome&prefix=/picture-in-picture"/>
+    </a>
+    <pre>&lt;a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+  &lt;img src="https://wpt-badge.glitch.me/?product=<b>chrome</b>&prefix=<b>/picture-in-picture</b>"/>
+&lt;/a></pre>
+  </p>
+  <p>
+    <a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+      <img src="/?product=edge&prefix=/picture-in-picture"/>
+    </a>
+    <pre>&lt;a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+  &lt;img src="https://wpt-badge.glitch.me/?product=<b>edge</b>&prefix=<b>/picture-in-picture</b>"/>
+&lt;/a></pre>
+  </p>
+  <p>
+    <a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+      <img src="/?product=firefox&prefix=/picture-in-picture"/>
+    </a>
+    <pre>&lt;a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+  &lt;img src="https://wpt-badge.glitch.me/?product=<b>firefox</b>&prefix=<b>/picture-in-picture</b>"/>
+&lt;/a></pre>
+  </p>
+  <p>
+    <a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+      <img src="/?product=safari&prefix=/picture-in-picture"/>
+    </a>
+    <pre>&lt;a href="https://wpt.fyi/results/picture-in-picture" target="_blank" rel="noopener">
+  &lt;img src="https://wpt-badge.glitch.me/?product=<b>safari</b>&prefix=<b>/picture-in-picture</b>"/>
+&lt;/a></pre>
+  </p>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    Array.from(document.querySelectorAll('pre')).forEach(function(block) {
+      hljs.highlightBlock(block);
+    });
+  </script>
+</body>
+</html>

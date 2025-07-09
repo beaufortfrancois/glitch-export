@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="buttons">
+      <button class="resize">
+      Create out-of-reference div with resizeObserver
+      </button>
+      <button class="intersection">
+        Create out-of-reference div with intersectionObserver
+      </button>
+      <button class="mutation">
+        Create out-of-reference div with mutationObserver
+      </button>
+      <button class="click">
+        Create out-of-reference div with click listener
+      </button>
+    </div>
+    
+    <script>
+      const weakMap = new WeakMap();
+
+      $('.resize').onclick = () => {
+        const el = document.createElement('div');
+
+        weakMap.set(el, new Uint8Array(1000 * 1000 * 100));
+
+        new ResizeObserver(
+          () => console.log('resize', el.getBoundingClientRect())
+        ).observe(el);
+
+        document.body.append(el);
+        setTimeout(() => el.remove(), 0);
+      }
+      
+      $('.intersection').onclick = () => {
+        const el = document.createElement('div');
+
+        weakMap.set(el, new Uint8Array(1000 * 1000 * 100));
+
+        new IntersectionObserver(
+          () => console.log('resize', el.getBoundingClientRect())
+        ).observe(el);
+
+        document.body.append(el);
+        setTimeout(() => el.remove(), 0);
+      }
+      
+      $('.mutation').onclick = () => {
+        const el = document.createElement('div');
+
+        weakMap.set(el, new Uint8Array(1000 * 1000 * 100));
+
+        new MutationObserver(
+          () => console.log('resize', el.getBoundingClientRect())
+        ).observe(el, { childList: true });
+
+        document.body.append(el);
+        setTimeout(() => el.remove(), 0);
+      }
+      
+      $('.click').onclick = () => {
+        const el = document.createElement('div');
+
+        weakMap.set(el, new Uint8Array(1000 * 1000 * 100));
+
+        el.addEventListener('click', () => console.log('resize', el.getBoundingClientRect()));
+
+        document.body.append(el);
+        setTimeout(() => el.remove(), 0);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="origin-trial"
+      content="AjsgeCuaC4qHMu0mU/pBJMzCfCpGQdmeZuUI++8+W7PN4zMxWHuFpT10JQImqukj8f/HDg4kBSRQ3n6V+Gk+5gYAAABfeyJvcmlnaW4iOiJodHRwczovL2NhcHR1cmUtaGFuZGxlLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiQ2FwdHVyZUhhbmRsZSIsImV4cGlyeSI6MTY1ODg3OTk5OX0="
+    />
+
+    <title>CAPTURE ME</title>
+
+    <link rel="stylesheet" href="/captured.css" />
+
+    <script src="/captured.js" defer></script>
+  </head>
+  <body>
+    <h2>Slide #<span id="slideNum">1</span></h2>
+    <pre id="logs"></pre>
+    <script>
+      window.onerror = (message) => {
+        logs.textContent += `${message}\r\n`;
+      };
+    </script>
+  </body>
+</html>

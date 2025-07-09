@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <script>
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://output.jsbin.com/rafefuk/2/quiet';
+      document.body.append(iframe);
+      iframe.onload = () => {
+        const { port1, port2 } = new MessageChannel();
+        iframe.contentWindow.postMessage({ port: port2 }, '*', [port2]);
+        port1.postMessage('Hello!');
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<button>Show Date Picker</button>
+<pre id=pre></pre>
+<script>
+  const button = document.querySelector("button");
+  button.addEventListener("click", () => {
+  
+    try {
+      const inputDate = document.createElement("input");
+      inputDate.type = "date";
+    
+      // Show programmatically the browser date picker.
+      inputDate.showPicker();
+    
+      // Get date entered by user.
+      inputDate.addEventListener("change", event => {
+        pre.append(`Got ${event.target.value} date`);
+      });
+      
+            // todo
+      inputDate.addEventListener("cancel", event => {
+        pre.append(`User cancelled picker`);
+      });
+    } catch (error) {
+      // Use custom library as a fallback...
+    }
+  });
+</script>

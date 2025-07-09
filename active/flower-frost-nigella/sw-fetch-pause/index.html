@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <script type="module">
+      $('.add-img').onclick = () => {
+        const imgURL = new URL('https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fphoto.jpg');
+        imgURL.searchParams.set('cache-bust', Math.random());
+        imgURL.searchParams.set('pause', '');
+        
+        const img = new Image();
+        img.src = imgURL.href;
+        document.body.append(img);
+      };
+      
+      $('.unpause').onclick = () => {
+        navigator.serviceWorker.controller.postMessage('unpause');
+      };
+      
+      // Avoid showing the page until the SW is ready
+      new Promise((resolve) => {
+        if (navigator.serviceWorker.controller) {
+          resolve();
+          return;
+        }
+        
+        navigator.serviceWorker.addEventListener(
+          'controllerchange',
+          () => resolve(),
+          { once: true },
+        );
+      }).then(() => document.body.style.display = '')
+      
+      navigator.serviceWorker.register('sw.js');
+    </script>
+    <style>
+      img {
+        border: 10px solid green;
+        display: block;
+      }
+    </style>
+  </head>
+  <body style="display: none">
+    <h1>
+      Pause fetches with SW
+    </h1>
+    <button class="add-img">Add paused image</button>
+    <button class="unpause">Unpause all requests</button>
+  </body>
+</html>

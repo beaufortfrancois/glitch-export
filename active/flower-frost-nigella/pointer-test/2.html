@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <p>
+      <label><input type="checkbox" class="capture"> Capture pointer to <code>pointerdown</code> target.</label>
+    </p>
+    <p>
+      <label><input type="checkbox" class="prevent-context-menu"> Prevent context menus.</label>
+    </p>
+    <div>
+      <iframe srcdoc="This is an iframe"></iframe>
+    </div>
+    <script>
+      const logEvent = (event) => console.log(event.type, event);
+      const captureCheckbox = $('.capture');
+      const preventContextMenuCheckbox = $('.prevent-context-menu');
+      
+      for (const eventType of ['pointerdown', 'pointercancel', 'pointerup', 'contextmenu', 'gotpointercapture', 'lostpointercapture']) {
+        window.addEventListener(eventType, logEvent);
+      }
+      
+      window.addEventListener('pointerdown', (event) => {
+        if (captureCheckbox.checked) event.target.setPointerCapture(event.pointerId);
+      });
+      window.addEventListener('contextmenu', (event) => {
+        if (preventContextMenuCheckbox.checked) event.preventDefault();
+      });
+      window.addEventListener('pointermove', (event) => {
+        console.log('pointermove', 'buttons:', event.buttons);
+      });
+    </script>
+  </body>
+</html>

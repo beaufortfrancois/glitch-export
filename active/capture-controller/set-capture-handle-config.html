@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CAPTURE ME</title>
+
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <h1>CAPTURE ME</h1>
+    <a href="https://github.com/w3c/mediacapture-screen-share/issues/230"
+      >https://github.com/w3c/mediacapture-screen-share/issues/230</a
+    >
+    <button>
+      setCaptureHandleConfig({ handle: "focus-captured-surface", permittedOrigins: ['*'] })
+    </button>
+    <button>
+      setCaptureHandleConfig({ handle: "no-focus-change", permittedOrigins: ['*'] })
+    </button>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onerror = (error) => {
+        logs.textContent += `> ${error}\r\n`;
+      };
+      document.querySelectorAll("button").forEach((button) => {
+        button.onclick = () => {
+          const code = `navigator.mediaDevices.${button.textContent.trim()}`;
+          eval(code);
+          logs.textContent += `Success! Executed ${code}\r\n`;
+        };
+      });
+    </script>
+  </body>
+</html>

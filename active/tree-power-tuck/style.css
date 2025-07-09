@@ -1,0 +1,9 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 2em auto;
+  max-width: 800px;
+}
+
+p {
+  margin: initial 1em;
+}

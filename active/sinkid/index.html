@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>AudioContext.setSinkId() demo</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>AudioContext.setSinkId() demo</h1>
+    <a href="https://github.com/WebAudio/web-audio-api/pull/2498"
+      >https://github.com/WebAudio/web-audio-api/pull/2498</a
+    >
+    <button id="getAudioOutputsButton">Get audio outputs</button>
+    <br />
+    <select id="devicesDropdown" disabled>
+      <option value="">Default</option>
+    </select>
+    <button id="changeOutputButton" disabled>Change ouput</button>
+
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `> ${event.reason}\r\n`;
+      };
+      window.onerror = (error) => {
+        logs.textContent += `> ${error}\r\n`;
+      };
+      if (!("setSinkId" in AudioContext.prototype)) {
+        logs.innerHTML += `<span>Warning! AudioContext.setSinkId() is NOT supported. Try Chrome 110 or later.</span>\r\n`;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 1em;
+  background-color: #fafafa;
+}
+
+h2 {
+  margin-bottom: 0.25em;
+  margin-top: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  border-radius: 2px;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 12px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+              0 3px 1px -2px rgba(0, 0, 0, 0.2),
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.card .description {
+  margin-bottom: 0.5em;
+  line-height: 1.25em;
+}
+
+.demos a {
+  display: block;
+  line-height: 1.5em;
+}
+
+.head {
+  margin-bottom: 1em;
+}
+
+.icons {
+  float:right;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.new {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/whatshot_googred_24dp.png");
+}
+.bug {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/bug_report_black_24dp.png");
+}
+.bug-no {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/bug_report_grey600_24dp.png");
+}
+.shipped {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/done_googblue_24dp.png");
+}
+.origin-trial {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/extension_googblue_24dp.png");
+}
+.flag {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/flag_googblue_24dp.png");
+}
+
+.mobile-yes {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/phone_android_googblue_24dp.png");
+}
+.mobile-no {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/phone_android_grey600_24dp.png");
+}
+
+.desktop-yes {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/laptop_chromebook_googblue_24dp.png");
+}
+.desktop-no {
+  background-image: url("https://www.gstatic.com/images/icons/material/system/2x/laptop_chromebook_grey600_24dp.png");
+}
+

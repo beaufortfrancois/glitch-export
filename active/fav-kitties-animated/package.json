@@ -1,0 +1,38 @@
+{
+  "//1": "describes your app and its dependencies",
+  "//2": "https://docs.npmjs.com/files/package.json",
+  "//3": "updating this file will download and update your packages",
+  "name": "hello-express",
+  "version": "0.0.1",
+  "description": "Fav Kitties: Minify and compress guide",
+  "main": "server.js",
+  "scripts": {
+    "start": "TMP=/app/.tmp webpack && node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "firebase": "11.x.x"
+  },
+  "devDependencies": {
+    "css-loader": "6.x.x",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "webpack": "5.x.x",
+    "webpack-bundle-analyzer": "4.x.x",
+    "webpack-cli": "5.x.x",
+    "webpack-dev-server": "4.x.x",
+    "webpack-fix-style-only-entries": "^0.6.1"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-express"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

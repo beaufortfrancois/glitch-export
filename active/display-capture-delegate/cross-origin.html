@@ -1,0 +1,60 @@
+<style>
+  iframe {
+    width: 100%;
+    max-width: 720px;
+    height: 230px;
+  }
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+  .text {
+    color: blue;
+    white-space: pre-line;
+  }
+</style>
+
+<iframe src="frames/iframe1.html"> </iframe>
+
+<br /><br />
+<label for="checkbox">
+  <input id="checkbox" type="checkbox" checked />
+  Delegate "display-capture" capability
+</label>
+
+<script class="visible">
+  onmessage = () => {
+    log(`userActivation.isActive: ${navigator.userActivation?.isActive}`);
+    let options = { targetOrigin: "https://iframe-2-cross-origin.glitch.me" };
+    if (checkbox.checked) options.delegate = "display-capture";
+    frames[1].postMessage(null, options);
+  };
+</script>
+
+<iframe allow="display-capture" src="https://iframe-2-cross-origin.glitch.me">
+</iframe>
+
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+
+  function log(text) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: text,
+        className: "text",
+      })
+    );
+  }
+</script>

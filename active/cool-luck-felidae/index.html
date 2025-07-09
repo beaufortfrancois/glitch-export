@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>"
+    />
+    <title>Lingua Franca Mastodon</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link
+      rel="modulepreload"
+      href="https://cdn.jsdelivr.net/npm/marked@latest/lib/marked.esm.js"
+    />
+    <script>
+      if (!isSecureContext) location.protocol = 'https:';
+    </script>
+    <script src="/script.js" type="module"></script>
+  </head>
+  <body>
+    <h1>Lingua Franca Mastodon</h1>
+    <div class="container">
+      <div>
+        <h2>Individual toots</h2>
+        <label for="toots"
+          >All recent toots; non-English toots are translated to English.</label
+        >
+        <output id="toots" class="toots"></output>
+      </div>
+      <div>
+        <h2>Summary of the discussed topics</h2>
+        <label for="topics"
+          >Summary of the topics of the most recent toots.</label
+        >
+        <output id="topics" class="topics wrapper"></output>
+      </div>
+    </div>
+
+    <template id="ai-toot">
+      <div class="wrapper">
+        <div class="toot ai-toot"></div>
+        <p>Original language: <span class="original-language"></span></p>
+        <details>
+          <summary>Prompt</summary>
+          <div class="prompt"></div>
+        </details>
+      </div>
+    </template>
+
+    <template id="toot">
+      <div class="wrapper">
+        <div class="toot"></div>
+        <p>Original language: <span class="language"></span></p>
+      </div>
+    </template>
+  </body>
+</html>

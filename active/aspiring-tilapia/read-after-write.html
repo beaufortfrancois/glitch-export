@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Web NFC 👾</h1>
+    <button id="button">Read after write</button>
+    <pre
+      id="pre"
+      style="overflow: auto; padding: 0 12px 12px 0; white-space: pre-wrap"
+    ></pre>
+    <script>
+      button.onclick = async () => {
+        const ndef = new NDEFReader();
+
+        log("Waiting for user to tap NFC tag to write to it...");
+        await ndef.write(`Hello world! ${now()}`);
+        log("Success! Message has been written.");
+
+        const abortController = new AbortController();
+        await ndef.scan({ signal: abortController.signal });
+        log("Scanning...");
+        const message = await new Promise((resolve) => {
+          ndef.onreading = (event) => {
+            resolve(event.message);
+          };
+        });
+        log(`Success! Message has been read: ${readTextRecord(message)}`);
+
+        await new Promise((r) => setTimeout(r, 3000));
+        abortController.abort();
+        log("Scanning is now stopped.");
+      };
+
+      /* Utils */
+
+      function log(string) {
+        document.querySelector("pre").textContent += `${string}\n`;
+      }
+
+      function now() {
+        return Intl.DateTimeFormat("en", { timeStyle: "long" }).format(
+          new Date()
+        );
+      }
+      function readTextRecord(message) {
+        if (message.records.length == 0) {
+          return "<no records>";
+        }
+        const record = message.records[0];
+        const textDecoder = new TextDecoder(record.encoding);
+        return textDecoder.decode(record.data);
+      }
+    </script>
+  </body>
+</html>

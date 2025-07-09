@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.shortcuts.twa",
+    "sha256_cert_fingerprints": [
+      "34:77:17:26:4A:8F:E7:36:F3:C6:AE:F9:0E:81:3D:08:18:08:14:18:35:02:50:8F:EB:50:7A:70:9B:AD:80:13"
+    ]
+  }
+}]

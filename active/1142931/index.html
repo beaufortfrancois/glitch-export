@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="button">getUserMedia then applyConstraints twice</button>
+    <video id="video" autoplay muted style="display:block"></video>
+    <script>
+      const IMAGECAPTURE_CONSTRAINTS = [
+        "exposureCompensation",
+        "exposureTime",
+        "colorTemperature",
+        "iso",
+        "brightness",
+        "contrast",
+        "saturation",
+        "sharpness",
+        "focusDistance",
+        "pan",
+        "tilt",
+        "zoom"
+      ];
+      button.onclick = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { pan: true, tilt: true, zoom: true }
+        });
+        video.srcObject = stream;
+
+        const [videoTrack] = stream.getVideoTracks();
+        const capabilities = videoTrack.getCapabilities();
+        const settings = videoTrack.getSettings();
+        console.log({ settings, capabilities });
+
+        const imageCaptureCapabilities = Object.keys(capabilities).filter(
+          capability => IMAGECAPTURE_CONSTRAINTS.includes(capability)
+        );
+        if (imageCaptureCapabilities.length == 0) {
+          console.error(
+            `Try camera supporting ${IMAGECAPTURE_CONSTRAINTS.join(", ")}`
+          );
+          return;
+        }
+
+        const capability = imageCaptureCapabilities[0];
+        let constraint = {};
+        constraint[capability] = capabilities[capability].min;
+        console.log(
+          `Calling twice videoTrack.applyConstraints({ advanced: [${JSON.stringify(
+            constraint
+          )}] })`
+        );
+        videoTrack
+          .applyConstraints({ advanced: [constraint] })
+          .then(_ => console.log("first promise resolved"))
+          .catch(error => console.error("first promise rejected", error));
+
+        let params = new URLSearchParams(document.location.search.substring(1));
+        const timeout = parseInt(params.get("timeout"), 0);
+
+        setTimeout(_ => {
+          videoTrack
+            .applyConstraints({ advanced: [constraint] })
+            .then(_ => console.log("second promise resolved"))
+            .catch(error => console.error("second promise rejected", error));
+        }, timeout);
+      };
+    </script>
+  </body>
+</html>

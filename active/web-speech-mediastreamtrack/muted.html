@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="logs"></div>
+    <audio id="audio" autoplay controls></audio>
+    <input id="audioInputButton" type="file" accept="audio/*" />
+
+    <script type="module">
+      audioInputButton.onchange = async (event) => {
+        const file = event.target.files[0];
+        const arrayBuffer = await file.arrayBuffer();
+
+        const ac = new AudioContext();
+        const audioBuffer = await ac.decodeAudioData(arrayBuffer);
+
+        const bufferSource = ac.createBufferSource();
+        bufferSource.buffer = audioBuffer;
+
+        const mediaStreamDestination = ac.createMediaStreamDestination();
+        bufferSource.connect(mediaStreamDestination);
+
+        audio.srcObject = mediaStreamDestination.stream;
+        bufferSource.start();
+
+        if (!isMediaStreamTrackSupported()) {
+          log("Warning! MediaStreamTrack support is not available.");
+          return;
+        }
+        log("Warning! MediaStreamTrack support is available.");
+
+        const recognition = new webkitSpeechRecognition();
+        const audioTrack = mediaStreamDestination.stream.getAudioTracks()[0];
+        recognition.start(audioTrack);
+      };
+
+      /* Utils */
+
+      function log(text) {
+        logs.innerHTML += `${text}<br>`;
+      }
+
+      function isMediaStreamTrackSupported() {
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("allow", "microphone 'none'");
+        document.body.appendChild(iframe);
+
+        const recognition = new iframe.contentWindow.webkitSpeechRecognition();
+
+        let result;
+        try {
+          recognition.start(0);
+          result = false;
+        } catch (error) {
+          result = error.name == "TypeError";
+        } finally {
+          iframe.remove();
+          return result;
+        }
+      }
+    </script>
+  </body>
+</html>

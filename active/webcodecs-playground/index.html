@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WebCodecs playground</title>
+  <style>
+    body {
+        margin: 0 auto;
+    }
+    canvas {
+      float: left;
+      padding: 4px 4px 0 0;
+      width: 480px;
+      height: 480px;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="src" width="480" height="360"></canvas>
+  
+  <script>
+    async function startDrawing() {
+      let cnv = document.getElementById("src");
+      var ctx = cnv.getContext('2d');
+      
+      // cnv.width = cnv.width * devicePixelRatio;
+      // cnv.height = cnv.height * devicePixelRatio;
+     
+      ctx.fillStyle = "#fff5e6";
+      let width = cnv.width;
+      let height = cnv.height;
+      let cx = width / 2;
+      let cy = height / 2;
+      
+      const size = Math.sqrt(width * width + height * height);
+      let drawOneFrame = function (time) {
+        const angle = Math.PI * 2 * (time / 2000);
+        ctx.save();
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        
+        ctx.fillStyle = "hsl(" + (angle * 40 ) + ",50%,50%)";
+        ctx.fillRect(-size / 2, 0, size, size);
+        
+        ctx.restore();        
+        window.requestAnimationFrame(drawOneFrame);
+      }
+      window.requestAnimationFrame(drawOneFrame);
+    }
+    
+    function startWorker(codec) {
+      let worker = new Worker('video-worker.js', { name: "Video worker"});
+      worker.onmessage = function(e) {
+        // Recreate worker in case of an error
+        console.log('Worker error: ' + e.data);
+        // worker.terminate();
+        // startWorker(codec);
+      };      
+      
+      // Capture animation track for the source canvas
+      let src_cnv = document.getElementById("src");
+      const fps = 24;
+      let stream = src_cnv.captureStream(fps);
+      const videoTrack = stream.getVideoTracks()[0]
+      videoTrackProcessor = new MediaStreamTrackProcessor(videoTrack);
+      const readable = videoTrackProcessor.readable;
+      
+      // Create a new destination canvas
+      const dst_cnv = document.createElement('canvas');
+      dst_cnv.id = codec;
+      dst_cnv.width = src_cnv.width;
+      dst_cnv.height = src_cnv.height;
+      document.getElementById(codec)?.remove();
+      document.body.appendChild(dst_cnv);
+      
+      
+      const offscreenCanvas = dst_cnv.transferControlToOffscreen();
+      worker.postMessage({
+        offscreenCanvas,
+        readable,
+        fps,
+        codec
+      }, [offscreenCanvas, readable]);          
+    }
+   
+    function main() {
+      if (!("VideoFrame" in window)) {
+        document.body.innerHTML = "<h1>WebCodecs API is not supported.</h1>";
+        return;
+      }
+
+      startDrawing();
+      /*
+      startWorker("av01.0.04M.08"); // Not supported.
+      // startWorker("av01.0.00M.10.0.112"); // Not supported.
+      startWorker("vp8");
+      startWorker("vp09.00.10.08");
+      // startWorker("vp09.01.10.08"); // Not supported
+      startWorker("vp09.02.10.10"); // Not supported on Android.
+      /*/
+      startWorker("avc1.42001E"); // h264 (baseline 3.0)
+    }
+
+    document.body.onload = main;
+  </script>
+
+</body>
+
+</html>

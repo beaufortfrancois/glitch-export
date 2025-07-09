@@ -1,0 +1,78 @@
+<!--
+ Your First PWA Codelab (https://g.co/codelabs/pwa)
+
+ Copyright 2019 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--     <title>Weather PWA</title> -->
+    <meta name="codelab" content="your-first-pwa-v3" />
+    <link rel="stylesheet" type="text/css" href="/styles/inline.css" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="PWA with screenshots" />
+    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png" />
+    <meta name="description" content="A sample app with screenshots" />
+  </head>
+  <body>
+    <header class="header">This is a PWA with screenshots</header>
+    <script>
+      // CODELAB: Register service worker.
+      // CODELAB: Register service worker.
+      // setInterval(location.reload(), 1000);
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/service-worker.js").then((reg) => {
+            console.log("Service worker registered.", reg);
+            console.log(reg.active.state);
+            console.log(reg.active.state == "activated");
+          });
+          count = 0;
+          setInterval(function () {
+            navigator.setAppBadge(count);
+            count += 1;
+            count = count % 10;
+          }, 3000);
+        });
+      }
+      setInterval(() => {
+        const audio = document.createElement("audio");
+        audio.src =
+          "https://cdn.glitch.global/9e74f014-eb25-4ef0-b986-16ac59425d75/ping.mp3";
+        audio
+          .play()
+          .then(() => {
+            pre.textContent += `Played at ${new Date()}\r\n`;
+          })
+          .catch((error) => {
+            pre.textContent += `Failed to play: ${error}\r\n`;
+          });
+      }, 3000);
+
+      // var deferredPrompt;
+      // window.addEventListener('beforeinstallprompt', function (e) {
+      //   console.log("prompt");
+      //   e.prompt();
+      // });
+    </script>
+  </body>
+</html>

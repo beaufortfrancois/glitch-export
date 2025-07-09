@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald" rel="stylesheet">
+    <style>
+      body, figure {
+        margin: 0;
+      }
+      .checkd {
+        background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".05"/></svg>');
+        background-size: 20px 20px;
+      }
+      .example-stage {
+        display: grid;
+        isolation: isolate;
+      }
+      .example-stage > * {
+        grid-area: 1/1;
+      }
+      .mix-input {
+        background: #ffe453;
+        display: grid;
+        padding: 10px;
+      }
+      #source-1 {
+        mix-blend-mode: plus-lighter;
+      }
+      
+      .article {
+        margin: 50px;
+      }
+      
+      h1 {
+        margin: 0 0 50px;
+        font-weight: normal;
+        font-family: oswald;
+        font-size: 7.6vw;
+      }
+      .article-img {
+        float: left;
+        margin: 0 20px 20px 0;
+        height: auto;
+        max-width: 30%;
+      }
+      p {
+        font-family: sans-serif;
+        line-height: 1.5;
+        max-width: 70ch;
+        overflow: hidden;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <figure class="checkd">
+      <div class="example-stage">
+        <div class="article" id="destination-1">
+          <h1>
+            A story about my cat
+          </h1>
+          <img alt="A black cat wearing a cone around its neck, sitting on my shoulder" class="article-img" width="1000" height="751" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/PXL_20211216_131826337%20(1).jpg?v=1642076976472">
+          <p>
+            My cat is an idiot.
+          </p>
+          <p>
+            He's an idiot because he got into a fight. We don't know what he got into a fight with, but it was something with teeth.
+          </p>
+          <p>
+            Some to think of it, 'fight' might be the wrong word to use. Like me, my cat isn't a fighter, he's a bleeder, so I suspect he tried to run away, but couldn't.
+          </p>
+          <p>
+            He ended up wearing a cone, and let's just say he didn't love it.
+          </p>
+        </div>
+        <div class="article" id="source-1">
+          <h1>
+            A story about my cat: Part 2
+          </h1>
+          <img alt="A black cat wearing a cone around its neck, sitting on my shoulder" class="article-img" width="1000" height="751" src="https://cdn.glitch.global/2f4b4e08-395c-470d-aad5-9ba01f7c4597/PXL_20211216_131826337%20(1).jpg?v=1642076976472">
+          <p>
+            Armed with the cone, the cat would eat like the game Hungry Hungry Hippos.
+          </p>
+          <p>
+            He'd accidentally get poo on his cone while checking he'd sufficiently buried his poo.
+          </p>
+          <p>
+            But most of all, he missed being able to go outside.
+          </p>
+          <p>
+            Thankfully, after two weeks, the cone was allowed to come off, and the cat lived ahppily ever after.
+          </p>
+        </div>
+      </div>
+      <div class="mix-input"><input id="mix-input-1" type="range" min="0" max="1" step="any" value="0"></div>
+    </figure>
+    <script type="module">
+      const range = $('#mix-input-1');
+      const destination = $('#destination-1');
+      const source = $('#source-1');
+      function update(mix) {
+        destination.style.opacity = 1 - mix;
+        source.style.opacity = mix;
+      }
+      range.oninput = () => update(range.valueAsNumber);
+      update(range.valueAsNumber);
+    </script>
+  </body>
+</html>

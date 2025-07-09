@@ -1,0 +1,1 @@
+self.getLazyResponse = () => new Response('This was created by lazy.js');

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <style>
+      html {
+        background: url('data:image/webp;base64,UklGRhYAAABXRUJQVlA4TAoAAAAvAUAAEIiI+Y8E');
+      }
+      
+      .test {
+        width: 400px;
+        height: 400px;
+        background: hsl(0deg 0% 50%);
+      }
+    </style>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+      
+      document.documentElement.style.backgroundSize = `${2 / devicePixelRatio}px`;
+    </script>
+  </head>
+  <body>
+    <div class="test">
+      
+    </div>
+  </body>
+</html>

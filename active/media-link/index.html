@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- The favicon should be black in dark mode, red in non spec-compliant browsers, or white otherwise. -->
+    <link rel="icon" href="https://via.placeholder.com/144/ff0000" />
+    <link
+      rel="icon"
+      media="(prefers-color-scheme: dark)"
+      href="https://via.placeholder.com/144/000000"
+    />
+    <link
+      rel="icon"
+      media="(prefers-color-scheme: light)"
+      href="https://via.placeholder.com/144/ffffff"
+    />
+
+    <!-- The manifest name should be "Dark PWA" in dark mode, "Default PWA" in non spec-compliant browsers, or "Light PWA" otherwise. -->
+    <link rel="manifest" href="default.webmanifest" />
+    <link
+      rel="manifest"
+      media="(prefers-color-scheme: dark)"
+      href="dark.webmanifest"
+    />
+    <link
+      rel="manifest"
+      media="(prefers-color-scheme: light)"
+      href="light.webmanifest"
+    />
+
+    <!-- In dark mode, the background color is black, otherwise it's white. -->
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme: dark)"
+      href="dark.css"
+    />
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme: light)"
+      href="light.css"
+    />
+  </head>
+  <body>
+    <pre id="pre" style="white-space: pre-wrap;"></pre>
+    <script>
+      pre.textContent += document.head.innerHTML;
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+body {
+  display: grid;
+  grid-gap: 24px;
+  place-items: center;
+}
+canvas {
+  border-radius: 12px;
+}
+p {
+  display: none;
+}
+.visible {
+  display: block;
+}

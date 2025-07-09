@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+  </head>
+  <body>
+    <script>
+      function log(message) {
+        var div = document.createElement('div');
+        div.innerText = message;
+        document.body.appendChild(div);
+      }
+    </script>
+    <script type="text/vbscript">
+      Function GetBodyTagName()
+        GetBodyTagName = document.body.tagName
+      End Function
+      
+      Function GetBodyChildNodes()
+        GetBodyChildNodes = document.body.childNodes
+      End Function
+      
+      Dim test1(2)
+      test1(0) = "Hello"
+      test1(1) = #10/07/2013#
+      Dim test2(5, 5)
+      test2(0, 0) = "Hello"
+      test2(0, 1) = #10/07/2013#
+      
+      Dim childNodes
+      
+      childNodes = document.body.childNodes
+    </script>
+    <script>
+      window.onload = function() {
+        log(test1(0));
+        log(test2(0, 1));
+        console.log(GetBodyTagName());
+        console.log(GetBodyChildNodes());
+        console.log(test1);
+      };
+    </script>
+  </body>
+</html>

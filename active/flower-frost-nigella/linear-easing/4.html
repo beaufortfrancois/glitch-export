@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      
+      .test {
+        --size: 100px;
+        width: var(--size);
+        height: var(--size);
+        background: green;
+        will-change: transform;
+      }
+      
+      .container {
+        height: 400px;
+        border-bottom: 10px solid #ccc;
+      }
+      
+      input[type=range] {
+        width: 300px;
+      }
+      
+      .demo-output {
+        font-family: monospace;
+      }
+      
+      .demo-graph svg {
+        width: 500px;
+        overflow: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-graph">
+      <svg viewBox="0 0 1 1">
+        <path d="M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1" fill="none" stroke="#f00" stroke-width="0.005" />
+      </svg>
+    </div>
+    
+    <form class="settings">
+      <p>
+        <label>
+          Duration:
+          <input name="duration" type="number" value="1500" />
+        </label>
+      </p>
+    </form>
+    
+    <p class="demo-output">
+      
+    </p>
+    
+    <div class="container">
+      <div class="test">
+      
+      </div>
+    </div>
+    
+    <script>
+      const form = $('.settings');
+      const el = $('.test');
+      const output = $('.demo-output');
+      const distance = 300;
+      const stopTime = 500;
+      let settings;
+      
+      const path = document.querySelector('path');
+
+      const pathLength = path.getTotalLength();
+      const pointsLength = 2000;
+      const points = Array.from({ length: pointsLength }, (_, i) => {
+        const point = path.getPointAtLength((i / pointsLength) * pathLength);
+        return [point.x, point.y];
+      });
+
+      points.push([1, 1]);
+
+      const simplePoints = simplifyDouglasPeucker(points, 0.002);
+      const fixed = 3;
+
+      console.log(simplePoints.length);
+
+      const newPath = path.cloneNode(true);
+      newPath.setAttribute('stroke', '#000');
+      newPath.setAttribute(
+        'd',
+        simplePoints.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x.toFixed(fixed)} ${y.toFixed(fixed)}`).join(),
+      );
+
+      path.after(newPath);
+      
+      const easingPoints = simplePoints.map(([input, output]) => ({ input: Number(input.toFixed(fixed)), output: Number(output.toFixed(fixed)) }))
+
+      // square distance from a point to a segment
+      function getSqSegDist(p, p1, p2) {
+          var x = p1[0],
+              y = p1[1],
+              dx = p2[0] - x,
+              dy = p2[1] - y;
+
+          if (dx !== 0 || dy !== 0) {
+
+              var t = ((p[0] - x) * dx + (p[1] - y) * dy) / (dx * dx + dy * dy);
+
+              if (t > 1) {
+                  x = p2[0];
+                  y = p2[1];
+
+              } else if (t > 0) {
+                  x += dx * t;
+                  y += dy * t;
+              }
+          }
+
+          dx = p[0] - x;
+          dy = p[1] - y;
+
+          return dx * dx + dy * dy;
+      }
+
+      function simplifyDPStep(points, first, last, sqTolerance, simplified) {
+          var maxSqDist = sqTolerance,
+              index;
+
+          for (var i = first + 1; i < last; i++) {
+              var sqDist = getSqSegDist(points[i], points[first], points[last]);
+
+              if (sqDist > maxSqDist) {
+                  index = i;
+                  maxSqDist = sqDist;
+              }
+          }
+
+          if (maxSqDist > sqTolerance) {
+              if (index - first > 1) simplifyDPStep(points, first, index, sqTolerance, simplified);
+              simplified.push(points[index]);
+              if (last - index > 1) simplifyDPStep(points, index, last, sqTolerance, simplified);
+          }
+      }
+
+      // simplification using Ramer-Douglas-Peucker algorithm
+      function simplifyDouglasPeucker(points, tolerance) {
+          if (points.length<=1)
+              return points;
+          tolerance = typeof tolerance === 'number' ? tolerance : 1;
+          var sqTolerance = tolerance * tolerance;
+
+          var last = points.length - 1;
+
+          var simplified = [points[0]];
+          simplifyDPStep(points, 0, last, sqTolerance, simplified);
+          simplified.push(points[last]);
+
+          return simplified;
+      }
+      
+      function ease(easingPoints, progress) {
+        let pointAIndex = easingPoints.findLastIndex(item => item.input <= progress);
+        
+        if (pointAIndex === -1) {
+          pointAIndex = 0;
+        } else if (pointAIndex === easingPoints.length - 1) {
+          pointAIndex--;
+        }
+        
+        const pointA = easingPoints[pointAIndex];
+        const pointB = easingPoints[pointAIndex + 1];
+        
+        if (pointA.input === pointB.input) return pointB.output;
+        
+        const progressFromPointA = progress - pointA.input;
+        const pointInputRange = pointB.input - pointA.input;
+        const progressBetweenPoints = progressFromPointA / pointInputRange;
+        const pointOutputRange = pointB.output - pointA.output;
+        const outputFromLastPoint = progressBetweenPoints * pointOutputRange;
+        return pointA.output + outputFromLastPoint;
+      }
+      
+      {
+        let outputTest = 'linear(';
+        for (const [i, point] of easingPoints.entries()) {
+          if (i !== 0) outputTest += ', ';
+          outputTest += Number(point.output.toFixed(fixed));
+          outputTest += ' ' + Number((point.input * 100).toFixed(fixed - 2)) + '%';
+        }
+        
+        output.textContent = outputTest + ' 100%)';
+      }
+      
+
+      function frame(now) {
+        const durationIncludingStop = settings.duration + stopTime;
+        const phaseIncludingStop =
+          (now % durationIncludingStop) / durationIncludingStop;
+        const phase = phaseIncludingStop * (1 + stopTime / durationIncludingStop);
+
+        const interpolatedPoint = ease(easingPoints, Math.min(phase, 1));
+
+g        el.style.transform = `translateY(${position}px)`;
+        requestAnimationFrame(frame);
+      }
+
+      function readSettings() {
+        const data = new FormData(form);
+        settings = {
+          duration: Number(data.get('duration')),
+        };
+      }
+
+      readSettings();
+      form.addEventListener('input', () => readSettings(), { capture: true });
+
+      requestAnimationFrame(frame);
+
+    </script>
+  </body>
+</html>

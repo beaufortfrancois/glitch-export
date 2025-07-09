@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="white"/>
+  </head>
+  <body>
+    <style>
+      html {
+        background-color: dodgerblue;
+      }
+      button {
+        padding: 0.5em;
+        margin: 1em 0 0 1em;
+      }
+    </style>
+    <button id="whiteButton">
+      change theme color to white
+    </button>
+    <button id="redButton">
+      change theme color to red
+    </button>
+    <script>
+      whiteButton.onclick = () => {
+        document.querySelector('meta[name="theme-color"]').content = "white";
+      };
+      redButton.onclick = () => {
+        document.querySelector('meta[name="theme-color"]').content = "red";
+      };
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+html
+  head
+    title= title
+  body
+    h1= "Feature Policy - Block them all!"
+    pre#header
+    script(type='text/javascript').
+      header.innerHTML = `HTTP Response Header\n\n #{featurePolicy.split(';').join(';\n')}`;
+    pre#pre
+    script(type='text/javascript').
+      pre.textContent = 'document.policy.allowedFeatures()\n\n';
+      if (document.policy) {
+        pre.textContent += ' ' + (document.policy.allowedFeatures().join(', ') || 'None. Yeah!');
+      } else {
+        pre.textContent += ' document.policy is not defined.';
+      }
+

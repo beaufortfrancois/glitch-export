@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Web OTP API Simplest</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>div {font-family: sans-serif;}</style>
+  </head>
+  <body>
+    <div style="border:1px solid; padding: 5px; 10px; margin: 10px 0;">
+      <form action="/post" method="post">
+        Enter OTP here:
+        <input type="text" autocomplete="one-time-code" inputmode="numeric" name="one-time-code">
+        <input type="submit" id="post" value="Submit">
+      </form>
+    </div>
+    <script>
+    if ('OTPCredential' in window) {
+      window.addEventListener('DOMContentLoaded', e => {
+        const input = document.querySelector('input[autocomplete="one-time-code"]');
+        const post = document.querySelector('#post');
+        if (!input) return;
+        const ac = new AbortController();
+        const form = input.closest('form');
+        if (form) {
+          form.addEventListener('submit', e => {
+            ac.abort();
+          });
+        }
+        navigator.credentials.get({
+          otp: { transport:['sms'] },
+          signal: ac.signal
+        }).then(otp => {
+          input.value = otp.code;
+          post.disabled = true;
+          if (form) setTimeout(() => {
+            form.submit();
+          }, 1000);
+        }).catch(err => {
+          console.log(err);
+        });
+      });
+    }
+    </script>
+  </body>
+</html>

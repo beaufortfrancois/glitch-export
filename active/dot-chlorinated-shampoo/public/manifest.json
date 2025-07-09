@@ -1,0 +1,130 @@
+{
+  "short_name": "screenshots app",
+  "description": "This is a useful app",
+  "theme_color": "green",
+  "icons": [
+    {
+      "src": "/images/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "id": "/index.html",
+  "display": "standalone",
+  "screenshots": [ 
+    {
+      "sizes": "960×720",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Test%20image.png?v=1665010231948",
+      "form_factor" : "wide",
+      "type": "image/png"
+    },
+            {
+      "sizes": "960×720",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Test%20image.png?v=1665010231948",
+      "form_factor" : "wide",
+      "type": "image/png"
+    },
+    {
+      "sizes": "960×720",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Test%20image.jpg?v=1665007772540",
+      "form_factor" : "wide",
+      "type": "image/jpg"
+    },
+        {
+      "sizes": "960×720",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Test%20image.jpg?v=1665007772540",
+      "form_factor" : "wide",
+      "type": "image/jpg"
+    },
+        {
+      "sizes": "960×720",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Test%20image.jpg?v=1665007772540",
+      "form_factor" : "wide",
+      "type": "image/jpg"
+    },
+        {
+      "sizes": "1920x1080",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/Marmotamaps_Wallpaper_Berchtesgaden_Desktop_1920x1080.jpg?v=1657820272145",
+      "type":"image/png",
+      "form_factor" : "wide",
+      "label": " this is an example wide screenshot "
+    },
+    {
+      "sizes": "1920x1080",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/screenshot-rotated.jpg?v=1667233025965",
+      "form_factor" : "wide",
+      "type":"image/png",
+      "label": " this is an example screenshot 2"
+    },
+    {
+      "sizes": "1920x1080",
+      "form_factor" : "wide",
+      "src": " https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/screenshot-rotated.jpg?v=1667233025965",
+      "label": " this is an example screenshot 3",
+      "type":"image/png"
+    },
+    {
+      "sizes": "1920x1080",
+      "form_factor" : "wide",
+      "src": " https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/screenshot-rotated.jpg?v=1667233025965",
+      "label": " this is an example screenshot 4",
+      "type":"image/png"
+    },
+    {
+      "sizes": "1920x1080",
+      "form_factor" : "wide",
+      "src": " https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/screenshot-rotated.jpg?v=1667233025965",
+      "label": " this is an example screenshot 5",
+      "type":"image/png"
+    },
+    {
+      "sizes": "1920x1080",
+      "form_factor" : "wide",
+      "src": " https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/screenshot-rotated.jpg?v=1667233025965",
+      "label": " this is an example screenshot 6",
+      "type":"image/png"
+    },
+    
+    {
+      "sizes": "626x352",
+      "form_factor" : "wide",
+      "src": "https://cdn.glitch.global/7fb7b490-1869-484f-8a43-25e1d0c5e953/s1-large.webp?v=1656355241359",
+      "form_factor" : "wide",
+      "type": "image/png"
+    },
+    
+    {
+      "sizes": "1080x1920",
+      "src": "https://cdn.glitch.global/41a34c79-e303-41a5-bd72-5daac0ab448f/002a3288-b69c-4d67-b3ea-1cbd6c68e8db.wide.jpg?v=1664919377745",
+      "type":"image/png",
+      "label": " this is an example narrow screenshot ",
+      "form_factor" : "narrow"
+    }
+  ]
+}

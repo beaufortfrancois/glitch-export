@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic PWA</title>
+    <meta charset="utf-8">
+    <meta name="color-scheme" content="light">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <meta name="theme-color" content="#3f51b5">
+    <link rel="manifest" href="/manifest.json">
+    <script>
+      // Redirect to HTTPS if HTTP is requested.
+      if (window.location.protocol === 'http:') {
+        window.location.href = 'https:' + window.location.href.substring(5);
+      }
+    </script>
+    
+  </head>  
+  <body>
+    <h1>
+      Basic PWA Demo
+    </h1>
+    
+    <p id="requireHTTPS" class="hidden">
+      <b>STOP!</b> This page <b>must</b> be served over HTTPS.
+      Please <a>reload this page via HTTPS</a>.
+    </p>
+    
+    <p>
+      This is a very simple PWA!
+    </p>
+    
+    <p id="notSupported" class="hidden">
+      <b>Sorry!</b> This browser doesn't support <code></code>,
+      which required for this demo.
+    </p>
+    
+    
+    <p id="install">
+      <button id="butInstall" type="button" disabled>
+        Install
+      </button>
+      <b>Install available:</b> <span id="installAvailable">false</span>
+    </p>
+    
+    <p>
+      <b>Already installed:</b> <span id="alreadyInstalled">unknown</span>
+    </p>
+    
+    <p>
+      <b>Display mode:</b> <span id="displayMode">unknown</span>
+    </p>
+    
+   
+    <p class="no-bottom-margin">
+      <b>Test links:</b>
+    </p>
+    <ul class="no-top-margin">
+      <li><a href="/page2.html">same domain (no <code>target</code>)</a></li>
+      <li><a href="/page2.html" target="_blank">same domain (<code>target="_blank"</code>)</a></li>
+      <li><a href="https://google.com">different domain (no <code>target</code>)</a></li>
+      <li><a href="https://google.com" target="_blank">different domain (<code>target="_blank"</code>)</a></li>
+    </ul>
+
+    
+    <p>
+      <b>User agent:</b> <span id="uaString">unknown</span>
+    </p>
+       
+    <hr/>
+    
+    <p>
+      Check out the <a href="https://glitch.com/edit/#!/basic-pwa" target="_blank">source</a>
+      for this sample, or
+      <a href="https://glitch.com/edit/#!/remix/basic-pwa" target="_blank">remix it</a> on Glitch.
+    </p>
+    
+    <script src="/common.js"></script>
+    <script src="/demo.js"></script>
+
+  </body>
+</html>

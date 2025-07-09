@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="/script.js" type="module"></script>
+  </head>
+  <body>
+    <h2>
+      WebGPU: Video frame processing with WebCodecs
+    </h2>
+    <button id="button">Process camera stream with WebGPU</button>
+    <pre id="logs"></pre>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        let error = document.createElement("p");
+        error.textContent = event.reason;
+        error.classList.add('error');
+        logs.appendChild(error);
+      };
+      window.onerror = (err) => {
+        let error = document.createElement("p");
+        error.textContent = err;
+        error.classList.add('error');
+        logs.appendChild(error);
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      .top-nav {
+        border: 4px solid #ccc;
+        background: #eee;
+        padding: 0 1rem;
+        contain: paint;
+      }
+      .rgb {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+      }
+      .with-inner-transparency {
+        contain: paint;
+        opacity: 0.8;
+        width: 300px;
+      }
+      .gradient {
+        width: 300px;
+        height: 100px;
+        background: linear-gradient(to right, grey, black);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-nav">
+      <h1>
+        Hello there!
+      </h1>
+      <p class="page-nav">
+        <button data-page-index="0">Page one</button> <button data-page-index="1">Page two</button>
+      </p>
+    </div>
+    <div class="content">
+      
+    </div>
+    <script>
+      const pages = [
+        `
+          <p>This is page one's content.</p>
+          <div class="with-inner-transparency"><div class="gradient"></div></div>
+        `,
+        `
+          <p>Page two</p>
+          <div class="with-inner-transparency"><div class="gradient"></div></div>
+        `,
+      ];
+      let currentPage = 0;
+      const content = $('.content');
+      const topNav = $('.top-nav');
+      content.innerHTML = pages[0];
+      
+      $('.page-nav').onclick = async (event) => {
+        const btn = event.target.closest('[data-page-index]');
+        if (!btn) return;
+        
+        const index = btn.dataset.pageIndex;
+        if (index === currentPage) return;
+        
+        await document.documentTransition.prepare({
+          rootTransition: 'cover-left',
+				  sharedElements: [topNav, $('.with-inner-transparency')],
+        });
+        
+        content.innerHTML = pages[index];
+        currentPage = index;
+        document.documentTransition.start({ sharedElements: [topNav, $('.with-inner-transparency')] });
+      };
+    </script>
+  </body>
+</html>

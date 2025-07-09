@@ -1,0 +1,15 @@
+body {
+  font-family: system-ui, sans-serif;
+  background-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(68, 68, 68, 1) 100%
+  );
+}
+p,
+pre {
+  color: white;
+}
+a {
+  color: yellow;
+}

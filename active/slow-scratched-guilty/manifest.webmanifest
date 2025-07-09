@@ -1,0 +1,22 @@
+{
+  "name": "Name",
+  "id": "/",
+  "short_name": "Short",
+  "start_url": "./?new-start-url",  
+  "display": "standalone",
+  "display_override": ["window-controls-overlay"],
+  "theme_color": "#36c",
+  "background_color": "#131313",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.global/733ad2ec-efb6-48bc-8fb2-60577e11ee56/Screenshot%202024-09-12%20at%2015.47.30.png?v=1726753994138",
+      "type": "image/png",
+      "sizes": "1144x393"  
+    },
+    {
+      "src": "https://cdn.glitch.com/e58095ef-156d-4ab0-9647-80d7e85a928b%2Fchuck.png?v=1617897417704",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

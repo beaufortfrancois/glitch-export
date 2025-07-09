@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      if (window.location.protocol === "http:") {
+        window.location.protocol = "https:";
+      }
+    </script>
+    <title>App Shortcuts Sample</title>
+    <meta name="description" content="A PWA sample for app shortcuts" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fff" />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="/assets/small-icon.png"
+    />
+    <link href="/assets/small-icon.png" rel="icon" />
+    <link rel="manifest" href="manifest.json" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      iframe {
+        flex-basis: 50%;
+        border: 0;
+        min-width: 0;
+      }
+      div {
+        position: absolute;
+        bottom: 0;
+        margin: 1em;
+        padding: 0.4em;
+        background: black;
+        color: white;
+      }
+      @media all and (display-mode: standalone) {
+        div {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="prompt">
+      👋 Install this PWA to play with app shortcuts
+    </div>
+    <iframe src="/blue" title="blue"> </iframe>
+    <iframe src="/red" title="red"> </iframe>
+    <iframe src="/yellow" title="yellow"> </iframe>
+    <iframe src="/green" title="green"> </iframe>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      
+      .test {
+        --size: 100px;
+        width: var(--size);
+        height: var(--size);
+        background: green;
+        will-change: transform;
+      }
+      
+      .container {
+        height: 400px;
+        border-bottom: 10px solid #ccc;
+      }
+      
+      input[type=range] {
+        width: 300px;
+      }
+      
+      .demo-output {
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="settings">
+      <p>
+        <label>
+          Easing:
+          <select name="easing">
+            <option value="0">Bounce</option>
+            <option value="1">Elastic</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label>
+          Duration:
+          <input name="duration" type="number" value="1500" />
+        </label>
+      </p>
+      <p>
+        <label>
+          Points:
+          <input name="points" type="range" min="2" max="100" value="50" />
+          <span class="points-output"></span>
+        </label>
+      </p>
+      <p>
+        <label>
+          Decimal places:
+          <input name="decimal" type="range" min="1" max="10" value="3" />
+          <span class="decimal-output"></span>
+        </label>
+        <label><input type="checkbox" name="dynamic-rounding" value="1" checked /> Dynamic</label>
+      </p>
+    </form>
+    
+    <p class="demo-output">
+      
+    </p>
+    
+    <div class="container">
+      <div class="test">
+      
+      </div>
+    </div>
+    
+    <script>
+      const easings = [
+        function easeOutBounce(x) {
+          const n1 = 7.5625;
+          const d1 = 2.75;
+
+          if (x < 1 / d1) {
+            return n1 * x * x;
+          } else if (x < 2 / d1) {
+            return n1 * (x -= 1.5 / d1) * x + 0.75;
+          } else if (x < 2.5 / d1) {
+            return n1 * (x -= 2.25 / d1) * x + 0.9375;
+          } else {
+            return n1 * (x -= 2.625 / d1) * x + 0.984375;
+          }
+        },
+        function easeOutElastic(x) {
+          const c4 = (2 * Math.PI) / 3;
+
+          return x === 0
+            ? 0
+            : x === 1
+            ? 1
+            : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+        },
+      ];
+      const form = $('.settings');
+      const el = $('.test');
+      const pointsOutput = $('.points-output');
+      const decimalOutput = $('.decimal-output');
+      const output = $('.demo-output');
+      const decimalRange = $('input[name=decimal]');
+      const dynamicRoundingInput = $('input[name="dynamic-rounding"]');
+      const distance = 300;
+      const stopTime = 500;
+      let settings;
+
+      function frame(now) {
+        const durationIncludingStop = settings.duration + stopTime;
+        const phaseIncludingStop =
+          (now % durationIncludingStop) / durationIncludingStop;
+        const phase = phaseIncludingStop * (1 + stopTime / durationIncludingStop);
+
+        let interpolatedPoint;
+
+        if (phase >= 1) {
+          interpolatedPoint = settings.points[settings.points.length - 1];
+        } else {
+          const pointInPoints = phase * (settings.points.length - 1);
+          const betweenPoints = [
+            settings.points[Math.floor(pointInPoints)],
+            settings.points[Math.ceil(pointInPoints)],
+          ];
+          interpolatedPoint =
+            (betweenPoints[1] - betweenPoints[0]) * (pointInPoints % 1) +
+            betweenPoints[0];
+        }
+
+        const position = distance * interpolatedPoint;
+        el.style.transform = `translateY(${position}px)`;
+        requestAnimationFrame(frame);
+      }
+
+      function readSettings() {
+        decimalRange.disabled = dynamicRoundingInput.checked;
+        
+        const data = new FormData(form);
+        const numPoints = Number(data.get('points'));
+        const decimal = Number(data.get('decimal'));
+        const easing = easings[Number(data.get('easing'))];
+        const dynamicRounding = Boolean(data.get('dynamic-rounding'));
+        
+        let lastPos;
+        
+        const points = Array.from({ length: numPoints }, (_, i) => {
+          const pos = easing(i / (numPoints - 1));
+          
+          let roundTo;
+          
+          if (!dynamicRounding) {
+            roundTo = decimal;
+          } else if (i === 0) {
+            roundTo = 3;
+          } else {
+            const diff = Math.abs(pos - lastPos);
+            if (diff < 0.001) {
+              roundTo = 4;
+            } else if (diff < 0.01) {
+              roundTo = 3;
+            } else if (diff < 0.1) {
+              roundTo = 2;
+            } else {
+              roundTo = 1;
+            }
+          }
+          
+          lastPos = pos;
+          
+          return Math.round(pos * 10 ** roundTo) / 10 ** roundTo;
+        });
+
+        pointsOutput.textContent = numPoints;
+        decimalOutput.textContent = decimal;
+        output.textContent = `linear(${points.join(', ')} 100% 100%)`;
+
+        settings = {
+          duration: Number(data.get('duration')),
+          points,
+        };
+      }
+
+      readSettings();
+      form.addEventListener('input', () => readSettings(), { useCapture: true });
+
+      requestAnimationFrame(frame);
+
+    </script>
+  </body>
+</html>

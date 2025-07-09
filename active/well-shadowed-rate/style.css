@@ -1,0 +1,92 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  /*   margin: 2em; */
+}
+
+h1 {
+  margin-block-end: 0;
+}
+
+body > a {
+  display: block;
+  margin-block-end: 1.4em;
+}
+
+video {
+  border-radius: 4px;
+  background: rgb(237, 239, 247);
+  max-width: calc(100% - 12px);
+  max-height: 100%;
+  width: calc(100% - 12px);
+  outline: 2px solid rgb(237, 239, 247);
+}
+
+video.playing {
+  width: auto;
+}
+
+#mainContent {
+  position: relative;
+  height: calc(100vh - 122px - 2em);
+}
+
+#buttons svg:hover {
+  color: white;
+
+  transform: scale(1.1);
+  transition: 0.1s;
+}
+
+#buttons svg:active {
+  transform: scale(1);
+}
+
+#buttons {
+  position: absolute;
+  top: -76px;
+  left: 434px;
+  padding: 8px 12px;
+  border-radius: 36px;
+  background: rgb(40 42 46);
+  height: 36px;
+  color: white;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 43px 1fr 1fr;
+  gap: 6px;
+  user-select: none;
+  text-align: center;
+  box-shadow: 0 1px 2px black;
+  color: rgb(161 199 255);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.instruction {
+  position: absolute;
+  padding: 6px 8px;
+  border-radius: 2px;
+  margin: 12px;
+  outline: 1px solid;
+  transition: 1s;
+}
+
+#logs {
+  margin-top: 24px;
+  color: red;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+@media screen and (min-width: 1280px) {
+  body {
+    margin: 2em auto;
+    max-width: calc(1280px - 2em);
+  }
+}

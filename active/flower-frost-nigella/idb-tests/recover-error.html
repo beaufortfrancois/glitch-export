@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script type="module">
+      import { openDB, unwrap } from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
+      
+      async function getDb() {
+        // fails silently
+        const db = await openDB("recover-error-test", 1, {
+          upgrade(db, oldVersion, newVersion, transaction) {
+            const store = db.createObjectStore("store", {
+              keyPath: "id",
+            });
+            store.add({ id: 0 });
+            store.add({ id: 1 });
+          },
+        });
+        return db;
+      }
+      
+      function preventTransationCloseOnError(promise) {
+        const request = unwrap(promise);
+        request.addEventListener('error', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+        });
+      }
+      
+      getDb().then(async (db) => {
+        const tx = db.transaction('store', 'readwrite');
+        
+        try {
+          await Promise.all([
+            preventTransationCloseOnError(tx.store.add({ id: 1 })),
+            preventTransationCloseOnError(tx.store.add({ id: 2 })),
+            preventTransationCloseOnError(tx.store.add({ id: 3 })),
+          ]);  
+        } catch (err) {
+          // do nothing
+        }
+        
+        await tx.done;
+        console.log('done');
+      });
+    </script>
+  </head>
+  <body>
+    <h1>
+      See the console
+    </h1>
+  </body>
+</html>

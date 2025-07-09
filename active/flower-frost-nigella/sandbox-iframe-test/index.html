@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <iframe src="1.html?initial"></iframe>
+    <button onclick="$('iframe').setAttribute('sandbox', '')">
+      Set iframe sandbox
+    </button>
+    <button onclick="$('iframe').src = `1.html?navigated`">
+      Navigate iframe by src
+    </button>
+    <button onclick="$('iframe').srcdoc = `srcdoc'd! <script>document.body.append('Script can run.')</script>`">
+      Navigate iframe by srcdoc
+    </button>
+    <button onclick="console.log($('iframe').contentDocument.body.innerHTML)">
+      Log iframe content
+    </button>
+    <a href="1.html">Navigate top level</a>
+  </body>
+</html>

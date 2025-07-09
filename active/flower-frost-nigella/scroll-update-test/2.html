@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0" />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="CodePen" />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico"
+    />
+
+    <link
+      rel="mask-icon"
+      type="image/x-icon"
+      href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg"
+      color="#111"
+    />
+
+    <title>scroll-timing</title>
+
+    <style>
+      @charset "UTF-8";
+      .first,
+      .second,
+      .third {
+        height: 70vh;
+        overflow: auto;
+      }
+      .first nav,
+      .second nav,
+      .third nav {
+        position: sticky;
+        top: 0;
+        background: white;
+      }
+
+      .inject,
+      .toggle-ha,
+      .toggle-cv,
+      .toggle-op {
+        padding: 1em;
+        margin: 0.5em 0;
+      }
+
+      .replyHeaderMsg,
+      .chatMsg {
+        margin: 5px 0;
+        position: relative;
+        word-wrap: break-word;
+      }
+
+      .chatMsg {
+        content-visibility: auto;
+        contain-intrinsic-size: 0 420px;
+      }
+
+      .cf {
+        zoom: 1;
+      }
+
+      .cf:before,
+      .cf:after {
+        content: " ";
+        display: table;
+      }
+
+      .partner.avatar {
+        cursor: pointer;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url(https://cdn.dev.textras.com/images/60d9f5f…/thumbnail.jpeg?w=100&q=100&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDllNmVhNmFlOWIzMDAxMzIzMjVjMSIsImNvdW50cnlDb2RlIjoiTkdBIiwiaWF0IjoxNjI5NTg3NzgyLCJleHAiOjE2Mjk4NDY5ODJ9.oE9Lx4U7m4nb_ozTyx8NO15Pc0mu-B_kFngdwt2mI_E&v=);
+      }
+
+      @media (max-width: 320px) {
+        .theirMsg .avatar,
+        .myMsg .avatar {
+          width: 27px;
+        }
+      }
+      .theirMsg .avatar {
+        margin-right: 10px;
+        float: left;
+        width: 34px;
+      }
+
+      .avatar {
+        visibility: hidden;
+      }
+
+      .replyHeaderMsg.media .textContainer,
+      .chatMsg.media .textContainer {
+        padding: 0 !important;
+      }
+
+      .sticker .textContainer,
+      li.media .textContainer {
+        background-color: #fff !important;
+        border: 1px solid #fff !important;
+      }
+
+      .theirMsg .textContainer,
+      .myMsg .textContainer {
+        border-radius: 7px;
+      }
+
+      .theirMsg .textContainer,
+      #isTyping.textContainer {
+        background-color: #ebebeb;
+        border: 1px solid #ebebeb;
+        color: #6d6d6d;
+        float: left;
+      }
+
+      .textContainer {
+        transition: transform 0.2s;
+      }
+
+      @media (max-width: 320px) {
+        .textContainer {
+          max-width: 50%;
+        }
+      }
+      .textContainer {
+        line-height: 1.2em;
+        padding: 10px;
+        position: relative;
+        max-width: 62%;
+        min-width: 75px;
+      }
+
+      .public .in-chat-handle,
+      #inProfileMasterChat .in-chat-handle {
+        display: block;
+        text-align: initial;
+      }
+
+      .theirMsg .in-chat-handle {
+        color: #002a80;
+      }
+
+      .in-chat-handle {
+        color: #999;
+        font-size: 0.8em;
+        display: block;
+        text-align: initial;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .textContainer .text {
+        overflow: hidden;
+        font-size: 14px;
+        line-height: 16px;
+        /* display: flex; */
+        word-break: break-word;
+        display: block;
+        max-width: 100%;
+        width: 187.5px;
+        white-space: pre-wrap;
+        margin: 0;
+      }
+
+      .textContainer .text span {
+        display: block;
+        padding-top: 133.3333333333%;
+      }
+
+      li:not(.gif) .aspect-ratio-wrapper {
+        background-color: #e5e5e5;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      ul.op li:not(.gif) .aspect-ratio-wrapper {
+        animation: redraw 10s linear infinite;
+      }
+
+      ul.cv li:not(.gif) .aspect-ratio-wrapper {
+        content-visibility: auto;
+      }
+
+      .aspect-ratio-wrapper {
+        display: block;
+      }
+
+      .aspect-ratio-wrapper {
+        position: relative;
+        height: 0;
+        overflow-y: hidden;
+      }
+
+      #currentChatMessagesListWrapper.public
+        .gif
+        .textContainer
+        .mediaMsg
+        video,
+      #currentChatMessagesListWrapper.public .textContainer .mediaMsg img {
+        /* max-height: 150px !important; */
+        /* width: 99% !important; */
+      }
+
+      li.media .mediaMsg img {
+        border: 1px solid #e5e5e5;
+        min-height: 80px;
+        visibility: visible;
+      }
+
+      .gif .mediaMsg video,
+      .mediaMsg img {
+        max-width: 99%;
+        max-height: 250px;
+        width: 100%;
+      }
+
+      .aspect-ratio-wrapper img {
+        /* 			visibility: hidden; */
+      }
+
+      .aspect-ratio-wrapper video,
+      .aspect-ratio-wrapper img {
+        max-width: 100%;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .in-chat-img-text {
+        color: black;
+        font-size: 0.8em;
+        display: block;
+        text-align: initial;
+        border-left: 1px solid #ccc;
+        padding: 0 5px;
+      }
+
+      .replyHeaderMsg.media .textContainer .timeInfo,
+      .chatMsg.media .textContainer .timeInfo {
+        top: 0;
+      }
+
+      .textContainer > .timeInfo {
+        color: #666;
+        float: right;
+        font-size: 0.6em;
+        height: 2em;
+        position: absolute;
+        top: -1.7em;
+        right: 0;
+        opacity: 0;
+      }
+
+      .msgNotifications {
+        line-height: 1.2em;
+        padding: 3px;
+        position: relative;
+        max-width: 65%;
+        min-width: 140px;
+        left: 17.5%;
+        float: left;
+        width: 65%;
+        z-index: -10;
+        clear: both;
+        transition: margin-top 0.5s, opacity 0.5s cubic-bezier(1, -1, 0.5, 2);
+        margin-top: -12%;
+        opacity: 0;
+      }
+
+      .msgNotifications span {
+        font-size: xx-small;
+        float: right;
+        margin-right: 5%;
+      }
+
+      .theirMsg .reply-btns-container {
+        float: left;
+        margin-left: 44px;
+      }
+
+      .theirMsg .reply-btns-container,
+      .myMsg .reply-btns-container {
+        display: block;
+        padding: 7px 0;
+        clear: both;
+        color: #777;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .theirMsg .reply-btns-container > .reply-btn:nth-child(1) {
+        margin-left: 0;
+      }
+
+      .theirMsg .reply-btns-container > .reply-btn,
+      .myMsg .reply-btns-container > .reply-btn {
+        margin: 0 0.5em;
+      }
+
+      .theirMsg .replyToChatMsg,
+      .theirMsg .view-replies {
+        float: left;
+      }
+
+      .theirMsg .replyToChatMsg,
+      .theirMsg .view-replies,
+      .myMsg .replyToChatMsg,
+      .myMsg .view-replies {
+        display: block;
+        padding: 7px 0;
+        clear: both;
+        color: #777;
+      }
+
+      .cf:after {
+        clear: both;
+      }
+
+      .cf:before,
+      .cf:after {
+        content: " ";
+        display: table;
+      }
+
+      .chatTimestampGroup,
+      .notifyNewStatusDivider span {
+        position: relative;
+        display: block;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.5);
+        height: 20px;
+        line-height: 38px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        cursor: default;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+      }
+    </style>
+
+    <script>
+      window.console = window.console || function (t) {};
+    </script>
+
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+    </script>
+  </head>
+
+  <body translate="no">
+    <third class="first">
+      <nav>
+        <button class="next">Next screen</button>
+        <button class="next-no-scroll">Next screen (no scroll change)</button>
+      </nav>
+      <p>top of first screen</p>
+      <ul class="ha cv op"></ul>
+      <p>bottom of first screen</p>
+    </third>
+    <div class="second"></div>
+    <div class="third"></div>
+    <script id="rendered-js">
+      const firstListContainer = document.querySelector(".first");
+
+      const secondListContainer = document.querySelector(".second");
+
+      const thirdListContainer = document.querySelector(".third");
+
+      const removeNodeFromDom = (node) => {
+        node.parentNode.removeChild(node);
+      };
+
+      const restoreNodeToDom = (node) => {
+        document.body.insertAdjacentElement("beforeend", node);
+      };
+
+      const firstScreenInit = () => {
+        requestAnimationFrame(() => {
+          removeNodeFromDom(thirdListContainer);
+          secondListContainer.innerHTML = "";
+          thirdListContainer.innerHTML = "";
+        });
+      };
+
+      firstScreenInit();
+
+      const uniqImgs = [
+        "dffcde80-0152-11ec-a649-5d1509f55e87",
+        "e12fb930-0152-11ec-a649-5d1509f55e87",
+        "e22ae210-0152-11ec-a649-5d1509f55e87",
+        "e326a730-0152-11ec-a649-5d1509f55e87",
+        "e48f10d0-0152-11ec-a649-5d1509f55e87",
+        "e4b95520-0152-11ec-a649-5d1509f55e87",
+        "e524c120-0152-11ec-a649-5d1509f55e87",
+        "e5517670-0152-11ec-a649-5d1509f55e87",
+        "e5710c60-0152-11ec-a649-5d1509f55e87",
+        "e6092db0-0152-11ec-a649-5d1509f55e87",
+        "e4b95520-0152-11ec-a649-5d1509f55e87",
+      ];
+
+      const renderer = (
+        index
+      ) => `<li class="chatMsg     msgHasImgs  theirMsg   media  cf">
+          <div class="partner avatar">User Image</div>
+          <div class="textContainer">
+              <p class="in-chat-handle">@userv2</p>
+              <p class="text mediaMsg">
+                  <span class="aspect-ratio-wrapper"><img src="https://cdn.dev.textras.com/images/60d9f5fd6ae9b30013232cce/${
+                    uniqImgs[
+                      Math.floor(Math.random() * uniqImgs.length)
+                    ]
+                  }.jpeg?w=320&amp;q=100&amp;token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTFiZTZkMDJkYmM3MDAxNDIzMDhhZiIsImNvdW50cnlDb2RlIjoiTkdBIiwiaWF0IjoxNjQ0NDE4NzM2LCJleHAiOjE2NDQ2Nzc5MzZ9.9UZrtaAsaxfC6of-Bsvt8qmubniruA2n8gpxxbwiB48" alt=""></span>
+              </p>
+              <p class="in-chat-img-text"></p>
+              <time class="timeInfo"></time>
+          </div>
+          <div class="msgNotifications hide">
+              <span></span>
+          </div>
+          <div class="reply-btns-container">
+              <div class="reply-btn">
+                  <div class="replyToChatMsg">Reply</div>
+              </div>
+          </div>
+      </li>`;
+
+      const liItems =
+        [...Array(25)].reduce(
+          (html, _item, index) => html + renderer(index),
+          ""
+        ) +
+        [...Array(5)].reduce(
+          (html) =>
+            html +
+            `<li class="notifyNewStatusDivider"><span>user did ${Math.floor(
+              Math.random() * uniqImgs.length
+            )} interesting things</span></li>`,
+          ""
+        );
+
+      requestAnimationFrame(() => {
+        firstListContainer
+          .querySelector("ul")
+          .insertAdjacentHTML("beforeend", liItems);
+      });
+
+      const secondPageHtml = `
+        <nav><button class="back">Prev screen</button></nav>
+        <p>top of second screen</p>
+        <ul class="ha cv op">${liItems}</ul>
+        <p>bottom of second screen</p>
+      `;
+
+      const thirdPageHtml = `
+        <nav><button class="back">Prev screen</button></nav>
+        <p>top of third screen</p>
+        <ul class="ha cv op">${liItems}</ul>
+        <p>bottom of third screen</p>
+      `;
+
+      firstListContainer
+        .querySelector(".next")
+        .addEventListener("click", (e) => {
+          requestAnimationFrame(() => {
+            restoreNodeToDom(secondListContainer);
+            removeNodeFromDom(firstListContainer);
+            secondListContainer.insertAdjacentHTML("beforeend", secondPageHtml);
+            secondListContainer.scrollTop = 100_000;
+          });
+        });
+
+      firstListContainer
+        .querySelector(".next-no-scroll")
+        .addEventListener("click", (e) => {
+          requestAnimationFrame(() => {
+            restoreNodeToDom(secondListContainer);
+            removeNodeFromDom(firstListContainer);
+            secondListContainer.insertAdjacentHTML("beforeend", secondPageHtml);
+          });
+        });
+
+      secondListContainer.addEventListener("click", (e) => {
+        if (e.target.matches("nav button")) {
+          requestAnimationFrame(() => {
+            restoreNodeToDom(thirdListContainer);
+            removeNodeFromDom(secondListContainer);
+            thirdListContainer.insertAdjacentHTML("beforeend", thirdPageHtml);
+            setTimeout(
+              () =>
+                (thirdListContainer.scrollTop =
+                  thirdListContainer.scrollHeight),
+              0
+            );
+          });
+        }
+      });
+
+      thirdListContainer.addEventListener("click", (e) => {
+        if (e.target.matches("nav button")) {
+          requestAnimationFrame(() => {
+            restoreNodeToDom(firstListContainer);
+          });
+          firstScreenInit();
+        }
+      });
+    </script>
+  </body>
+</html>

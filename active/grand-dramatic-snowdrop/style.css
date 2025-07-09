@@ -1,0 +1,50 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+  /*   margin: 2em; */
+}
+
+h1 {
+  margin-block-end: 0;
+}
+
+body > a {
+  display: block;
+  margin-block-end: 1.4em;
+}
+
+#mainContent {
+  position: relative;
+  height: calc(100vh - 122px - 2em);
+}
+
+
+.hidden {
+  display: none !important;
+}
+
+.instruction {
+  position: absolute;
+  padding: 6px 8px;
+  border-radius: 2px;
+  margin: 12px;
+  outline: 1px solid;
+  transition: 1s;
+}
+
+#logs {
+  margin-top: 24px;
+  color: red;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+@media screen and (min-width: 1280px) {
+  body {
+    margin: 2em auto;
+    max-width: calc(1280px - 2em);
+  }
+}

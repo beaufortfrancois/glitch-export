@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello!</title>
+  </head>
+  <body>
+    <pre id="pre"></pre>
+    <script>
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: true })
+        .then(() => navigator.mediaDevices.enumerateDevices())
+        .then(devices => {
+          devices.forEach(device => {
+            pre.textContent += `${JSON.stringify(device.toJSON(),null,2)}\r\n`;
+          });
+        });
+    </script>
+  </body>
+</html>

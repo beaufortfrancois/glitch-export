@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <script>
+      console.log('<body><script>...<\/script>');
+      onload = _ => { console.log('onload'); console.log(document.body.outerHTML); };
+      document.addEventListener('DOMContentLoaded', _ => { console.log('DOMContentLoaded') });
+    </script>
+    <script src="script.js?timeout=1000&index=1"></script>
+
+    <script type="module" src="script.js?timeout=0&type=module"></script>
+    <script type="module" src="script.js?timeout=1000&type=module"></script>
+
+    <script src="script.js?timeout=1000&index=2"></script>
+    
+    <script src="script.js?timeout=2000&defer" defer></script>
+    <script src="script.js?timeout=0&defer" defer></script>
+    
+    <script src="script.js?timeout=3000&async" async></script>
+    <script src="script.js?timeout=0&async" async></script>
+    
+<!--     <script src="script.js?timeout=3000"></script> -->
+    <script src="script.js?timeout=1000&index=3"></script>
+
+    <script>
+      console.log('<script>...<\/script><\/body>');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    div {
+      width: 300px;
+      display: inline-block;
+    }
+    video,
+    canvas,
+    img {
+      width: 300px;
+      outline: 1px solid #d3d3d3;
+    }
+  </style>
+  <body>
+    <button id="button">play/pause</button>
+    <select id="select">
+      <option>https://d2axc7bbtmotmv.cloudfront.net/7XT-hju8SKM_540.mp4</option>
+      <option>
+        https://d2axc7bbtmotmv.cloudfront.net/bug-reports/IMG_2366_2.mp4
+      </option>
+    </select>
+    <br />
+    <div>
+      <p>Video:</p>
+      <video id="video" muted loop>
+        <source
+          src="https://d2axc7bbtmotmv.cloudfront.net/7XT-hju8SKM_540.mp4"
+          type="video/mp4"
+        />
+      </video>
+    </div>
+
+    <div>
+      <p>Canvas with Rec. 2100 HLG color space:</p>
+      <canvas id="hlgColorSpaceCanvas"></canvas>
+    </div>
+
+    <div>
+      <p>Canvas with Rec. 2100 PQ color space:</p>
+      <canvas id="colorSpaceCanvas"></canvas>
+    </div>
+
+    <div>
+      <p>Canvas without color space:</p>
+      <canvas id="noColorSpaceCanvas"></canvas>
+    </div>
+
+    <pre id="log"></pre>
+    <script>
+      select.onchange = () => {
+        video.src = select.selectedOptions[0].textContent.trim();
+        playVideo();
+      };
+      function playVideo() {
+        video.play().then(() => {
+          Array.from(document.querySelectorAll("canvas")).forEach((canvas) => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+          });
+
+          function drawVideoFrame(canvas, colorSpace) {
+            const options = {};
+            if (colorSpace) {
+              options.colorSpace = colorSpace;
+            }
+            try {
+              const context = canvas.getContext("2d", options);
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            } catch (error) {
+              const context = canvas.getContext("2d");
+              context.font = "40px serif";
+              context.fillText(error, 10, 30);
+            }
+          }
+
+          (function frame() {
+            drawVideoFrame(noColorSpaceCanvas);
+            drawVideoFrame(colorSpaceCanvas, "rec2100-pq");
+            drawVideoFrame(hlgColorSpaceCanvas, "rec2100-hlg");
+
+            requestAnimationFrame(frame);
+          })();
+        });
+      }
+      button.onclick = () => {
+        if (video.paused) {
+          video.play();
+          return;
+        }
+        video.pause();
+      };
+      playVideo();
+    </script>
+  </body>
+</html>

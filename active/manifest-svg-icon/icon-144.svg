@@ -1,0 +1,24 @@
+<svg width="144" height="144" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    circle {
+      fill: yellow;
+      stroke: black;
+      stroke-width: 0px;
+    }
+    text {
+      font: bold 50px sans-serif; 
+      fill: red; 
+    }
+    @media (prefers-color-scheme: dark) {
+      circle {
+        fill: black;
+        stroke: yellow;
+      }
+    text {
+      fill: white; 
+    }
+    }
+  </style>
+  <circle cx="70" cy="70" r="68"/>
+  <text x="27" y="89">144</text>
+</svg>

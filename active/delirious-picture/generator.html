@@ -1,0 +1,67 @@
+<!doctype html>
+
+<script>
+  function nextEvent(target, name) {
+    return new Promise(resolve => {
+      target.addEventListener(name, resolve, { once: true });
+    });
+  }
+  
+  const cvs = document.createElement("canvas");
+  cvs.width = cvs.height = 100;
+  const ctx = cvs.getContext("2d");
+  function* frames() {
+    for(let i = 0; i < 4; i++) {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+      ctx.font = `${Math.floor(cvs.height)}px serif`;
+      ctx.fillStyle = 'black';
+      ctx.fillText(`${i}`, 0, cvs.height);
+      yield ctx.getImageData(0, 0, cvs.width, cvs.height);
+    }
+  }
+  
+  function createBufferURL(buffer, type = '') {
+    return URL.createObjectURL(new Blob([buffer], {type}));
+  }
+  
+  async function init() {
+    const workerBuffer = await fetch("https://unpkg.com/webm-wasm@0.3.0/dist/webm-worker.js").then(r => r.arrayBuffer());
+    const worker = new Worker(createBufferURL(workerBuffer, "text/javascript"));
+    worker.postMessage("https://unpkg.com/webm-wasm@0.3.0/dist/webm-wasm.wasm");
+    await nextEvent(worker, "message");
+    worker.postMessage({
+      width: cvs.width,
+      height: cvs.height,
+      timebaseDen: 2 // fps
+    });
+    for(const frame of frames()) {
+      worker.postMessage(frame.data.buffer, [frame.data.buffer]);
+    }
+    worker.postMessage(null);
+    const webmBuffer = (await nextEvent(worker, "message")).data;
+    const urls = [];
+    urls.push(createBufferURL(webmBuffer, `video/webm; codecs="vp8"`));
+    
+    const ms = new MediaSource();
+    ms.onsourceopen = () => {
+      const buffer = ms.addSourceBuffer(`video/webm; codecs="vp8"`);
+      buffer.appendBuffer(webmBuffer);
+      buffer.onupdateend = () => ms.endOfStream();
+    };
+    urls.push(URL.createObjectURL(ms));
+
+    urls.forEach(url => {
+      video = document.createElement("video");
+      video.src = url;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      document.body.append(video);
+      video.play();
+    });
+  }
+  
+  init();
+</script>

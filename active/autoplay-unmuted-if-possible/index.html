@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>video[autoplay-unmuted-if-possible]</title>
+  </head>
+  <body>
+    <video
+      controls
+      src="https://storage.googleapis.com/watk-public/buck360p_h264.mp4"
+      autoplay-unmuted-if-possible
+    ></video>
+    <video
+      controls
+      src="https://storage.googleapis.com/watk-public/buck360p_h264.mp4#t=10"
+      autoplay-unmuted-if-possible
+    ></video>
+    <script>
+      Array.from(
+        document.querySelectorAll("video[autoplay-unmuted-if-possible]")
+      ).forEach(video => {
+        video.play()?.catch(_ => {
+          video.muted = true;
+          video.play();
+        });
+      });
+    </script>
+  </body>
+</html>

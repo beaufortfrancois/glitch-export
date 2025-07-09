@@ -1,0 +1,19 @@
+{
+  "name": "ptz",
+  "version": "0.0.2",
+  "description": "ptz.glitch.me",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/ptz"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello!</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background: green;
+        color: white;
+        font-size: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>requestAnimationFrame</h1>
+    <div class="anim-track">
+      <div id="box">0</div>
+    </div>
+    <button>
+      Owww stop it
+    </button>
+    
+    
+    <script>
+      (function frame() {      
+        console.timeStamp('timestamp');  
+        requestAnimationFrame(frame);
+        box.textContent = performance.now();
+      })();
+    </script>
+  </body>
+</html>

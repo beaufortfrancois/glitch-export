@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        display: grid;
+        justify-items: center;
+      }
+      body > * {
+        grid-area: 1/1;
+      }
+      html {
+        height: -webkit-fill-available;
+        font-family: sans-serif;
+      }
+      .top-nav {
+        border: 4px solid #ccc;
+        background: #eee;
+        padding: 0 1rem;
+        contain: paint;
+      }
+      .chat-app {
+        width: 500px;
+        height: 500px;
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        grid-template-rows: max-content 1fr;
+        grid-template-areas:
+          'header header'
+          'people messages';
+        border: 1px solid #000;
+      }
+      .header {
+        grid-area: header;
+        border-bottom: 1px solid #000;
+        background: #ccc;
+        padding: 1rem;
+      }
+      .people {
+        grid-area: people;
+        border-right: 1px solid #000;
+      }
+      .people > * {
+        border-bottom: 1px solid #ccc;
+        padding: 1.5rem 1.5rem;
+        cursor: pointer;
+      }
+      .people > .active {
+        background: #eee;
+      }
+      .messages {
+        grid-area: messages;
+        padding: 1rem;
+      }
+      .messages > * {
+        padding: 1rem 0;
+        border-bottom: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-app">
+      <div class="header">
+        Basic chat layout demo
+      </div>
+      <div class="people">
+        <div data-person="0">
+          Jeremy
+        </div>
+        <div data-person="1">
+          Samantha
+        </div>
+        <div data-person="2">
+          Joanne
+        </div>
+      </div>
+      <div class="messages">
+        
+      </div>
+    </div>
+    <script>
+      const peopleMessages = [
+        `
+          <div>These</div>
+          <div>are</div>
+          <div>messages</div>
+          <div>from</div>
+          <div>Jeremy</div>
+        `,
+        `
+          <div>And</div>
+          <div>these</div>
+          <div>are</div>
+          <div>from</div>
+          <div>Samantha</div>
+        `,
+        `
+          <div>Joanne</div>
+          <div>sent</div>
+          <div>these</div>
+          <div>messages</div>
+        `,
+      ];
+      let currentPerson = -1;
+      const messages = $('.messages');
+      const people = $('.people');
+      
+      
+      function activatePerson(num) {
+        if (currentPerson === num) return;
+        for (const person of people.children) {
+          person.classList.remove('active');
+        }
+        people.children[num].classList.add('active');
+        messages.innerHTML = peopleMessages[num];
+        currentPerson = num;
+      }
+      
+      activatePerson(0);
+      
+      people.onclick = async (event) => {
+        const btn = event.target.closest('[data-person]');
+        if (!btn) return;
+        
+        activatePerson(btn.dataset.person);
+      };
+    </script>
+  </body>
+</html>

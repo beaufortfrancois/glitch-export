@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <style>
+      video {
+        max-width: 240px;
+      }
+    </style>
+    <pre id="logs"></pre>
+    <script>
+      (async _ => {
+        const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+        for (const mediaDevice of mediaDevices) {
+          if (mediaDevice.kind != "videoinput") {
+            continue;
+          }
+          const deviceName = `[${mediaDevice.kind}] ${mediaDevice.label ||
+            mediaDevice.deviceId}`;
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                deviceId: mediaDevice.deviceId,
+                advanced: [{ pan: true }]
+              }
+            });
+
+            const videoTrack = stream.getVideoTracks()[0];
+            const settings = JSON.stringify(videoTrack.getSettings(), null, 2);
+            log(`<b>${deviceName}</b><br/>${settings}<br/>`);
+
+            const video = document.createElement("video");
+            video.autoplay = true;
+            video.muted = true;
+            video.srcObject = stream;
+            logs.appendChild(video);
+
+            await video.play();
+            video.pause();
+            videoTrack.stop();
+            // stream.getTracks().forEach(track => track.stop());
+          } catch (error) {
+            log(`<b>${deviceName}</b><br/>error: ${error}<br/>`);
+          }
+        }
+      })();
+
+      function log(text) {
+        const p = document.createElement("p");
+        p.innerHTML = text;
+        logs.appendChild(p);
+      }
+    </script>
+  </body>
+</html>

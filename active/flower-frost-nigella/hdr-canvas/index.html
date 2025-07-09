@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+  </head>
+  <body>
+    <h1>
+      HDR canvas test
+    </h1>
+    <p>
+      The order is &lt;img&gt;, &lt;canvas&gt;, then HDR &lt;canvas&gt;:
+    </p>
+    <script type="module">
+      async function createHDRTestElements(src) {
+        const image = new Image();
+        image.src = src;
+        await image.decode();
+        
+        const canvases = ['', 'hdr'].map((type) => {
+          const canvas = document.createElement('canvas');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          const ctx = canvas.getContext('2d', { colorSpace: type === 'hdr' ? 'display-p3' : 'srgb' });
+          ctx.drawImage(image, 0, 0);
+          return canvas;
+        });
+        
+        return [image, ...canvases];
+      }
+      
+      const promises = [
+        createHDRTestElements('https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2FR2020-sRGB-color-ring.png?v=1623659687515'),
+        createHDRTestElements('https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fkitchen.avif?v=1623659671446'),
+      ];
+      
+      for await (const els of promises) document.body.append(...els, document.createElement('br'));
+    </script>
+  </body>
+</html>

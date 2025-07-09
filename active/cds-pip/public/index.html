@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Picture-in-Picture / Screen Capture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#322e22">
+    <link rel="icon" href="https://developer.chrome.com/devsummit/static/images/icons/chrome-icon@192.png" />
+    <style>
+      body {
+        background: linear-gradient(gold, orange);
+        background-color: orange;
+        background-repeat: repeat-x;
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      h1 {
+        font-family: Google Sans,Roboto,Arial,Helvetica,sans-serif;
+        padding: 12px 0;
+        background: #322e22;
+        color: white;
+        margin-top: 0px;
+        width: calc(100% - 48px); 
+        width: 100vw;
+        text-align: center;
+        margin-bottom: 24px;
+      }
+      span {
+        white-space: nowrap;
+        color: orange;
+      }
+      #video {
+        width: 100%;
+        background-image: url('https://developer.chrome.com/devsummit/static/images/lines/link-videos.svg');
+        background-repeat: no-repeat;
+        background-position: 24px;
+        max-height: calc(100vh - 88px - 24px);
+      }
+      body.playing video {
+        background: #322e22;
+      }
+      body.broadcasting {
+        background: #322e22;
+      }
+      body.broadcasting video {
+        background: #322e22 !important;
+      }
+      pre {
+        display: none;
+        color: #322e22;
+        margin: 24px 12px;
+        white-space: pre-wrap;
+      }
+    </style>  
+  </head>
+  <body>
+    <h1>Picture-in-Picture / <span>Screen Capture</span></h1>
+    <video id="video" autoplay muted intrinsicSize="15x10"></video>
+  <pre>Enable Canary flag
+#enable-experimental-web-platform-features</pre>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

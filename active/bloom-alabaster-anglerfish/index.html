@@ -1,0 +1,86 @@
+<video id="video" autoplay />
+<script type="module">
+  async function waitForReceivedFramesOrPackets(
+    pc,
+    numFramesOrPackets
+  ) {
+    let initialAudioPackets = 0;
+    let initialVideoFrames = 0;
+      let lookForVideo = true;
+    while (lookForVideo) {
+      const report = await pc.getStats();
+      for (const stats of report.values()) {
+        if (stats.type == "inbound-rtp") {
+          if (stats.kind == "video") {
+            if (!initialVideoFrames) {
+              initialVideoFrames = stats.framesDecoded;
+            } else if (
+              stats.framesDecoded >
+              initialVideoFrames + numFramesOrPackets
+            ) {
+              lookForVideo = false;
+            }
+          }
+        }
+      }
+      await new Promise((r) => setTimeout(r, 100));
+    }
+  }
+
+  const cameraStream = await navigator.mediaDevices.getUserMedia({ video });
+  const pc1 = new RTCPeerConnection();
+  const pc2 = new RTCPeerConnection();
+  const transceivers = {};
+  for (const track of cameraStream.getTracks()) {
+    pc1.addTransceiver(track, { streams: [cameraStream] });
+  }
+  for (const [local, remote] of [
+    [pc1, pc2],
+    [pc2, pc1],
+  ]) {
+    local.addEventListener("icecandidate", ({ candidate }) => {
+      if (!candidate || remote.signalingState == "closed") return;
+      remote.addIceCandidate(candidate);
+    });
+  }
+  const haveTrackEvent = new Promise((r) => (pc2.ontrack = r));
+
+  await pc1.setLocalDescription(await pc1.createOffer());
+  await pc2.setRemoteDescription(pc1.localDescription);
+  await pc2.setLocalDescription(await pc2.createAnswer());
+  await pc1.setRemoteDescription(pc2.localDescription);
+
+  const { streams } = await haveTrackEvent;
+  
+  const stream = streams[0];
+  const clone = stream.clone();
+
+  // let [stream1, stream2] = [stream, stream];
+  let [stream1, stream2] = [clone, stream];
+  
+  const recorder = new MediaRecorder(stream1);
+  recorder.start();
+  await new Promise((r) => (recorder.onstart = r));
+  console.log("onstart");
+
+  await waitForReceivedFramesOrPackets(pc2, 20);
+
+  for (const track of stream1.getTracks()) {
+    console.log(`stream1 track.readyState: ${track.readyState}`);
+    track.stop();
+    console.log(`stream1 track.stop()`);
+  }
+  // await new Promise((r) => setTimeout(r, 1000));
+
+  for (const track of stream1.getTracks()) {
+    console.log(`stream1 track.readyState: ${track.readyState}`);
+  }
+  for (const track of stream2.getTracks()) {
+    console.log(`stream2 track.readyState: ${track.readyState}`);
+  }
+  
+      await new Promise((r) => setTimeout(r, 500));
+  recorder.stop();
+  await new Promise((r) => (recorder.onstop = r));
+  console.log("onstop");
+</script>

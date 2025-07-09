@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>localstorage bug</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      p {
+        max-width: 60ch;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      These localStorage values should not get out of sync between tabs. However, in Safari 14.1 they do, and there's no workaround.
+      Even page reloads continue to use stale values.
+    </p>
+    <p>
+      localStorage 'foo' is: <span class="ls-value"></span>
+    </p>
+    <p>
+      <button class="reget">Re-get value</button>
+      <button class="increment">Increment</button>
+    </p>
+    <p>
+      localStorage 'bar' is: <span class="ls-value-2"></span>
+    </p>
+    <p>
+      <button class="reget-2">Re-get value</button>
+      <button class="increment-2">Increment</button>
+    </p>
+    <div class="log"></div>
+    <script>
+      const container = $('.ls-value');
+      const container2 = $('.ls-value-2');
+      
+      function showValue() {
+        container.textContent = localStorage.foo;
+      }
+      showValue();
+      function showValue2() {
+        container2.textContent = localStorage.bar;
+      }
+      showValue2();
+      
+      $('.reget').onclick = () => showValue();
+      $('.increment').onclick = () => {
+        localStorage.foo = (Number(localStorage.foo) || 0) + 1;
+        showValue();
+      };
+      $('.reget-2').onclick = () => showValue2();
+      $('.increment-2').onclick = () => {
+        localStorage.bar = (Number(localStorage.bar) || 0) + 1;
+        showValue2();
+      };
+      
+      function log(msg) {
+        const div = document.createElement('div');
+        div.textContent = msg;
+        $('.log').append(div);
+      }
+      
+      window.onstorage = ({ key, oldValue, newValue }) => {
+        log(`'storage' event: ${JSON.stringify({ key, oldValue, newValue })}`);
+        showValue();
+        showValue2();
+      };
+    </script>
+  </body>
+</html>

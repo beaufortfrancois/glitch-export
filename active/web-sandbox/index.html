@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Web Capabilities Demos</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#3f51b5">
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/2dd95fca-9576-4132-878d-807597cb2d37%2Ffugu.png?v=1556910939962">
+    <link rel="apple-touch-icon" sizes="192x192" href="https://cdn.glitch.com/2dd95fca-9576-4132-878d-807597cb2d37%2Ffugu.png?v=1556910939962">
+    <meta name="description" content="A list of amazing fugu & web capabilities demos">
+    <link rel="canonical" href="https://web-sandbox.glitch.me/">
+    <script>
+      if (window.location.protocol === 'http:') {
+        window.location.href = 'https:' + window.location.href.substring(5);
+      }
+    </script>
+  </head>  
+  <body>
+    <div class="head">
+      <h1>
+        Web Capabilities Demos
+      </h1>
+      The goal of the web capabilities project is to enable web
+      apps to do anything native apps can, by exposing the capabilities 
+      of native platforms to the web platform, while maintaining user 
+      security, privacy, trust, and other core tenets of the web.
+    </div>
+    <div class="card" id="badging-api">     
+      <h2>
+        Badging API
+        <span class="icons">
+          <span class="icon mobile-no"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon origin-trial"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Badging API is a new web platform API that allows installed web apps
+          to set an application-wide badge, shown in an operating-system-specific
+          place associated with the application, such as the shelf or home screen.
+          Badging makes it easy to subtly notify the user that there is some new
+          activity that might require their attention, or it can be used to indicate
+          a small amount of information, such as an unread count. 
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://badging-api.glitch.me/">Badging API Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="contact-picker">     
+      <h2>
+        Contact Picker 
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Contact Picker API is a new, on-demand picker that allows users to
+          select an entry or entries from their contact list and share limited
+          details of the selected contact(s) with a website. It allows users to
+          share only what they want, when they want, and makes it easier for users
+          to reach and connect with their friends and family.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://contact-picker.glitch.me/">Contact Picker Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="native-fs">     
+      <h2>
+        Native File System APIs
+        <span class="icons">
+          <span class="icon mobile-no"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The new Native File System API enables developers to build powerful web apps
+          that interact with files on the users local device, like IDEs, photo and
+          video editors, text editors, and more. After a user grants a web app access, 
+          this API allows web apps to read or save changes directly to files and folders 
+          on the users device.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://googlechromelabs.github.io/text-editor/">Text Editor</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="not-triggers">     
+      <h2>
+        Notification Triggers
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          Notification Triggers is an extension to the Notifications API that allows developers 
+          to schedule network-independent notifications that are based on a triggering condition 
+          being met ahead of time.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://notification-triggers.glitch.me/">Notification Triggers Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="sms-receiver">     
+      <h2>
+        SMS Receiver API
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          With the SMS Receiver API, you can programmatically obtain an OTP from an SMS 
+          message and verify a phone number for the user more easily.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://sms-receiver-demo.glitch.me/">SMS Receiver Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-share">     
+      <h2>
+        Web Share
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon shipped"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Web Share API, allows sites to share links and text to other
+          apps via the system provided share picker.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://web-share.glitch.me">Web Share Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-share-target">     
+      <h2>
+        Web Share Target
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon shipped"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Web Share Target API allows installed web apps to register
+          with the underlying OS as a share target to receive shared
+          content from either the Web Share API or system events, like
+          the OS-level share button. 
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://web-share.glitch.me/target.html">Web Share Target Level 1 Demo (text-only)</a>
+          <a target="_blank" href="https://stoic-kepler-c046f7.netlify.com/">Web Share Target Level 2 Demo (text and files)</a>
+          <a target="_blank" href="https://mobile.twitter.com/">Twitter's PWA (must be added to home screen)</a> 
+        </div>
+      </div>
+    </div>
+    <div class="card" id="wake-lock">     
+      <h2>
+        Wake Lock
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Wake Lock API provides a way to prevent the device from
+          dimming or locking the screen or prevent the device from going
+          to sleep when an application needs to keep running. 
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://wake-lock-demo.glitch.me/">Wake Lock Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="shape-detection">     
+      <h2>
+        Shape Detection
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon origin-trial"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Shape Detection API opens up native implementations of
+          shape detection services and exposes them through a set of
+          JavaScript interfaces. Currently, the supported features are
+          face detection, and barcode detection. 
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://qr-snapper.firebaseapp.com/">Barcode Detection</a>
+          <!-- This seems to not work anymore -->
+          <!-- <a target="_blank" href="https://face-detect.glitch.me/">Face Detection</a> -->
+        </div>
+      </div>
+    </div>
+    <div class="card" id="get-installed-related">     
+      <h2>
+        Get Installed Related Apps
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon origin-trial"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The <code>getInstalledRelatedApps</code> API is a new web platform
+          API that allowsyour web app to check to see if your native app is
+          installed on the users device, and vice versa.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://get-installed-apps.glitch.me/">Get Installed Related Apps Demo</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-bluethooth">     
+      <h2>
+        Web Bluetooth
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon shipped"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          Description
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://bluetooth.rocks/batmobile/">Lego Controller</a>
+          <a target="_blank" href="https://puckjs-temperature.glitch.me/">Puck.js Temperature Scanner</a>
+          <a target="_blank" href="https://webbluetoothcg.github.io/demos/playbulb-candle/">Candles</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-nfc">     
+      <h2>
+        Web NFC
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-no"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          Web NFC aims to provide sites the ability to read and write to nearby NFC devices
+          (e.g., tags and phones). The current scope is limited to NDEF, a lightweight binary
+          message format, but the API is designed so that the feature set can be expanded in
+          the future.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://web-nfc-demo.glitch.me/">NFC cards game</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-usb">     
+      <h2>
+        Web USB
+        <span class="icons">
+          <span class="icon mobile-no"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The WebUSB API makes USB safer and easier to use by bringing it to the Web.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://sowbug.github.io/weblight/">Web Lights</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="web-serial">     
+      <h2>
+        Web Serial
+        <span class="icons">
+          <span class="icon mobile-no"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon flag"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          The Serial API provides a way for websites to read and write from a serial device
+          through script. The API bridges the web and the physical world, by allowing websites
+          to communicate with devices such as microcontrollers, 3D printers, and other serial
+          devices.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://web-serial-codelab-end.glitch.me/">Web Serial Codelab</a>
+        </div>
+      </div>
+    </div>
+    <div class="card" id="wasm">     
+      <h2>
+        Web Assembly
+        <span class="icons">
+          <span class="icon mobile-yes"></span>
+          <span class="icon desktop-yes"></span>
+          <span class="icon"></span>
+        </span>
+      </h2>
+      <div>
+        <div class="description">
+          WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual
+          machine. Wasm is designed as a portable target for compilation of high-level languages
+          like C/C++/Rust, enabling deployment on the web for client and server applications.
+        </div>
+        <div class="demos">
+          <a target="_blank" href="https://pursuit.page.link/XenoEffects">Face Expression Effect</a>
+          <a target="_blank" href="https://pursuit.page.link/XenoEffectsSimd">Face Expression Effect (SIMD)</a>
+          <a target="_blank" href="https://pursuit.page.link/MediaPipeHandTracking">Hand Tracking</a>
+          <a target="_blank" href="https://pursuit.page.link/XenoPuppet">Puppet Effect</a>
+          <a target="_blank" href="https://pursuit.page.link/XenoPuppetSimd">Puppet Effect (SIMD)</a>
+          <a target="_blank" href="https://aleksazh.github.io/WebCamera/samples/">Camera Effects</a>
+          <a target="_blank" href="https://squoosh.app">Squoosh</a>
+          <a target="_blank" href="https://pursuit.page.link/XenoSegmentation">Segmentation</a>
+          <a target="_blank" href="https://storage.googleapis.com/aim-bucket/users/tmullen/demos_10_2019/simd128/xeno_segmentation/cpu_xeno_segmentation.html">Segmentation (SIMD)</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+              .then((reg) => {
+                console.log('Service worker registered.', reg);
+              });
+        });
+      }
+    </script>
+  </body>
+</html>

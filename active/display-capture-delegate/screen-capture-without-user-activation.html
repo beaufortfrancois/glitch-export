@@ -1,0 +1,25 @@
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+</style>
+<body></body>
+<script class="visible">
+  navigator.mediaDevices.getDisplayMedia();
+</script>
+<script>
+  onunhandledrejection = (event) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: event.reason,
+        className: "error",
+      })
+    );
+</script>

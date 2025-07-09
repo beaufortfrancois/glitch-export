@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+  <style>
+    .circle,
+    .circle-alt {
+      --size: 200px;
+      width: var(--size);
+      height: var(--size);
+      background: green;
+      border-radius: 100%;
+      page-transition-tag: circle;
+      contain: paint;
+    }
+
+    .circle-alt {
+      background: blue;
+      --size: 400px;
+      margin: 100px;
+    }
+
+    ::page-transition-container(circle),
+    ::page-transition-outgoing-image(circle),
+    ::page-transition-incoming-image(circle) {
+      animation-duration: 0.5s;
+    }
+  </style>
+</head>
+<body>
+  <button>Run demo</button>
+  
+  <div class="circle"></div>
+  <script>
+    const circle = document.querySelector('.circle');
+    
+    document.querySelector('button').onclick = () => {
+      const transition = document.createDocumentTransition();
+      transition.start(() => {
+        // This is just an example of a DOM change.
+        // It doesn't need to be a class change like this,
+        // it could be full change of DOM content.
+        circle.classList.toggle('circle-alt');
+      });
+
+    };
+  </script>
+</body>
+</html>

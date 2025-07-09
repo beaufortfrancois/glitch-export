@@ -1,0 +1,20 @@
+body {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+img,
+video {
+  width: min(240px, 45vw);
+  height: min(240px, 45vw);
+  border: 2px solid black;
+}
+
+button {
+  margin-top: 0.4em;
+}
+
+pre {
+  white-space: pre-wrap;
+}

@@ -1,0 +1,55 @@
+:root {
+  color-scheme: dark light;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+.wrapper {
+  padding: 0.5rem;
+  border: solid 1px CanvasText;
+  margin-block: 1rem;
+}
+
+.toot {
+  padding: 0.5rem;
+}
+
+.ai-toot {
+  color: black;
+  background-color: yellow;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+output {
+  display: block;
+}
+
+#topics {
+  display: none;
+}
+
+label {
+  color: red;
+}
+
+summary {
+  cursor: pointer;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      @keyframes test-anim {
+        from {
+          transform: rotate(0turn);
+          filter: blur(1px);
+        }
+        
+        50% {
+          filter: blur(10px);
+        }
+        
+        to {
+          transform: rotate(1turn);
+          filter: blur(1px);
+        }
+      }
+      
+      body {
+        display: grid;
+        --size: 20px;
+        grid-template-columns: repeat(auto-fill, var(--size));
+        grid-auto-rows: var(--size);
+        gap: 10px;
+      }
+      
+      .test {
+        animation: 10s infinite linear test-anim;
+        background: linear-gradient(to bottom, blue, yellow);
+        
+        width: var(--size);
+        height: var(--size);
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      document.body.innerHTML = Array(1000).fill('<div class="test"></div>').join('');
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "name": "App with SVG icons",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#a0532e",
+  "description": "Demonstrate whether SVG icons can be used on Android.",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/320x640.png",
+      "sizes": "320x640",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Shortcut one",
+      "description": "Description of shortcut one",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-144.svg",
+          "type": "image/svg+xml",
+          "sizes": "144x144",
+          "purpose": "any"
+        }
+      ]
+    }
+  ]
+}

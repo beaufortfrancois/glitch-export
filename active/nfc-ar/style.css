@@ -1,0 +1,22 @@
+html,
+body,
+model-viewer {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+pre {
+  text-align: center;
+  line-height: 100vmin;
+  margin: 0;
+  font-family: Roboto;
+}
+
+model-viewer:not([src]) {
+  display: none;
+}
+
+model-viewer[src] + pre {
+  display: none;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="buttons">
+      <button class="resize">
+        Create out-of-reference div with resizeObserver
+      </button>
+    </div>
+    
+    <script>
+      $('.resize').onclick = async () => {
+        const el = document.createElement('div');
+
+        const arr = new Uint8Array(1000 * 1000 * 100);
+
+        const ro = new ResizeObserver(() => console.log(arr[0]));
+        ro.observe(el);
+
+        document.body.append(el);
+        (() => el.remove())();
+      }
+    </script>
+  </body>
+</html>

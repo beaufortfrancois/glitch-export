@@ -1,0 +1,42 @@
+sudo: false
+language: node_js
+node_js:
+  - '6'
+
+cache:
+  directories:
+    - vendor/bundle
+    - node_modules
+
+before_install:
+  - pip install PyOpenSSL --user
+  - openssl aes-256-cbc -K $encrypted_61236829dce9_key -iv $encrypted_61236829dce9_iv -in qrsnapper-d4b905ab556f.json.enc -out qrsnapper-d4b905ab556f.json -d
+  - curl https://sdk.cloud.google.com | bash
+  - $HOME/google-cloud-sdk/bin/gcloud components update app -q
+  - $HOME/google-cloud-sdk/bin/gcloud config set project $PROJECT_ID
+  - $HOME/google-cloud-sdk/bin/gcloud auth activate-service-account $SRV_ACCOUNT --key-file qrsnapper-d4b905ab556f.json
+  - npm install --global gulp && npm install
+  
+env:
+  global:
+  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+  - CLOUDSDK_PYTHON_SITEPACKAGES=1
+  - PROJECT_ID=qrsnapper
+  - SRV_ACCOUNT=deploy@qrsnapper.iam.gserviceaccount.com
+  
+after_success:
+ - $HOME/google-cloud-sdk/bin/gcloud app deploy --version $TRAVIS_BRANCH ./app.yaml --promote
+
+# branch whitelist
+branches:
+  only:
+  - production
+  - slow
+  
+# Work out the deployment to app engine.
+
+script:
+  - gulp
+
+notifications:
+  webhooks: https://webpush.rocks/send-raw?processor=travis&id=https://fcm.googleapis.com/fcm/send/cC8zEklLFpQ:APA91bE7HDYW0TC_FOOavRO1feULYpzo317iidDUKrdVu0AYdtM0WBIi1z0sUBpkIdfv1lEtttzACObOPIg2xpZ0nYBbu7to0t_mh5fDIpg5LzEM2a4ymEB7xo3ER3b5wkxvLoBEN5Gi

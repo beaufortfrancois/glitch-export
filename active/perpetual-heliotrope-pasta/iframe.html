@@ -1,0 +1,8 @@
+<body>Click me!
+</body>
+  <script>
+  document.body.onclick = () => {
+    document.body.innerText = `Last clicked ${new Date()}`;
+    alert('click from hidden iframe');
+  }
+</script>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Screen sharing controls</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Screen sharing controls</h1>
+    <a
+      href="https://developer.chrome.com/docs/web-platform/screen-sharing-controls/"
+      >https://developer.chrome.com/docs/web-platform/screen-sharing-controls/</a
+    >
+    <label>navigator.mediaDevices.getDisplayMedia({</label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-video"
+        >video</a
+      >":
+      <input id="video" type="text" list="videoValues" placeholder="..." />
+      <datalist id="videoValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dfn-displaysurface"
+        >displaySurface</a
+      >":
+
+      <input
+        id="displaySurface"
+        type="text"
+        list="displaySurfaceValues"
+        placeholder="..."
+      />&nbsp;}
+
+      <datalist id="displaySurfaceValues">
+        <option value="monitor"></option>
+        <option value="window"></option>
+        <option value="browser"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-audio"
+        >audio</a
+      >":
+      <input id="audio" type="text" list="audioValues" placeholder="..." />
+      <datalist id="audioValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-mediatrackconstraintset-suppresslocalaudioplayback"
+        >suppressLocalAudioPlayback</a
+      >":
+
+      <input
+        id="suppressLocalAudioPlayback"
+        type="text"
+        list="suppressLocalAudioPlaybackValues"
+        placeholder="..."
+      />&nbsp;}
+
+      <datalist id="suppressLocalAudioPlaybackValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://wicg.github.io/prefer-current-tab/#dom-mediastreamconstraints-prefercurrenttab"
+        >preferCurrentTab</a
+      >":
+      <input
+        id="preferCurrentTab"
+        type="text"
+        list="preferCurrentTabValues"
+        placeholder="..."
+      />
+      <datalist id="preferCurrentTabValues">
+        <option value="true"></option>
+        <option value="false"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-selfbrowsersurface"
+        >selfBrowserSurface</a
+      >":
+      <input
+        id="selfBrowserSurface"
+        type="text"
+        list="selfBrowserSurfaceValues"
+        placeholder="..."
+      />
+      <datalist id="selfBrowserSurfaceValues">
+        <option value="include"></option>
+        <option value="exclude"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-systemaudio"
+        >systemAudio</a
+      >":
+      <input
+        id="systemAudio"
+        type="text"
+        list="systemAudioValues"
+        placeholder="..."
+      />
+      <datalist id="systemAudioValues">
+        <option value="include"></option>
+        <option value="exclude"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-surfaceswitching"
+        >surfaceSwitching</a
+      >":
+      <input
+        id="surfaceSwitching"
+        type="text"
+        list="surfaceSwitchingValues"
+        placeholder="..."
+      />
+      <datalist id="surfaceSwitchingValues">
+        <option value="include"></option>
+        <option value="exclude"></option>
+      </datalist>
+    </label>
+    <label>
+      &nbsp;&nbsp;"<a
+        href="https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-monitortypesurfaces"
+        >monitorTypeSurfaces</a
+      >":
+      <input
+        id="monitorTypeSurfaces"
+        type="text"
+        list="monitorTypeSurfacesValues"
+        placeholder="..."
+      />
+      <datalist id="monitorTypeSurfacesValues">
+        <option value="include"></option>
+        <option value="exclude"></option>
+      </datalist>
+    </label>
+    <label>})</label><br />
+    <button id="captureButton">Capture display media</button>
+    <button id="resetButton">Reset options</button>
+    <video id="previewVideo"></video>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        let error = document.createElement("p");
+        error.textContent = event.reason;
+        error.classList.add('error');
+        logs.appendChild(error);
+      };
+    </script>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const searchParams = new URL(location).searchParams;
+        const inputs = Array.from(document.querySelectorAll("input[id]"));
+
+        inputs.forEach((input) => {
+          if (searchParams.has(input.id)) {
+            if (input.type == "checkbox") {
+              input.checked = searchParams.get(input.id);
+            } else {
+              input.value = searchParams.get(input.id);
+              input.blur();
+            }
+          }
+          if (input.type == "checkbox") {
+            input.addEventListener("change", function (event) {
+              const newSearchParams = new URL(location).searchParams;
+              if (event.target.checked) {
+                newSearchParams.set(input.id, event.target.checked);
+                newSearchParams.sort();
+              } else {
+                newSearchParams.delete(input.id);
+              }
+              history.replaceState(
+                {},
+                "",
+                Array.from(newSearchParams).length
+                  ? location.pathname + "?" + newSearchParams
+                  : location.pathname
+              );
+            });
+          } else {
+            input.addEventListener("input", function (event) {
+              const newSearchParams = new URL(location).searchParams;
+              if (event.target.value) {
+                newSearchParams.set(input.id, event.target.value);
+                newSearchParams.sort();
+              } else {
+                newSearchParams.delete(input.id);
+              }
+              history.replaceState(
+                {},
+                "",
+                Array.from(newSearchParams).length
+                  ? location.pathname + "?" + newSearchParams
+                  : location.pathname
+              );
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

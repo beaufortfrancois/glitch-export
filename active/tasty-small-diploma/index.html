@@ -1,0 +1,11 @@
+<script type="module">
+  await import(
+    `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js`
+  );
+  await import(
+    `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu/dist/tf-backend-webgpu.js`
+  );
+  await tf.ready();
+  await tf.setBackend("webgpu"); // <--Error: Backend name 'webgpu' not found in registry
+  console.log(tf.getBackend());
+</script>

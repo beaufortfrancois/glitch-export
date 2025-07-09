@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔎</text></svg>"
+    />
+    <title>Web Speech ❤️ MediaStreamTrack</title>
+
+    <link rel="stylesheet" href="/style.css" />
+
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <h1>Web Speech ❤️ MediaStreamTrack</h1>
+    <a target="_blank" href="https://chromestatus.com/feature/5178378197139456"
+      >https://chromestatus.com/feature/5178378197139456</a
+    >
+
+    <div id="mainContent" hidden>
+    </div>
+    <pre id="logs"></pre>
+    <div id="failureWarning" hidden>
+      <p>To enjoy this demo, please:</p>
+      <ol>
+        <li>
+          Install
+          <a href="https://www.google.com/chrome/canary/">Chrome Canary</a>.
+        </li>
+        <li>
+          Visit chrome://flags/#captured-surface-control and enable that flag.
+        </li>
+        <li>Come back here.</li>
+      </ol>
+    </div>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        log(`> ${event.reason}`);
+      };
+      window.onerror = (error) => {
+        log(`> Error: ${error}`);
+      };
+
+      function log(text) {
+        const pre = document.createElement("pre");
+        pre.innerHTML = `${text}`;
+        logs.append(pre);
+      }
+    </script>
+  </body>
+</html>

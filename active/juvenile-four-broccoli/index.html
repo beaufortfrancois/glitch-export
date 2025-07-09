@@ -1,0 +1,64 @@
+<html>
+  <body>
+    <h1>Origin = charmed (top-level)</h1>
+    <p id="out">?</p>
+    <br />
+    <button onclick="buttonClick();">Click!</button>
+    <br />
+    <script>
+      function ook() {
+        const out = document.getElementById("out");
+        out.innerHTML = `isActive = ${navigator?.userActivation?.isActive}`;
+      }
+      
+      // woo 
+      // https://masteringjs.io/tutorials/fundamentals/wait-1-second-then
+      function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+      }
+      
+      function showActiveStateInIFrame(iFrame) {
+        const activeString = `isActive = ${iFrame.contentWindow.navigator?.userActivation?.isActive}`;
+
+        const newP = iFrame.contentWindow.document.createElement("p"); 
+        newP.textContent = activeString;
+        iFrame.contentWindow.document.body.appendChild(newP);  
+      }      
+      
+      // Create a srcless iframe that spits out whether userActivation.isActive.
+      function createIFrame() {
+        const iFrame = document.createElement("iframe");
+        iFrame.setAttribute("class", "iframe-foo");
+        
+        return iFrame;    
+      }
+      
+       // Add a new div to the body.
+      function createNewDiv() {
+        const divOnClick = document.createElement("div");
+        divOnClick.setAttribute("class", "divOnClick");
+        divOnClick.setAttribute("style", "background: cyan;");
+        
+        const divOnClickLabel = document.createElement("p");
+        divOnClickLabel.textContent = "Here's the new div created onClick.";
+        divOnClick.appendChild(divOnClickLabel);
+        
+        return divOnClick;
+      }
+
+      function buttonClick() {
+        const newDiv = createNewDiv();        
+        document.body.appendChild(newDiv);
+        
+        // Pretend it takes some time to append the Present iframe.
+        delay(4000).then(() => {
+          const iframe = createIFrame();
+          newDiv.appendChild(iframe);
+          this.showActiveStateInIFrame(iframe);
+        });
+      }
+      
+      setInterval(ook, 100);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>capture-handle-content-hint.glitch.me</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Tab Capture Handle - Content Hint</h1>
+    <a href="https://w3c.github.io/mediacapture-handle/identity/"
+      >https://w3c.github.io/mediacapture-handle/identity/</a
+    >
+    <button id="openButton">Open Presentation</button>
+    <button id="captureButton">Capture</button>
+    <button id="previousButton">Previous</button>
+    <button id="nextButton">Next</button>
+
+    <br />
+    <br />
+    Content Hint:
+    <select id="contentHintsSelect">
+      <option value="">""</option>
+      <option value="motion">"motion"</option>
+      <option value="detail">"detail"</option>
+      <option value="text">"text"</option>
+    </select>
+    <br />
+    <pre id="captureHandle"></pre>
+    <br />
+    <video id="video" autoplay playsinline></video>
+    <pre id="logs"></pre>
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<select id="select">
+  <optgroup label="Encrypted">
+    <option
+      data-mime-type="video/webm; codecs=vp9"
+      data-range="bytes=0-1196488"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video-encrypted-with-no-clear-lead.webm"
+      >VP9 - No Clear Lead</option
+    >
+    <option
+      data-mime-type="video/webm; codecs=vp9"
+      data-range="bytes=0-3600000"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video-encrypted-with-clear-lead.webm"
+      >VP9 - Clear Lead of 10s</option
+    >
+    <option
+      data-mime-type="video/mp4; codecs=avc1.4d401f"
+      data-range="bytes=0-2060760"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video-encrypted-with-no-clear-lead.mp4"
+      >H264 - No Clear Lead</option
+    >
+    <option
+      data-mime-type="video/mp4; codecs=avc1.4d401f"
+      data-range="bytes=0-6000000"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video-encrypted-with-clear-lead.mp4"
+      >H264 - Clear Lead of 10s</option
+    >
+  </optgroup>
+  <optgroup label="Not Encrypted">
+    <option
+      data-mime-type="video/webm; codecs=vp9"
+      data-range="bytes=0-1196488"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video.webm"
+      >VP9</option
+    >
+    <option
+      data-mime-type="video/mp4; codecs=avc1.4d401f"
+      data-range="bytes=0-2060760"
+      value="https://storage.googleapis.com/fbeaufort-test/sample-video.mp4"
+      >H264</option
+    >
+  </optgroup>
+</select>
+<label for="keyCheckbox">Wrong Encryption Key</label>
+<input type="checkbox" id="keyCheckbox" />
+<label for="mseCheckbox">MSE</label>
+<input type="checkbox" id="mseCheckbox" />
+<button id="loadButton">Load & Play</button>
+<video
+  muted
+  crossorigin
+  controls
+  id="video"
+  width="640"
+  height="360"
+  style="display: block; margin-top: 8px"
+></video>
+<script>
+  const KEY = new Uint8Array([
+    0x00,
+    0x01,
+    0x02,
+    0x03,
+    0x04,
+    0x05,
+    0x06,
+    0x07,
+    0x08,
+    0x09,
+    0x0a,
+    0x0b,
+    0x0c,
+    0x0d,
+    0x0e,
+    0x0f
+  ]);
+
+  video.addEventListener("encrypted", async function(event) {
+    console.log("encrypted event:", event);
+
+    const session = video.mediaKeys.createSession();
+    session.closed.then(reason => console.log(reason));
+    session.addEventListener("message", handleSessionMessage);
+
+    await session.generateRequest(event.initDataType, event.initData);
+    session.close();
+  });
+
+  (async _ => {
+    console.log("RMKSA");
+
+    const config = [
+      {
+        initDataTypes: ["cenc", "webm"],
+        videoCapabilities: [
+          { contentType: 'video/mp4; codecs="avc1.4d401f"' },
+          { contentType: 'video/webm; codecs="vp9"' }
+        ]
+      }
+    ];
+    const keySystemAccess = await navigator.requestMediaKeySystemAccess(
+      "org.w3.clearkey",
+      config
+    );
+    const mediaKeys = await keySystemAccess.createMediaKeys();
+    await video.setMediaKeys(mediaKeys);
+    console.log("Media keys set up");
+  })();
+
+  async function handleSessionMessage(event) {
+    console.log("message event: ", event);
+
+    const license = await fetchLicense("license-server.html", {
+      body: event.message
+    });
+
+    const session = event.target;
+    await session.update(license);
+    console.log("Session updated");
+  }
+
+  /* Utils */
+
+  // This takes the place of a license server.
+  async function fetchLicense(fakeUrl, init) {
+    return new Promise((resolve, reject) => {
+      setTimeout(_ => {
+        // Parse the clearkey license request.
+        const licenseRequest = JSON.parse(new TextDecoder().decode(init.body));
+        console.log("License request:", licenseRequest);
+
+        // A JSON Web Key (JWK) Set contains the representation of the symmetric key
+        // to be used for decryption: https://tools.ietf.org/html/rfc7517
+        const jwk = {
+          keys: [
+            {
+              kty: "oct" /* key type */,
+              kid:
+                licenseRequest
+                  .kids[0] /* base64url encoding of the octet sequence containing the key ID value */,
+              k: toBase64(
+                getKey()
+              ) /* base64url encoding of the octet sequence containing the symmetric key value */
+            }
+          ]
+        };
+        console.log("license response:", jwk);
+        const licenseResponse = new TextEncoder().encode(JSON.stringify(jwk));
+
+        resolve(licenseResponse);
+      }, 2000);
+    });
+  }
+
+  function getKey() {
+    if (keyCheckbox.checked) {
+      return new Uint8Array(16);
+    }
+    return KEY;
+  }
+
+  // Convert Uint8Array into base64 using base64url alphabet, without padding.
+  function toBase64(u8arr) {
+    // See https://en.wikipedia.org/wiki/Base64#URL_applications
+    return btoa(String.fromCharCode.apply(null, u8arr))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=*$/, "");
+  }
+
+  loadButton.addEventListener("click", function() {
+    video.src = "";
+    if (mseCheckbox.checked) {
+      const mediaSource = new MediaSource();
+      video.src = URL.createObjectURL(mediaSource);
+      mediaSource.addEventListener("sourceopen", async function() {
+        URL.revokeObjectURL(video.src);
+        const mimeType = select.options[select.selectedIndex].dataset.mimeType;
+        const sourceBuffer = mediaSource.addSourceBuffer(mimeType);
+        const url = select.options[select.selectedIndex].value;
+        const range = select.options[select.selectedIndex].dataset.range;
+        console.log("Fetching...", url);
+        const response = await fetch(url, { headers: { range } });
+        const data = await response.arrayBuffer();
+        console.log("Fetched", data);
+        sourceBuffer.addEventListener("updatestart", function(e) {
+          console.log("updatestart", e);
+        });
+        sourceBuffer.addEventListener("error", function(e) {
+          console.log("error", e);
+        });
+        sourceBuffer.addEventListener("abort", function(e) {
+          console.log("abort", e);
+        });
+        sourceBuffer.addEventListener("updateend", function(e) {
+          if (!sourceBuffer.updating && mediaSource.readyState === "open") {
+            mediaSource.endOfStream();
+          }
+          video.play();
+        });
+        console.log("Append Buffer", data);
+        try {
+          sourceBuffer.appendBuffer(data);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+    } else {
+      video.src = select.options[select.selectedIndex].value;
+      video.play();
+    }
+  });
+</script>
+<style>
+  select,
+  input {
+    margin-right: 24px;
+  }
+  video {
+    display: block;
+    margin-top: 8px;
+  }
+</style>

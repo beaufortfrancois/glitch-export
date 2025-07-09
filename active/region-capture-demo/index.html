@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="origin-trial"
+      content="AtZFNHqDfStnuGpYicK2wo0X7jUBfsJ7kOFTIAQzjLxsGrE3GNaINXa30TtvpP0+HYp7eO8TpEe06gEDAKQ4VQ4AAABfeyJvcmlnaW4iOiJodHRwczovL3JlZ2lvbi1jYXB0dXJlLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiUmVnaW9uQ2FwdHVyZSIsImV4cGlyeSI6MTY2MTI5OTE5OX0="
+    />
+
+    <title>region-capture-demo.glitch.me</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Region Capture Demo</h1>
+    <a href="https://github.com/w3c/mediacapture-region/"
+      >https://github.com/w3c/mediacapture-region/</a
+    >
+    <iframe id="iframe" src="iframe.html"> </iframe>
+    <div class="loremIpsum">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+      est laborum.
+    </div>
+    <div id="cropArea">
+      <div id="cropAreaHeader">Drag me</div>
+      <div id="innerCropArea"></div>
+    </div>
+    <div class="loremIpsum">
+      Suspendisse imperdiet vel augue sed finibus. Integer a iaculis purus.
+      Donec at tortor sit amet augue sagittis pulvinar. Donec interdum dictum
+      erat, sed aliquam est laoreet nec. Mauris ultrices iaculis nibh, ac
+      hendrerit arcu elementum quis. Cras ut dictum mauris, id pulvinar lacus.
+      Duis commodo purus at tellus commodo auctor. Integer ut accumsan arcu. Ut
+      semper ornare eleifend. Nullam fringilla lacus sapien, sed ultricies sem
+      rutrum eget. Fusce lacinia nunc consequat lectus vehicula, in ultricies
+      lorem efficitur. Etiam lectus augue, pretium eu rhoncus non, sollicitudin
+      eu tortor. Ut interdum ipsum nunc, vitae venenatis purus blandit sed. Cras
+      et finibus leo, vehicula pellentesque elit. Sed condimentum massa ac nisl
+      gravida lacinia.
+    </div>
+    <div class="loremIpsum">
+      Cras elementum hendrerit lacus, vitae aliquam ex convallis nec. Sed
+      condimentum nunc eget lectus accumsan, nec accumsan purus mollis. Nulla
+      tincidunt nisi sit amet vestibulum interdum. Aenean lacus leo, sodales id
+      tincidunt non, hendrerit in nunc. Fusce vel metus a mauris fringilla
+      pharetra. Etiam diam erat, sagittis non velit id, rhoncus finibus magna.
+      Integer ligula mi, vehicula at odio in, lacinia pellentesque sapien.
+    </div>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+    <script>
+      /* Utils to make red rectangle draggable */
+
+      cropArea.onpointerdown = (e) => {
+        let pos1, pos2, pos3, pos4;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        
+        
+        if (pos3 - cropArea.offsetWidth -  cropArea.offsetLeft > - 20 &&
+            pos4 - cropArea.offsetHeight -  cropArea.offsetTop > - 20) {
+          // Allow resize.
+          return;
+        }
+
+        document.onpointermove = (e) => {
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          cropArea.style.top = cropArea.offsetTop - pos2 + "px";
+          cropArea.style.left = cropArea.offsetLeft - pos1 + "px";
+        };
+        document.onpointerup = () => {
+          document.onpointerup = null;
+          document.onpointermove = null;
+        };
+      };
+    </script>
+  </body>
+</html>

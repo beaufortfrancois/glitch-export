@@ -1,0 +1,50 @@
+<style>
+  iframe {
+    width: 100%;
+    max-width: 720px;
+    height: 230px;
+  }
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+  .text {
+    color: blue;
+    white-space: pre-line;
+  }
+</style>
+<iframe src="frames/iframe1.html"> </iframe>
+
+<script class="visible">
+  onmessage = () => {
+    log(`userActivation.isActive: ${navigator.userActivation?.isActive}`);
+    frames[1].postMessage(null);
+  };
+</script>
+
+<iframe src="frames/iframe2.html"> </iframe>
+
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+
+  function log(text) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: text,
+        className: "text",
+      })
+    );
+  }
+</script>

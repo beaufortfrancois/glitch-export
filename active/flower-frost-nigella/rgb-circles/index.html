@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        display: grid;
+        justify-items: center;
+        align-content: center;
+      }
+      body > * {
+        grid-area: 1/1;
+      }
+      html {
+        height: -webkit-fill-available;
+      }
+      .r, .g, .b {
+        --size: 30vw;
+        width: var(--size);
+        height: var(--size);
+        transform: rotate(var(--rotate)) translateY(-42%);
+        border-radius: 100%;
+        mix-blend-mode: screen;
+      }
+      .r {
+        background: rgb(255, 0, 0);
+        --rotate: 0;
+      }
+      .g {
+        background: rgb(0, 255, 0);
+        --rotate: 120deg;
+      }
+      .b {
+        background: rgb(0, 0, 255);
+        --rotate: 240deg;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="r"></div>
+    <div class="g"></div>
+    <div class="b"></div>
+  </body>
+</html>

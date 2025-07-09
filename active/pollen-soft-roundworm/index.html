@@ -1,0 +1,118 @@
+<video id="vid" playsinline autoplay></video>
+<h1 id="text">
+    Controls
+</h1>
+<button id="togglePipButton">Toggle PIP</button>
+<br>
+<button id="increaseCanvasXButton">Increment X</button>
+<button id="decreaseCanvasXButton">Decrement X</button>
+<br>
+<button id="increaseCanvasYButton">Increment Y</button>
+<button id="decreaseCanvasYButton">Decrement Y</button>
+<br>
+<button id="resetPipButton">Reset canvas size</button>
+<button id="multipleImgsButton">Toggle multiple images</button>
+<div>
+    <h1>Canvas</h1>
+    <p id="size"></p>
+    <canvas id="canvas">
+    </canvas>
+</div>
+<style>
+canvas {
+    background: #edfff6;
+}
+
+.row {
+    display: flex;
+}
+
+h1, p {
+    font-size: 16px;
+    margin: 0 5px;
+}
+</style>
+<script>
+  const video = document.getElementById('vid');
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d', { alpha: false });
+const sizeEl = document.getElementById('size');
+const observer = new MutationObserver(() =>
+{ sizeEl.innerText = "x: " + canvas.width + ", y:" + canvas.height; });
+observer.observe(canvas, { attributes: true });
+let troll = false;
+
+let toggleImages = false;
+
+const setImage = (imgSel) => {
+    base_image = new Image();
+    base_image.onload = function () {
+        context.drawImage(base_image, 0, 0, 400, 300);
+    }
+    base_image.crossOrigin = "anonymous";
+    base_image.src = imgSel && toggleImages ? "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png"
+        : "https://upload.wikimedia.org/wikipedia/commons/7/7e/Dontfeedthetrolls.jpg";
+    troll = !troll;
+};
+
+const resetImage = () => {
+    canvas.width = 350;
+    canvas.height = 250;
+    setImage(troll);
+}
+resetImage();
+
+const stream = canvas.captureStream();
+video.srcObject = stream;
+video.play();
+
+const increaseCanvasX = () => {
+    canvas.width = canvas.width + 1;
+    setImage(troll);
+}
+
+const decreaseCanvasX = () => {
+    canvas.width = canvas.width - 1;
+    setImage(troll);
+}
+
+const increaseCanvasY = () => {
+    canvas.height = canvas.height + 1;
+    setImage(troll);
+}
+
+const decreaseCanvasY = () => {
+    canvas.height = canvas.height - 1;
+    setImage(troll);
+}
+
+resetPipButton.addEventListener('click', () => resetImage());
+multipleImgsButton.addEventListener('click', () => { toggleImages = !toggleImages; });
+
+const togglePipButton = document.getElementById('togglePipButton');
+// Hide button if Picture-in-Picture is not supported or disabled.
+togglePipButton.hidden = !document.pictureInPictureEnabled ||
+    video.disablePictureInPicture;
+
+togglePipButton.addEventListener('click', function () {
+    // If there is no element in Picture-in-Picture yet, let’s request
+    // Picture-in-Picture for the video, otherwise leave it.
+    if (!document.pictureInPictureElement) {
+        video.requestPictureInPicture()
+            .catch(error => {
+                // Video failed to enter Picture-in-Picture mode.
+            });
+    } else {
+        document.exitPictureInPicture()
+            .catch(error => {
+                // Video failed to leave Picture-in-Picture mode.
+            });
+    }
+});
+
+increaseCanvasXButton.addEventListener('click', increaseCanvasX);
+increaseCanvasYButton.addEventListener('click', increaseCanvasY);
+decreaseCanvasXButton.addEventListener('click', decreaseCanvasX);
+decreaseCanvasYButton.addEventListener('click', decreaseCanvasY);
+
+</script>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Content-Security-Policy: default-src 'none'</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        max-width: 800px;
+        margin: auto;
+        padding: 2em;
+      }
+      input {
+        margin-top: 1em;
+      }
+    </style>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'" />
+  </head>
+  <body>
+    <p>
+      It is safe here to enter sensitive data. This website aims to show that
+      the browser should reassure users when it knows <b>for sure</b> that
+      nothing can be stolen. I believe this is the case on this page thanks to
+      the Content Security Policy <code>default-src 'none'</code> applied.
+    </p>
+    <p>See <a href="//glitch.com/edit/#!/harmless">page source</a></p>
+    <input id="name" type="text" placeholder="name" />
+    <input id="firstname" type="text" placeholder="firstname" />
+    <input id="lastname" type="text" placeholder="lastname" />
+    <input id="streetaddress" type="text" placeholder="address" />
+    <input id="postalcode" type="text" placeholder="postalcode" />
+    <input id="city" type="text" placeholder="city" />
+    <input id="country" type="text" placeholder="country" />
+    <input id="phone" type="text" placeholder="phone" />
+    <input id="email" type="text" placeholder="email" />
+    <br />
+    <input id="cardholder" type="text" placeholder="cardholder" />
+    <input id="cardnumber" type="text" placeholder="cardnumber" />
+    <input id="exp-date" type="text" placeholder="exp-date" />
+    <input id="cvc" type="text" placeholder="cvc" />
+  </body>
+</html>

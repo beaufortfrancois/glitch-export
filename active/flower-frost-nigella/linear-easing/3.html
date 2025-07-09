@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+      
+      .test {
+        --size: 100px;
+        width: var(--size);
+        height: var(--size);
+        background: green;
+        will-change: transform;
+      }
+      
+      .container {
+        height: 400px;
+        border-bottom: 10px solid #ccc;
+      }
+      
+      input[type=range] {
+        width: 300px;
+      }
+      
+      .demo-output {
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="settings">
+      <p>
+        <label>
+          Duration:
+          <input name="duration" type="number" value="1500" />
+        </label>
+      </p>
+    </form>
+    
+    <p class="demo-output">
+      
+    </p>
+    
+    <div class="container">
+      <div class="test">
+      
+      </div>
+    </div>
+    
+    <script>
+      const form = $('.settings');
+      const el = $('.test');
+      const output = $('.demo-output');
+      const distance = 300;
+      const stopTime = 500;
+      let settings;
+      
+      function ease(easingPoints, progress) {
+        let pointAIndex = easingPoints.findLastIndex(item => item.input <= progress);
+        
+        if (pointAIndex === -1) {
+          pointAIndex = 0;
+        } else if (pointAIndex === easingPoints.length - 1) {
+          pointAIndex--;
+        }
+        
+        const pointA = easingPoints[pointAIndex];
+        const pointB = easingPoints[pointAIndex + 1];
+        
+        if (pointA.input === pointB.input) return pointB.output;
+        
+        const progressFromPointA = progress - pointA.input;
+        const pointInputRange = pointB.input - pointA.input;
+        const progressBetweenPoints = progressFromPointA / pointInputRange;
+        const pointOutputRange = pointB.output - pointA.output;
+        const outputFromLastPoint = progressBetweenPoints * pointOutputRange;
+        return pointA.output + outputFromLastPoint;
+      }
+      
+      function roundToPlaces(num, places) {
+        const mult = 10 ** places;
+        return Math.round(num * mult) / mult;
+      }
+      
+      function easeOutBounce(x) {
+        const n1 = 7.5625;
+        const d1 = 2.75;
+
+        if (x < 1 / d1) {
+          return n1 * x * x;
+        } else if (x < 2 / d1) {
+          return n1 * (x -= 1.5 / d1) * x + 0.75;
+        } else if (x < 2.5 / d1) {
+          return n1 * (x -= 2.25 / d1) * x + 0.9375;
+        } else {
+          return n1 * (x -= 2.625 / d1) * x + 0.984375;
+        }
+      }
+      
+      const sections = [
+        { before: 1 / 2.75, points: 4 },
+        { before: 2 / 2.75, points: 4 },
+        { before: 2.5 / 2.75, points: 4 },
+        { before: 1, points: 2 },
+      ];
+      
+      const authoredEasingPoints = sections.map((section, i) => {
+        const previousBefore = i === 0 ? 0 : sections[i - 1].before;
+        const range = section.before - previousBefore;
+        
+        return Array.from({ length: section.points }, (_, pointI) => ({
+          input: pointI === 0 && i !== 0 ? previousBefore : null,
+          output: easeOutBounce(previousBefore + (range * (pointI / section.points))),
+        }));
+      }).flat();
+      
+      authoredEasingPoints.push({ input: null, output: 1 });
+      
+      console.log(authoredEasingPoints);
+      
+      const easingPoints = authoredEasingPoints.map(point => ({ ...point }));
+      const rounding = 3;
+      
+      {
+        let largestInput = -Infinity;
+        
+        for (let i = 0; i < easingPoints.length; i++) {
+          const point = easingPoints[i];
+          
+          if (point.input !== null) {
+            point.input = Math.max(point.input, largestInput);
+            largestInput = point.input;
+          } else if (i === 0) {
+            point.input = 0;
+            largestInput = 0;
+          } else if (i === easingPoints.length - 1) {
+            point.input = Math.max(1, largestInput);
+          }
+        }
+        
+        let lastPointWithInput;
+        
+        // At this point, the first and last items will have an input
+        
+        for (let i = 0; i < easingPoints.length; i++) {
+          const point = easingPoints[i];
+          
+          if (point.input !== null) {
+            lastPointWithInput = point;
+            continue;
+          }
+          
+          const first = i;
+          
+          do { i++; } while (easingPoints[i].input === null);
+          
+          const nextPointWithInput = easingPoints[i];
+          const withoutInput = easingPoints.slice(first, i);
+          const fromInput = lastPointWithInput.input;
+          const toInput = nextPointWithInput.input;
+          
+          for (const [i, point] of withoutInput.entries()) {
+            point.input = (toInput - fromInput) * ((i+1) / (withoutInput.length+1)) + fromInput;
+          }
+          
+          lastPointWithInput = nextPointWithInput;
+        }
+        
+        for (const point of easingPoints) {
+          point.input = roundToPlaces(point.input, rounding);
+          point.input = roundToPlaces(point.input, rounding);
+        }
+      }
+      
+      console.log(easingPoints);
+      console.log(ease(easingPoints, -.25));
+      
+      {
+        let outputTest = 'linear(';
+        for (const [i, point] of easingPoints.entries()) {
+          if (i !== 0) outputTest += ', ';
+          outputTest += Number(point.output.toFixed(rounding));
+          if (authoredEasingPoints[i].input !== null) {
+            outputTest += ' ' + Number((point.input * 100).toFixed(rounding - 2)) + '%';
+          }
+        }
+        
+        output.textContent = outputTest + ' 100% 100%)';
+      }
+      
+
+      function frame(now) {
+        const durationIncludingStop = settings.duration + stopTime;
+        const phaseIncludingStop =
+          (now % durationIncludingStop) / durationIncludingStop;
+        const phase = phaseIncludingStop * (1 + stopTime / durationIncludingStop);
+
+        const interpolatedPoint = ease(easingPoints, Math.min(phase, 1));
+
+        const position = distance * interpolatedPoint;
+        el.style.transform = `translateY(${position}px)`;
+        requestAnimationFrame(frame);
+      }
+
+      function readSettings() {
+        const data = new FormData(form);
+
+        settings = {
+          duration: Number(data.get('duration')),
+        };
+      }
+
+      readSettings();
+      form.addEventListener('input', () => readSettings(), { useCapture: true });
+
+      requestAnimationFrame(frame);
+
+    </script>
+  </body>
+</html>

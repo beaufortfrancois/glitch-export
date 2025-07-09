@@ -1,0 +1,40 @@
+<button id="button">Append &lt;iframe&gt; and log total JS heap size</button>
+
+<style>
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+</style>
+<script class="visible">
+  button.onclick = async () => {
+    logTotalJsHeapSize(performance.memory.totalJSHeapSize);
+
+    document.body.append(document.createElement("iframe"));
+
+    await new Promise((r) => setTimeout(r, 500));
+    logTotalJsHeapSize(performance.memory.totalJSHeapSize);
+  };
+</script>
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+  function logTotalJsHeapSize(data) {
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: `Total JS heap size: ${data / 1000000}MB`,
+      })
+    );
+  }
+</script>

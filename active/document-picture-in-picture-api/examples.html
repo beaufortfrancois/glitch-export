@@ -1,0 +1,131 @@
+<style>
+  #playerContainer {
+    background: red;
+    width: 100%;
+    height: 300px;
+    display: grid;
+    place-content: center;
+    gap: 1ch;
+  }
+  #player {
+    background: blue;
+    padding: 25px;
+    display: grid;
+    place-content: center;
+    gap: 1ch;
+  }
+  button {
+    margin-top: 20px;
+  }
+</style>
+<div id="playerContainer">
+  <div id="player">
+    <video
+      id="video"
+      controls
+      src="https://storage.googleapis.com/media-session/sintel/trailer.mp4"
+      style="width: 300px; height: 168px"
+    ></video>
+    <!-- More player elements here. -->
+  </div>
+</div>
+<button id="pipButton1">pipButton1</button>
+<button id="pipButton2">pipButton2</button>
+<button id="pipButton3">pipButton3</button>
+<button id="pipButton4">pipButton4</button>
+<button id="pipButton5">pipButton5</button>
+<button id="pipButton6">pipButton6</button>
+<button id="closePipButton">closePipButton</button>
+<script>
+  pipButton1.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Open a Picture-in-Picture window.
+    const pipWindow = await documentPictureInPicture.requestWindow();
+
+    // Add player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+  });
+
+  pipButton2.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Open a Picture-in-Picture window whose aspect ratio is
+    // the same as the player's.
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      initialAspectRatio: player.clientWidth / player.clientHeight,
+    });
+
+    // Move player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+  });
+
+  pipButton3.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Set player's width and height as the Picture-in-Picture window size.
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      width: player.clientWidth,
+      height: player.clientHeight,
+    });
+
+    // Move player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+  });
+
+  pipButton4.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Open a Picture-in-Picture window with style sheets copied over
+    // from the initial document so that the player looks the same.
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      copyStyleSheets: true,
+    });
+
+    // Move player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+  });
+
+  pipButton5.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Open a Picture-in-Picture window.
+    const pipWindow = await documentPictureInPicture.requestWindow();
+
+    // Move player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+
+    // Listen for the PiP closing event to move the player back.
+    pipWindow.addEventListener("unload", (event) => {
+      const playerContainer = document.querySelector("#playerContainer");
+      const pipPlayer = event.target.querySelector("#player");
+      playerContainer.append(pipPlayer);
+    });
+  });
+
+  pipButton6.addEventListener("click", async () => {
+    const player = document.querySelector("#player");
+
+    // Open a Picture-in-Picture window.
+    const pipWindow = await documentPictureInPicture.requestWindow();
+
+    // Move player to the Picture-in-Picture window.
+    pipWindow.document.body.append(player);
+
+    const pipVideo = pipWindow.document.querySelector("#video");
+    const pipMuteButton = pipWindow.document.createElement("button");
+    pipMuteButton.textContent = "Mute";
+    pipMuteButton.addEventListener("click", () => {
+      pipVideo.muted = true;
+    });
+    pipWindow.document.body.append(pipMuteButton);
+  });
+
+  closePipButton.addEventListener("click", () => {
+    documentPictureInPicture.window.close();
+  });
+
+  documentPictureInPicture.addEventListener("enter", (event) => {
+    console.log(event.window);
+  });
+</script>

@@ -1,0 +1,19 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+  margin: 0;
+}
+
+#faceEl {
+  border: solid red 3px;
+  background: transparent;
+  position: absolute;
+  transition: all 0.1s ease-in-out;
+}
+
+
+h1 {
+  font-style: italic;
+  color: #373fff;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Conditional Focus</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Conditional Focus</h1>
+    <a href="https://developer.chrome.com/docs/web-platform/conditional-focus/"
+      >https://developer.chrome.com/docs/web-platform/conditional-focus/</a
+    >
+
+    <video id="video" autoplay muted playsinline></video>
+    <input type="checkbox" id="focusTabs" /><label for="focusTabs"
+      >Focus tabs</label
+    >
+    <input type="checkbox" id="focusWindows" /><label for="focusWindows"
+      >Focus windows</label
+    >
+    <button id="captureButton">Capture</button>
+    <pre id="logs"></pre>
+
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.innerHTML += `<span> > ${event.reason}</span>\r\n`;
+      };
+      window.onerror = (error) => {
+        logs.innerHTML += `<span> > ${error}</span>\r\n`;
+      };
+      if (
+        !(
+          "CaptureController" in window &&
+          "setFocusBehavior" in CaptureController.prototype
+        )
+      ) {
+        logs.innerHTML += `<span>Warning! Conditional Focus is NOT supported. Try Chrome 109 or later on desktop.</span>\r\n`;
+      }
+    </script>
+  </body>
+</html>

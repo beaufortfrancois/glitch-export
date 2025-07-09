@@ -1,0 +1,42 @@
+<body>
+  <div
+    id="detection"
+    style="display: none; background-color: canvas; color-scheme: light"
+  ></div>
+  <pre id="pre"></pre>
+<!--     <script>
+    const detectionDiv = document.querySelector("#detection");
+    // If the computed style is not white then the page is in Auto Dark Theme.
+    const isAutoDark =
+      getComputedStyle(detectionDiv).backgroundColor != "rgb(255, 255, 255)";
+    // Update element styles when Auto Dark Theme is applied.
+    pre.textContent = `
+isAutoDark: ${isAutoDark}
+detectionDiv: ${detectionDiv}
+getComputedStyle(detectionDiv).backgroundColor: "${getComputedStyle(detectionDiv).backgroundColor}"
+`;  </script> -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+    // We can also use JavaScript to generate the detection element.
+    const detectionDiv = document.createElement("div");
+    detectionDiv.style.display = "none";
+    detectionDiv.style.backgroundColor = "canvas";
+    detectionDiv.style.colorScheme = "light";
+    document.body.appendChild(detectionDiv);
+    // If the computed style is not white then the page is in Auto Dark Theme.
+    const isAutoDark =
+      getComputedStyle(detectionDiv).backgroundColor != "rgb(255, 255, 255)";
+
+    pre.textContent = `
+isAutoDark: ${isAutoDark}
+detectionDiv: ${detectionDiv}
+getComputedStyle(detectionDiv).backgroundColor: "${getComputedStyle(detectionDiv).backgroundColor}"
+`;
+       // remove the detection element from the DOM.
+    document.body.removeChild(detectionDiv);
+
+   
+    })
+  </script>
+</body>

@@ -1,0 +1,12 @@
+body {
+  width: 448px;
+  margin: 2px;
+}
+
+canvas {
+  outline: 1px solid;
+  margin: 2px;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}

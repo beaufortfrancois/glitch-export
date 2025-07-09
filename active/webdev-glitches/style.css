@@ -1,0 +1,23 @@
+/* CSS files add styling rules to your content */
+
+body {
+  margin: 2em;
+  max-width: 1024px;
+}
+
+summary {
+  font-size: 200%;
+}
+
+div {
+  margin-bottom: 40px;
+}
+
+iframe {
+  width: 600px;
+  height: 300px;  
+}
+
+a {
+  display: block;
+}

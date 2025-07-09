@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      img {
+        width: 100%;
+        max-width: 620px;
+        display: block;
+        height: auto;
+      }
+      
+      body {
+        color: #fff;
+        background: #000;
+        font-family: sans-serif;
+      }
+      
+      a:link, a:visited {
+        color: #99f;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Image compression test
+    </h1>
+    <p>
+      I'm taking two images and compressing them until they are as small as possible, but 'not bad' to my eyes.
+      So, lots of subjectivity, and not a lot of science.
+      However, it gives a feel for the kind of quality I'd usually aim for.
+    </p>
+    <p>
+      I'm copying the size and density from <a href="https://www.theguardian.com/world/2021/jun/01/uk-facing-perilous-moment-as-indian-covid-variant-spreads">The Guardian article pages</a>.
+    </p>
+    <p>
+      All of the images were created in <a href="https://squoosh.app">Squoosh.app</a>.
+    </p>
+    
+    <h2>
+      City
+    </h2>
+    
+    <h3>
+      Uncompressed
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Ftown.png?v=1622540703233">
+    
+    <h3>
+      MozJPEG - 57kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Ftown.jpg?v=1622540705760">
+    
+    <p>
+      Quality 44. Banding in the sky prevented me going lower quality.
+    </p>
+    
+    <h3>
+      WebP - 40kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Ftown.webp?v=1622540969451">
+    
+    <p>
+      Quality 24.9. Effort 6.
+    </p>
+    
+    <h3>
+      AVIF - 35kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Ftown.avif?v=1622541822075">
+    
+    <p>
+      Quality 24, effort 10.
+    </p>
+    
+    <h3>
+      JXL - 39.3kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Ftown.jxl.png?v=1622542384799">
+    
+    <p>
+      Quality 15, progressive rendering, effort 3 (higher efforts seemed to increase size without improving quality).
+    </p>
+    
+    <h2>
+      Face
+    </h2>
+    
+    <h3>
+      Uncompressed
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface.png?v=1622542267486">
+    
+    <h3>
+      MozJPEG - 60kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface.jpg?v=1622542712834">
+    
+    <p>
+      Quality 50. Anything lower introduced severe blocks to the left-hand side of the face.
+    </p>
+    
+    <h3>
+      WebP - 36kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface.webp?v=1622542881565">
+    
+    <p>
+      Quality 20.5. Effort 6.
+    </p>
+    
+    <h3>
+      AVIF - 38Kb
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface.avif?v=1622543645111">
+    
+    <p>
+      Quality 22, effort 10. Any lower and the smoothing was just too much.
+    </p>
+    
+    <h3>
+      AVIF - 29kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface%20(1).avif?v=1622543731000">
+    
+    <p>
+      Quality 22, effort 10, full noise synthesis. This image looks good to me, but it's missing potentially significant details (like the mole on the face). Also I'm told the noise synthesis isn't well optimised yet.
+    </p>
+    
+    <h3>
+      JXL - 35.6kB
+    </h3>
+    
+    <img width="1240" height="744" src="https://cdn.glitch.com/2f4b4e08-395c-470d-aad5-9ba01f7c4597%2Fface.png?v=1622543856353">
+    
+    <p>
+      Quality 14.9, effort 3, progressive. This feels higher quality than the AVIF, but lower qualities introduced pretty noticable blockiness around the lips.
+    </p>  </body>
+</html>
+

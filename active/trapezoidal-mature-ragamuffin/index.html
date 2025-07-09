@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="origin-trial"
+      content="AtZFNHqDfStnuGpYicK2wo0X7jUBfsJ7kOFTIAQzjLxsGrE3GNaINXa30TtvpP0+HYp7eO8TpEe06gEDAKQ4VQ4AAABfeyJvcmlnaW4iOiJodHRwczovL3JlZ2lvbi1jYXB0dXJlLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiUmVnaW9uQ2FwdHVyZSIsImV4cGlyeSI6MTY2MTI5OTE5OX0="
+    />
+
+    <title>region-capture.glitch.me</title>
+
+    <link rel="stylesheet" href="/index.css" />
+
+    <script src="/index.js" defer></script>
+  </head>
+  <body>
+    <h1>Region Capture</h1>
+    <a href="https://github.com/w3c/mediacapture-region/"
+      >https://github.com/w3c/mediacapture-region/</a
+    >
+    <button id="previewCurrentTabButton">Capture current tab</button>
+    <button id="cropToButton" disabled>Crop it to red rectangle contours</button>
+    <hr />
+    <h2>Live preview</h2>
+    <video id="video" autoplay playsinline></video>
+    <div id="loremIpsum">
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+      est laborum."
+    </div>
+    <div id="cropIdArea">
+      <div id="cropIdAreaHeader">Drag me</div>
+      <div id="innerRedRectangle"></div>
+    </div>
+
+    <pre id="logs"></pre>
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+    <script>
+      /* Utils to make red rectangle draggable */
+
+      cropIdArea.onmousedown = (e) => {
+        let pos1, pos2, pos3, pos4;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+        document.onmousemove = (e) => {
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          cropIdArea.style.top = cropIdArea.offsetTop - pos2 + "px";
+          cropIdArea.style.left = cropIdArea.offsetLeft - pos1 + "px";
+        };
+        document.onmouseup = () => {
+          document.onmouseup = null;
+          document.onmousemove = null;
+        };
+      };
+    </script>
+  </body>
+</html>

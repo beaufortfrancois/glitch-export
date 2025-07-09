@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="button">getUserMedia then enumerateDevices</button>
+    <video id="video" autoplay muted style="display: block"></video>
+    <script>
+      button.onclick = async () => {
+        video.srcObject = await navigator.mediaDevices.getUserMedia({
+          video: true
+        });
+
+        // Calling navigator.mediaDevices.enumerateDevices causes black screen on some Android devices using Camera API, not Camera2 API.
+        navigator.mediaDevices.enumerateDevices();
+      };
+    </script>
+  </body>
+</html>

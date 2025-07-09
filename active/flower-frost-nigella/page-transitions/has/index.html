@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: system-ui;
+      }
+      
+      body {
+        margin: 0;
+        display: grid;
+        grid-auto-rows: max-content;
+        grid-auto-flow: row;
+      }
+      
+      .header {
+        height: 130px;
+        color: #fff;
+        background: hsl(214deg 100% 50%);
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        text-shadow: 1px 2px 7px #000000a8;
+        page-transition-tag: header;
+        contain: paint;
+      }
+      
+      .hidden {
+        display: none;
+      }
+      
+      .content {
+        margin: 50px;
+        page-transition-tag: content;
+        contain: paint;
+      }
+      
+      @keyframes slide-to-top {
+        to {
+          transform: translateY(-100%);
+        }
+      }
+
+      @keyframes slide-from-top {
+        from {
+          transform: translateY(-100%);
+        }
+      }
+
+      
+      ::page-transition-incoming-image(header):only-child {
+        animation-name: slide-from-top;
+      }
+      
+      ::page-transition-going-image(header):only-child {
+        animation-name: slide-to-top;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      Header
+    </div>
+    <div class="content">
+      <button class="toggle">Toggle heading</button>
+      <button class="color">Random heading color</button>
+    </div>
+    
+    <script>
+      function withTransition(callback) {
+        if (!document.createDocumentTransition) {
+          callback();
+          return;
+        }
+        
+        const transition = document.createDocumentTransition();
+        transition.start(() => callback());
+      }
+      
+      const header = $('.header');
+      
+      $('.toggle').onclick = () => {
+        withTransition(() => {
+          header.classList.toggle('hidden');
+        });
+      }
+      
+      $('.color').onclick = () => {
+        withTransition(() => {
+          header.style.background = `hsl(${Math.random() * 360}deg 100% 50%)`;
+        });
+      }
+    </script>
+  </body>
+</html>

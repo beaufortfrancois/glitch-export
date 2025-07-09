@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ptz.glitch.me</title>
+    <meta charset="utf-8" />
+    <meta name="Description" content="pan–tilt–zoom playground" />
+    <link rel="icon" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="/script.js" defer></script>
+  </head>
+  <body>
+    <div id="preview">
+      <video id="video" autoplay muted width="320" height="140"></video>
+      <div class="buttons">
+        <button id="panLeftButton" data-name="pan" disabled>
+          left
+        </button>
+        <button id="panRightButton" data-name="pan" disabled>
+          right
+        </button>
+        <button id="tiltDownButton" data-name="tilt" disabled>
+          down
+        </button>
+        <button id="tiltUpButton" data-name="tilt" disabled>
+          up
+        </button>
+        <button id="zoomOutButton" data-name="zoom" disabled>
+          zoom&nbsp;-
+        </button>
+        <button id="zoomInButton" data-name="zoom" disabled>
+          zoom&nbsp;+
+        </button>
+      </div>
+    </div>
+
+    <h1>
+      pan–tilt–zoom
+      <small id="small">🌱</small>
+    </h1>
+
+    <p>Pick a camera or use the default one</p>
+    <select id="cameraSelect" disabled>
+      <option id="default">(default camera)</option>
+    </select>
+
+    <p>Call <b>navigator.mediaDevices.getUserMedia</b> with</p>
+    <button id="getUserMediaVideoButton">
+      { video: true }
+    </button>
+<!--     <button id="getUserMediaVideoPtzUnconstrainedButton">
+      { video: { pan: {}, tilt: {}, zoom: {} } }
+    </button> -->
+    <button id="getUserMediaVideoPtzButton">
+      { video: { pan: 0, tilt: 0, zoom: 1 } }
+    </button>
+    <button id="getUserMediaVideoPtzAudioButton">
+      { video: { pan: 0, tilt: 0, zoom: 1 }, audio: true }
+    </button>
+
+    <p>Manage the <b>panTiltZoom</b> camera permission with</p>
+    <button id="requestCameraPtzTrueButton">
+      navigator.permissions.request
+    </button>
+    <button id="revokeCameraPtzTrueButton">
+      navigator.permissions.revoke
+    </button>
+
+    <p>
+      Feature policy is
+      <input type="checkbox" id="cameraFeaturePolicy" />
+      <label for="cameraFeaturePolicy">camera</label>
+      <input type="checkbox" id="microphoneFeaturePolicy" />
+      <label for="microphoneFeaturePolicy">microphone</label>
+    </p>
+
+    <p id="warning" style="display: none">
+      Enable the flag
+      <code>chrome://flags/#enable-experimental-web-platform-features</code>
+    </p>
+
+    <div id="logs"></div>
+
+    <script>
+      if (location.protocol == "http:") {
+        small.textContent = "(not secure)";
+        if (window.confirm("Do you want to switch to the https protocol?"))
+          location.protocol = "https:";
+      }
+    </script>
+  </body>
+</html>

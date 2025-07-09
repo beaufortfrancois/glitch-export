@@ -1,0 +1,52 @@
+<p>Instructions: Open DevTools console</p>
+<button id="button">MediaRecorder.start()</button>
+<video id="video" style="display: none"></video>
+<script>
+  let stream;
+  button.onclick = async () => {
+    if (stream) stream.getTracks().forEach((t) => t.stop());
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+
+    const pc1 = new RTCPeerConnection();
+    const pc2 = new RTCPeerConnection();
+    for (const track of stream.getTracks()) {
+      pc1.addTransceiver(track, { streams: [stream] });
+    }
+    for (const [local, remote] of [
+      [pc1, pc2],
+      [pc2, pc1],
+    ]) {
+      local.addEventListener("icecandidate", ({ candidate }) => {
+        if (!candidate || remote.signalingState == "closed") return;
+        remote.addIceCandidate(candidate);
+      });
+    }
+    const haveTrackEvent = new Promise((r) => (pc2.ontrack = r));
+
+    await pc1.setLocalDescription(await pc1.createOffer());
+    await pc2.setRemoteDescription(pc1.localDescription);
+    await pc2.setLocalDescription(await pc2.createAnswer());
+    await pc1.setRemoteDescription(pc2.localDescription);
+
+    const { streams } = await haveTrackEvent;
+    stream = streams[0];
+    
+    {
+    const recorder = new MediaRecorder(stream);
+    recorder.start(200);
+    }
+    
+
+    const clone = stream.clone();
+    video.srcObject = clone;
+    const recorder = new MediaRecorder(clone);
+    recorder.start(200);
+    console.log("recorder.start");
+    const { data } = await new Promise((r) => (recorder.ondataavailable = r));
+    console.log("recorder.ondataavailable");
+    recorder.stop();
+    console.log("recorder.stop");
+  };
+</script>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+<!--     <button id="button">
+      click this button to trigger user interaction 
+    </button> -->
+    <pre id="pre"></pre>
+    <!--  <iframe src="https://frill-planet-tin.glitch.me" width="500" height="500"></iframe> -->
+    <script>
+      setInterval(() => {
+        pre.textContent = `[TOP FRAME] navigator.userActivation.hasBeenActive: ${navigator.userActivation.hasBeenActive}`;
+      }, 500);
+      
+      // Adding manually iframe.
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://frill-planet-tin.glitch.me";
+      iframe.width = 500;
+      iframe.height = 500;
+      // iframe.allow = 'autoplay';
+      document.body.appendChild(iframe);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Offline</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#3f51b5">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <h1>Page 2</h1>
+    
+    <div>
+      This is just another page.
+    </div>
+    
+    <div>
+      <button id="butBack" type="button" onclick="history.back();">
+        Back
+      </button>
+    </div>
+   
+    <script>
+      /* Register the service worker  */
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then(() => { 
+              console.log('SERVICE_WORKER: Registered'); 
+            });
+        });
+      }
+    </script>
+
+  </body>
+</html>

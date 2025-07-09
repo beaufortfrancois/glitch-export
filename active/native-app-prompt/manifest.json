@@ -1,0 +1,55 @@
+{
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/1280x2560",
+      "sizes": "1280x2560",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/640x1280",
+      "sizes": "640x1280",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/320x640",
+      "sizes": "320x640",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/640x320",
+      "sizes": "640x320",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/160x320",
+      "sizes": "160x320",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.pinimg.com/originals/a9/88/c1/a988c1bf6e66482d5292e2c0c52f2dde.gif",
+      "sizes": "320x640",
+      "type": "image/gif"
+    }
+  ],
+  "name": "Native App Prompt",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.com/1163eaec-58f8-4386-9c02-ffc75c3a5e45%2Flarge-icon.png?v=1589352660115",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?start_url",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.google.samples.apps.iosched"
+    }
+  ],
+  "prefer_related_applications": true
+}

@@ -1,0 +1,187 @@
+<html>
+    <body>
+        <canvas id="gl-canvas" width="200" height="200"></canvas>
+        <canvas id="canvas-2d" width="200" height="200"></canvas>
+    </body>
+<script>
+
+const vertShaderScript = `
+attribute vec2 a_position;
+attribute vec2 a_texcoord;
+
+uniform vec2 u_resolution;
+varying vec2 v_texcoord;
+
+void main()
+{
+    vec2 zeroToOne = a_position / u_resolution;
+    vec2 clipSpace = zeroToOne * 2.0 - 1.0;
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+    v_texcoord = a_texcoord;
+}`;
+
+const fragShaderScript = `
+precision mediump float;
+varying vec2 v_texcoord;
+uniform sampler2D u_texture;
+
+void main() {
+    gl_FragColor = texture2D(u_texture, v_texcoord);
+}
+`;
+
+function compileShader(gl, shaderSource, shaderType) {
+    const shader = gl.createShader(shaderType);
+    if (!shader) throw new Error(`[webgl] failed to create shader with type ${shaderType}.`);
+
+    gl.shaderSource(shader, shaderSource);
+    gl.compileShader(shader);
+    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS) === false) {
+        throw new Error(`[webgl] failed to compile shader: ${gl.getShaderInfoLog(shader)}`);
+    }
+    return shader;
+  }
+  function setRectangle(gl, x, y, width, height) {
+    var x1 = x;
+    var x2 = x + width;
+    var y1 = y;
+    var y2 = y + height;
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+       x1, y1,
+       x2, y1,
+       x1, y2,
+       x1, y2,
+       x2, y1,
+       x2, y2,
+    ]), gl.STATIC_DRAW);
+  }
+
+function renderImage(gl, tex, texWidth, texHeight) {
+    gl.viewport(0, 0, texWidth, texHeight);
+    gl.scissor(0, 0, texWidth, texHeight);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
+    const program = gl.createProgram();
+    // Attach pre-existing shaders
+    const vertShader = compileShader(gl, vertShaderScript, gl.VERTEX_SHADER);
+    const fragShader = compileShader(gl, fragShaderScript, gl.FRAGMENT_SHADER);
+    gl.attachShader(program, vertShader);
+    gl.attachShader(program, fragShader);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+    const positionLocation = gl.getAttribLocation(program, 'a_position');
+    const texcoordLocation = gl.getAttribLocation(program, 'a_texcoord');
+    const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+    const textureLocation = gl.getUniformLocation(program, "u_texture");
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    setRectangle(gl, 0, 0, texWidth, texHeight);
+
+    const texcoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        0.0,  0.0,
+        1.0,  0.0,
+        0.0,  1.0,
+        0.0,  1.0,
+        1.0,  0.0,
+        1.0,  1.0,
+    ]), gl.STATIC_DRAW);
+
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    gl.enableVertexAttribArray(texcoordLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+    gl.vertexAttribPointer(texcoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+    gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+    gl.viewport(0, 0, texWidth, texHeight);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.finish();
+  }
+
+    // render a random texture to canvas using webgl context
+    function drawWebGLTexture() {
+        const texWidth = 200, texHeight = 200;
+        const glCanvas = document.getElementById('gl-canvas');
+        const gl = glCanvas.getContext("webgl2", { preserveDrawingBuffer: false });
+        const tex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, tex);
+        const data = new Uint8Array(texWidth * texHeight * 4).fill(0).map((_, i) => Math.floor(Math.random() * 255));
+        gl.texImage2D(gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            texWidth,
+            texHeight,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+        data);
+        renderImage(gl, tex, texWidth, texHeight);
+    }
+
+    // fill blue using 2d context
+    function draw2dCanvas() {
+        const canvas2d = document.getElementById('canvas-2d');
+        const ctx = canvas2d.getContext('2d');
+        ctx.fillStyle = '#0099cc';
+        ctx.fillRect(0, 0, 200, 200);
+    }
+
+    async function loadFromWebGLToWebGPU() {
+        drawWebGLTexture();
+        draw2dCanvas();
+        const adapter = await navigator.gpu?.requestAdapter();
+        const device = await adapter?.requestDevice();
+        const glCanvas = document.getElementById('gl-canvas');
+        const canvas2d = document.getElementById('canvas-2d');
+        const loadStart = performance.now();
+        const texWidth = 200, texHeight = 200;
+        const texture = device.createTexture({
+            size: [200, 200],
+            dimension: '2d',
+            format: 'rgba8unorm',
+            sampleCount: 1,
+            usage: GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC | GPUTextureUsage.RENDER_ATTACHMENT,
+        });
+        // copy from webgl canvas
+        device.queue.copyExternalImageToTexture({source: glCanvas}, {texture: texture}, {
+            width: 200,
+            height: 200
+        });
+        // copy from 2d canvas
+        // device.queue.copyExternalImageToTexture({source: canvas2d}, {texture: texture}, {
+        //     width: 200,
+        //     height: 200
+        // });
+        await device.queue.onSubmittedWorkDone();
+        const loadTime = performance.now() - loadStart;
+        console.log('load time', loadTime / 1e6);
+        readGPUTexture(device, texture, 1024 * texHeight);
+    }
+
+    async function readGPUTexture(device, texture, size) {
+        commandEncoder = device.createCommandEncoder()
+        const readBuffer = device.createBuffer({size, usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ });
+        commandEncoder.copyTextureToBuffer({texture: texture}, {buffer: readBuffer, bytesPerRow: 1024}, { width: 200, height: 200 });
+        device.queue.submit([ commandEncoder.finish() ]);
+        await readBuffer.mapAsync(GPUMapMode.READ);
+        const mappedBuffer = readBuffer.getMappedRange().slice(0);
+        console.log(new Int8Array(mappedBuffer.slice(0, 100)));
+    }
+
+    loadFromWebGLToWebGPU();
+</script>
+</html>
+     

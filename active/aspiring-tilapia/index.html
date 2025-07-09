@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--     <meta
+      http-equiv="origin-trial"
+      content="AgJ2inxvWXZFz8Rs4oEHoJ1xaQpK5oLjbuT012KNrICtxqT6LGaqyWjm+iwL9itCx/iASJlB6Cqhe3IED9urPg8AAABaeyJvcmlnaW4iOiJodHRwczovL2FzcGlyaW5nLXRpbGFwaWEuZ2xpdGNoLm1lOjQ0MyIsImZlYXR1cmUiOiJXZWJORkMiLCJleHBpcnkiOjE1OTQ5MDE2NDd9"
+    /> -->
+  </head>
+  <body>
+    <h1>
+      Web NFC 👾
+    </h1>
+    <button id="scanButton">
+      Scan
+    </button>
+    <button id="writeButton">
+      Write
+    </button>
+    <button id="abortButton">
+      Abort
+    </button>
+    <label>
+      <input id="soundInput" type="checkbox" style="vertical-align: bottom" />
+      sound
+    </label>
+    <label>
+      <input id="signalInput" type="checkbox" style="vertical-align: bottom" checked />
+      pass signal
+    </label>
+    <pre
+      id="pre"
+      style="overflow: auto; padding: 0 12px 12px 0; white-space: pre-wrap;"
+    ></pre>
+    <script>
+      if ("NDEFReader" in window) {
+        import("/script.js");
+//         document.onvisibilitychange = () =>
+//           console.log("hidden:" + document.hidden);
+
+//         setTimeout(async () => {
+//           console.log("Hi!");
+//           const ndef = new NDEFReader();
+//           console.log(ndef);
+//           await ndef.scan();
+//           console.log("scan started");
+//           ndef.onreading = event => console.log(event);
+//         }, 5000);
+//         setTimeout(async () => {
+//           console.log("Hi!");
+//           const ndef = new NDEFReader();
+//           console.log(ndef);
+//           await ndef.scan();
+//           console.log("scan started");
+//           ndef.onreading = event => console.log(event);
+//         }, 3000);
+      } else {
+        pre.textContent = "No Web NFC support!\n";
+      }
+    </script>
+<!--         <iframe src="iframe.html"> </iframe> -->
+  </body>
+</html>

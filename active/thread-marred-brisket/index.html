@@ -1,0 +1,17 @@
+<div id="playerContainer">
+  <iframe id="iframeId" src="//emp.bbc.co.uk/emp/SMPj/2.47.3/iframe.html">
+  </iframe>
+</div>
+<button id="button">button</button>
+
+<script>
+  button.onclick = async () => {
+    const pipOptions = {
+      initialAspectRatio: 1280 / 720,
+      copyStyleSheets: true,
+    };
+    const player = document.getElementById("playerContainer");
+    const pipWindow = await documentPictureInPicture.requestWindow(pipOptions);
+    pipWindow.document.body.append(player);
+  };
+</script>

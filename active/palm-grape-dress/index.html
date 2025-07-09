@@ -1,0 +1,23 @@
+<html>
+  <body>
+    <h1>
+      Origin = palm (top)
+    </h1>
+    <p id="out">
+      ?
+    </p>
+    <br/>
+    <iframe src="https://elemental-glorious-rainstorm.glitch.me"></iframe>
+    <iframe src="https://elemental-glorious-rainstorm.glitch.me"></iframe>
+    <br/>
+    <iframe src="same-origin.html"></iframe>
+    <iframe src="same-origin.html"></iframe>
+    <script>
+      (function ook() {
+        const out = document.getElementById("out");
+        out.innerHTML = `isActive = ${navigator?.userActivation?.isActive}`;
+      requestAnimationFrame(ook);
+      })();
+    </script>
+  </body>
+</html>

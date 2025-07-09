@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<script>
+  let my_popup_html = `
+<script>
+window.alert(navigator.gpu) // undefined
+<\/script>  
+<!DOCTYPE html>
+<html>
+<body>
+I am a popup window
+<body>
+</html>
+    `;
+  let my_popup = document.addEventListener(`DOMContentLoaded`, async () =>
+    window.open(
+      URL.createObjectURL(new Blob([my_popup_html], { type: "text/html" })),
+      "Test",
+      "directories=false",
+      "popup=true",
+      "status=false",
+      "toolbar=false",
+      "menubar=false",
+      "replace=false"
+    )
+  );
+  console.log(navigator.gpu); // is defined and I can use to access the webgpu API
+</script>
+<html></html>

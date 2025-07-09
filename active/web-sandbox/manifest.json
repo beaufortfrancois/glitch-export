@@ -1,0 +1,14 @@
+{
+  "name": "Fugu Demos",
+  "short_name": "Demos",
+  "icons": [{
+      "src": "https://cdn.glitch.com/2dd95fca-9576-4132-878d-807597cb2d37%2Ffugu.png?1556910939962",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e8eaf6",
+  "theme_color": "#3f51b5"
+}

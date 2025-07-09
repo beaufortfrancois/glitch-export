@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <video
+      id="video"
+      width="400"
+      controls
+      autoplay
+      muted
+      loop
+      src="https://storage.googleapis.com/media-session/sintel/trailer.mp4"
+    ></video>
+    <pre id="pre"></pre>
+    <button id="button">
+      unmute
+    </button>
+    <img
+      id="img"
+      style="background-color:black"
+      src="https://www.gstatic.com/dfp/native/volume_off.png"
+    />
+    <script>
+      setInterval(() => {
+        pre.textContent = `[CHILD FRAME] navigator.userActivation.hasBeenActive: ${navigator.userActivation.hasBeenActive}`;
+      }, 500);
+      // setTimeout(() => {
+      //   video.muted = false;
+      // }, 2000)
+      button.onclick = () => {
+        video.muted = false;
+      };
+      img.addEventListener("touchstart", event => {
+        console.log("touchstart");
+        // event.stopPropagation();
+        event.preventDefault();
+        // video.muted = false;
+      });
+      img.addEventListener("click", event => {
+        console.log("click");
+        event.stopPropagation();
+        event.preventDefault();
+        video.muted = false;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<style>
+  iframe {
+    width: 100%;
+    max-width: 720px;
+    height: 230px;
+    border: 2px dashed hotpink;
+  }
+  pre {
+    color: hotpink;
+  }
+  .visible {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 24px;
+  }
+  .error {
+    color: red;
+    white-space: pre-line;
+  }
+</style>
+
+<pre>&lt;iframe&gt; ⬇</pre>
+<iframe></iframe>
+<br /><br />
+<button id="button">Call getDisplayMedia() from the empty iframe</button>
+
+<script class="visible">
+  button.onclick = () => {
+    const emptyIframe = frames[0];
+    emptyIframe.navigator.mediaDevices
+      .getDisplayMedia()
+      .catch((e) => emptyIframe.document.body.append(e));
+  };
+</script>
+<script>
+  onerror = (error) =>
+    document.body.appendChild(
+      Object.assign(document.createElement("pre"), {
+        textContent: error,
+        className: "error",
+      })
+    );
+</script>

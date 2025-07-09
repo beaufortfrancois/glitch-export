@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="origin-trial"
+      content="AtZFNHqDfStnuGpYicK2wo0X7jUBfsJ7kOFTIAQzjLxsGrE3GNaINXa30TtvpP0+HYp7eO8TpEe06gEDAKQ4VQ4AAABfeyJvcmlnaW4iOiJodHRwczovL3JlZ2lvbi1jYXB0dXJlLmdsaXRjaC5tZTo0NDMiLCJmZWF0dXJlIjoiUmVnaW9uQ2FwdHVyZSIsImV4cGlyeSI6MTY2MTI5OTE5OX0="
+    />
+
+    <title>iframe</title>
+    <style>
+      body {
+        font-family: helvetica, arial, sans-serif;
+      }
+      #cropTargetArea {
+        font-weight: bold;
+        position: absolute;
+        cursor: move;
+        z-index: 10;
+        border: 2px solid;
+        border-color: green;
+        user-select: none;
+      }
+
+      #cropTargetAreaHeader {
+        background: green;
+        color: white;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      #innerGreenRectangle {
+        height: 100px;
+        width: 100px;
+      }
+
+      .loremIpsum {
+        margin-bottom: 25px;
+        text-align: justify;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>This text and the green rectangle are in an &lt;iframe&gt;</h3>
+    <div id="cropTargetArea">
+      <div id="cropTargetAreaHeader">Drag me</div>
+      <div id="innerGreenRectangle"></div>
+    </div>
+    <div class="loremIpsum">
+      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+      Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+      fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+      sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
+      amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
+      incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
+      minima veniam, quis nostrum exercitationem ullam corporis suscipit
+      laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum
+      iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae
+      consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+    </div>
+
+    <pre id="logs"></pre>
+    <script>
+      CropTarget.fromElement(innerGreenRectangle).then(
+        (innerGreenRectangleCropTarget) => {
+          window.parent.postMessage({ innerGreenRectangleCropTarget });
+        }
+      );
+    </script>
+    <script>
+      window.onunhandledrejection = (event) => {
+        logs.textContent += `${event.reason}\r\n`;
+      };
+    </script>
+    <script>
+      /* Utils to make green rectangle draggable */
+
+      cropTargetArea.onmousedown = (e) => {
+        let pos1, pos2, pos3, pos4;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+        document.onmousemove = (e) => {
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          cropTargetArea.style.top = cropTargetArea.offsetTop - pos2 + "px";
+          cropTargetArea.style.left = cropTargetArea.offsetLeft - pos1 + "px";
+        };
+        document.onmouseup = () => {
+          document.onmouseup = null;
+          document.onmousemove = null;
+        };
+      };
+
+      /* Utils */
+
+      function log(text) {
+        logs.textContent += `${text}\r\n`;
+      }
+    </script>
+  </body>
+</html>

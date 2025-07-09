@@ -1,0 +1,15 @@
+{
+  "name": "Dark PWA",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/144/000000",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/?start_url",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#000"
+}

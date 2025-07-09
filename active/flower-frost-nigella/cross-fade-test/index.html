@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Demo</title>
+    <script>
+      window.$ = (...args) => document.querySelector(...args);
+    </script>
+    <style>
+      html {
+        font-family: sans-serif;
+        font-weight: bold;
+      }
+      
+      .items {
+        font-size: 32px;
+        line-height: 1.4;
+        display: grid;
+      }
+      
+      .items > * {
+        grid-area: 1/1;
+        transition: opacity 0.5s ease-in-out;
+      }
+      
+      .opacity-hide {
+        opacity: 0;
+      }
+      
+      .items img {
+        width: 200px;
+        float: left;
+        margin: 0 10px 10px 0;
+        filter: drop-shadow(0px 3px 5px rgb(0 0 0 / 0.2));
+      }
+    </style>
+  </head>
+  <body>
+    <button class="cross-fade">
+      Cross-fade
+    </button>
+    <div class="items">
+      <div></div>
+      <div></div>
+    </div>
+    
+    <script>
+      const lipsum = 'Morbi et enim non risus vestibulum tincidunt ultricies eget risus. Donec hendrerit odio non rutrum aliquet. Integer pretium scelerisque nisi, at luctus eros ultricies vitae. Maecenas tempor pharetra pretium. Donec venenatis tincidunt sem quis convallis. Morbi ac lorem lacus. Duis ultricies rhoncus commodo. Curabitur congue vitae erat eget interdum. Donec ut elit id massa dictum varius. Aenean ac risus ut felis aliquet efficitur sed quis dui. Donec quis leo erat.';
+      const lipsumWords = lipsum.split(' ');
+      const lipsumFragment = (() => {
+        const frag = document.createDocumentFragment();
+        
+        const img = new Image();
+        img.src = 'https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2Fillustration.svg?v=1618177344016';
+        frag.append(img);
+        
+        for (const [i, word] of lipsumWords.entries()) {
+          if (i !== 0) {
+            frag.append(new Text(' '));
+          }
+          
+          const span = document.createElement('span');
+          span.style.color = `hsl(${i / lipsumWords.length * 360}deg, 50%, 50%)`;
+          span.textContent = word;
+          frag.append(span);
+        }
+        
+        return frag;
+      })();
+      
+      const items = $('.items');
+      items.children[0].append(...[...lipsumFragment.cloneNode(true).childNodes].slice(0, -8));
+      items.children[1].append(lipsumFragment.cloneNode(true));
+      items.children[1].classList.add('opacity-hide');
+      
+      $('.cross-fade').onclick = () => {
+        for (const el of items.children) el.classList.toggle('opacity-hide');
+      }
+    </script>
+  </body>
+</html>
